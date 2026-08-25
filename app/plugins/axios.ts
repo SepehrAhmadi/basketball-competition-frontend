@@ -53,7 +53,7 @@ export default defineNuxtPlugin(() => {
         !originalRequest.url.includes("/auth/login") &&
         !originalRequest.url.includes("/auth/admin/login") &&
         !originalRequest.url.includes("/auth/logout") &&
-        !originalRequest.url.includes("/auth/refresh")
+        !originalRequest.url.includes("/auth/refresh-token")
       ) {
         if (isRefreshing) {
           return new Promise((resolve, reject) => {
@@ -71,8 +71,9 @@ export default defineNuxtPlugin(() => {
 
         return new Promise(async (resolve, reject) => {
           try {
-            const { data } = await axios.get(
-              `${config.public.API_URL}auth/refresh`,
+            const { data } = await axios.post(
+              `${config.public.API_URL}auth/refresh-token`,
+              {},
               {
                 withCredentials: true,
               },
