@@ -13,10 +13,16 @@ const identifier = ref("");
 const password = ref("");
 
 const submit = () => {
-    authStore.login({
-        identifier: identifier.value,
-        password: password.value,
-    });
+    if (identifier.value && password.value) {
+        authStore.login({
+            identifier: identifier.value,
+            password: password.value,
+        });
+    } else {
+        handlerStore.setError(
+            "لطفاً شماره موبایل یا ایمیل و رمز عبور را وارد کنید",
+        );
+    }
 };
 </script>
 

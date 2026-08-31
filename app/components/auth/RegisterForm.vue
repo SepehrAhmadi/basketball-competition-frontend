@@ -20,13 +20,24 @@ const roles = ref([]);
 
 const submit = () => {
     const selectedRoles = roles.value.map((role: any) => role.value);
-    authStore.register({
-        fullName: fullName.value,
-        phone: phone.value,
-        email: email.value,
-        password: password.value,
-        roles: selectedRoles,
-    });
+
+    if (
+        fullName.value &&
+        phone.value &&
+        email.value &&
+        password.value &&
+        selectedRoles.length
+    ) {
+        authStore.register({
+            fullName: fullName.value,
+            phone: phone.value,
+            email: email.value,
+            password: password.value,
+            roles: selectedRoles,
+        });
+    } else {
+        handlerStore.setError("لطفاً تمام فیلدها را وارد کنید");
+    }
 };
 
 onMounted(() => {
