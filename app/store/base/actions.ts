@@ -14,7 +14,7 @@ export function useBaseActions(state: StateType) {
     return axios
       .get("/roles")
       .then((res) => {
-        state.roles.value = res.data;
+        state.roles.value = res.data.data.roles;
       })
       .catch((err) => {
         console.log(err);
