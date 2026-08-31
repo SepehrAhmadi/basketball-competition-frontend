@@ -1,0 +1,7 @@
+@utility custom-input-focus {
+  @apply shadow-none border! border-cyan-700;
+
+  &:focus-visible {
+    @apply border-cyan-900! ring-0! ring-cyan-900/50!;
+  }
+}

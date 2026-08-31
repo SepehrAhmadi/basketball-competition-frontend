@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "@pinia/nuxt",
-    "@comark/nuxt",
   ],
   shadcn: {
     prefix: "",
@@ -25,7 +24,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        class: "dark",
+        class: "light",
       },
     },
   },
