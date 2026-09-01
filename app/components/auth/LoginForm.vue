@@ -77,19 +77,23 @@ const submit = () => {
         <CardFooter class="flex flex-col gap-3">
             <Button
                 @click="submit"
-                class="w-full bg-cyan-700 flex justify-center items-center gap-2"
+                class="w-full flex justify-center items-center gap-2"
             >
                 <div>ورود</div>
                 <icon-login class="size-5" />
             </Button>
-            <Button
-                class="w-full text-xs"
-                variant="link"
-                @click="$emit('switch')"
+            <div
+                class="w-full text-xs flex gap-2 justify-center items-center"
             >
                 <span> حساب کاربری ندارید؟ </span>
-                <span class="text-cyan-500 font-bold"> ثبت نام کنید </span>
-            </Button>
+                <Button
+                    variant="link"
+                    @click="$emit('switch')"
+                    class="text-cyan-500 font-bold px-0"
+                >
+                    ثبت نام
+                </Button>
+            </div>
         </CardFooter>
     </Card>
 </template>
