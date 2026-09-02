@@ -117,7 +117,7 @@
 }
 
 html {
-    direction: rtl;
+    direction: rtl !important;
 }
 
 body {

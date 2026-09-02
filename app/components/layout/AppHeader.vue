@@ -1,41 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "~/store/auth";
-import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
+const authStore = useAuthStore();
 
 type Theme = "light" | "dark";
 
 const THEME_KEY = "theme";
 const DEFAULT_THEME: Theme = "light";
-// Temporary until profile data is reliably available from auth state.
-const FALLBACK_USERNAME = "کاربر";
 
-const authStore = useAuthStore();
 const theme = ref<Theme>(DEFAULT_THEME);
-
-const username = computed(() => {
-    const profile = authStore.profileResult as {
-        fullName?: string;
-        username?: string;
-        data?: { fullName?: string; username?: string };
-    } | null;
-
-    return (
-        profile?.fullName ||
-        profile?.username ||
-        profile?.data?.fullName ||
-        profile?.data?.username ||
-        FALLBACK_USERNAME
-    );
-});
 
 const applyTheme = (value: Theme) => {
     const root = document.documentElement;
@@ -61,16 +35,6 @@ const handleLogout = () => {
     authStore.logout();
 };
 
-useHead({
-    script: [
-        {
-            id: "theme-init",
-            innerHTML:
-                "(function(){try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark')}catch(e){}})();",
-        },
-    ],
-});
-
 onMounted(() => {
     const saved = localStorage.getItem(THEME_KEY);
     const next: Theme =
@@ -86,7 +50,14 @@ onMounted(() => {
         class="flex items-center justify-between gap-4 border-b border-border bg-background px-4 py-3 sm:px-6"
     >
         <img
+            v-if="theme === 'light'"
             src="~/assets/img/logo.png"
+            alt="Logo"
+            class="h-8 w-auto object-contain sm:h-10"
+        />
+        <img
+            v-else
+            src="~/assets/img/logo-dark.png"
             alt="Logo"
             class="h-8 w-auto object-contain sm:h-10"
         />
@@ -110,9 +81,10 @@ onMounted(() => {
                 <span class="sr-only">Toggle theme</span>
             </Button>
 
-            <DropdownMenu>
-                <DropdownMenuTrigger as-child>
+            <DropdownMenu dir="rtl">
+                <DropdownMenuTrigger as-child dir="rtl">
                     <Button
+                        dir="rtl"
                         type="button"
                         variant="ghost"
                         size="icon-sm"
@@ -127,19 +99,26 @@ onMounted(() => {
                     </Button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" class="min-w-44">
-                    <DropdownMenuLabel class="font-medium">
-                        {{ username }}
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                        variant="destructive"
-                        class="cursor-pointer text-destructive"
-                        :disabled="authStore.loading"
+                <DropdownMenuContent
+                    align="end"
+                    class="min-w-40 flex flex-col gap-4 p-2"
+                    dir="rtl"
+                >
+                    <div class="flex justify-start items-center gap-2">
+                        <icon-user class="size-4" />
+                        <div class="text-[13px]">سپهر احمدی</div>
+                    </div>
+                    <button class="flex justify-start items-center gap-2">
+                        <icon-edit-box class="size-4" />
+                        <div class="text-[13px]">ویرایش پروفایل</div>
+                    </button>
+                    <button
                         @click="handleLogout"
+                        class="flex justify-start items-center gap-2 text-red-700 dark:text-red-500"
                     >
-                        خروج
-                    </DropdownMenuItem>
+                        <icon-logout class="size-4" />
+                        <div class="text-[13px]">خروج</div>
+                    </button>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
