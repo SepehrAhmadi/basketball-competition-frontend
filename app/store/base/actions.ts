@@ -26,8 +26,50 @@ export function useBaseActions(state: StateType) {
         state.loading.value = false;
       });
   };
+  
+  const getCoachDegree = () => {
+    const axios = useApi();
+    state.loading.value = true;
+
+    return axios
+      .get("/coach-degrees")
+      .then((res) => {
+        state.coachDegree.value = res.data.data.degrees;
+      })
+      .catch((err) => {
+        console.log(err);
+
+        const message = err.response?.data?.message || "خطای سرور";
+        handlerStore.setError(message);
+      })
+      .finally(() => {
+        state.loading.value = false;
+      });
+  };
+
+  const getRefereeDegree = () => {
+    const axios = useApi();
+    state.loading.value = true;
+
+    return axios
+      .get("/referee-levels")
+      .then((res) => {
+        state.refereeDegrees.value = res.data.data.levels;
+      })
+      .catch((err) => {
+        console.log(err);
+
+        const message = err.response?.data?.message || "خطای سرور";
+        handlerStore.setError(message);
+      })
+      .finally(() => {
+        state.loading.value = false;
+      });
+  };
 
   return {
     getRoles,
+    getCoachDegree,
+    getRefereeDegree
   };
 }

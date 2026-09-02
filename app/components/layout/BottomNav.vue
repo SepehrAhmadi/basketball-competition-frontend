@@ -6,7 +6,7 @@ const items = [
     { label: "خانه", to: "/", letter: "A" },
     { label: "بازی‌ها", to: "/", letter: "B" },
     { label: "اعلان‌ها", to: "/", letter: "C" },
-    { label: "علاقه‌مندی‌ها", to: "/", letter: "D" },
+    { label: "پروفایل", to: "/profile", letter: "D" },
 ];
 
 const route = useRoute();
