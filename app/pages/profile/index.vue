@@ -10,6 +10,7 @@
             </div>
             <view-profile-coach />
             <view-profile-referee />
+            <view-profile-player />
         </div>
     </div>
 </template>
