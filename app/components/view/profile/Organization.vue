@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex justify-between items-center gap-2">
+        <div class="flex justify-between items-center gap-2 mb-2">
             <div class="flex items-center gap-2">
                 <icon-building
                     class="size-3.75 text-gray-500 dark:text-gray-300"
@@ -23,7 +23,7 @@
             v-if="organizationList.length > 0"
             v-for="organization in organizationList"
             :key="organization.id"
-            class="w-full shadow-xs! rounded-4xl gap-4 py-3"
+            class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
         >
             <CardContent class="px-3">
                 <div class="flex justify-start items-center gap-1">
@@ -137,6 +137,39 @@
                 </DrawerHeader>
 
                 <div class="flex flex-col gap-4 px-4">
+                    <div class="flex justify-start items-center gap-5">
+                        <div
+                            class="w-20 h-20 rounded-full border border-gray-300 mb-2"
+                        >
+                            <img
+                                :src="avatar"
+                                alt="avatar"
+                                class="object-cover w-full h-full rounded-full p-1.25"
+                            />
+                        </div>
+                        <div>
+                            <div class="flex flex-col gap-2 mb-2">
+                                <div
+                                    class="text-gray-600 dark:text-gray-400 text-xs"
+                                >
+                                    تصویر را در ابعاد مربعی انتخاب کنید
+                                </div>
+                                <div
+                                    class="text-gray-600 dark:text-gray-400 text-xs"
+                                >
+                                    فرمت عکس باید PNG یا JPG باشد
+                                </div>
+                            </div>
+                            <Button
+                                class="text-[12px]"
+                                size="sm"
+                                @click="openDrawer('add')"
+                            >
+                                انتخاب تصویر
+                            </Button>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col gap-1">
                         <Label class="text-gray-600 text-xs" for="org-name"
                             >نام سازمان</Label
@@ -156,7 +189,7 @@
                             for="org-description"
                             >توضیحات</Label
                         >
-                        <shadcnTextarea
+                        <Textarea
                             v-model="description"
                             aria-label="توضیحات سازمان"
                             class="custom-input-focus text-[14px]"
@@ -215,7 +248,7 @@
 </template>
 
 <script setup lang="ts">
-import shadcnTextarea from "~/components/ui/textarea/Textarea.vue";
+import { Textarea } from "~/components/ui/textarea";
 import {
     AlertDialog,
     AlertDialogAction,
