@@ -1,7 +1,7 @@
 <template>
     <div>
         <AppHeader />
-        <div class="px-3">
+        <div class="px-3 pb-28!">
             <slot />
         </div>
         <BottomNav />
