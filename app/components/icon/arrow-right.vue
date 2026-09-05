@@ -12,13 +12,13 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
-            d="M15 6s-6 4.419-6 6s6 6 6 6"
+            d="M9 6s6 4.419 6 6s-6 6-6 6"
         />
     </svg>
 </template>
 
 <script>
 export default {
-    name: "HugeiconsArrowLeft01",
+    name: "HugeiconsArrowRight01",
 };
 </script>

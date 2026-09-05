@@ -2,7 +2,6 @@
 import type { PaginationFirstProps } from "reka-ui"
 import type { HTMLAttributes } from "vue"
 import type { ButtonVariants } from '@/components/ui/button'
-import { ArrowLeft01Icon } from '@hugeicons/vue'
 import { reactiveOmit } from "@vueuse/core"
 import { PaginationFirst, useForwardProps } from "reka-ui"
 import { cn } from "@/lib/utils"
@@ -26,7 +25,7 @@ const forwarded = useForwardProps(delegatedProps)
     v-bind="forwarded"
   >
     <slot>
-      <ArrowLeft01Icon />
+      <icon-arrow-right class="size-4" />
       <span class="hidden sm:block">First</span>
     </slot>
   </PaginationFirst>

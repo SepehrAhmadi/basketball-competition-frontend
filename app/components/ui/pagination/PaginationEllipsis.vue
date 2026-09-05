@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PaginationEllipsisProps } from "reka-ui"
 import type { HTMLAttributes } from "vue"
-import { MoreHorizontalCircle01Icon } from '@hugeicons/vue'
 import { reactiveOmit } from "@vueuse/core"
 import { PaginationEllipsis } from "reka-ui"
 import { cn } from "@/lib/utils"
@@ -18,7 +17,7 @@ const delegatedProps = reactiveOmit(props, "class")
     :class="cn('flex size-9 items-center justify-center', props.class)"
   >
     <slot>
-      <MoreHorizontalCircle01Icon class="size-4" />
+      <icon-more-horizental class="size-4" />
       <span class="sr-only">More pages</span>
     </slot>
   </PaginationEllipsis>

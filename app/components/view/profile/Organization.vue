@@ -97,6 +97,32 @@
             </CardContent>
         </Card>
 
+        <Pagination
+            v-if="pageCount > 1"
+            v-model:page="page"
+            :items-per-page="pageSize"
+            :total="organizationListMeta?.total ?? 0"
+            :sibling-count="1"
+            show-edges
+            class="mt-4"
+            aria-label="صفحه‌بندی سازمان‌ها"
+        >
+            <PaginationContent>
+                <PaginationPrevious aria-label="صفحه قبلی" />
+                <PaginationItem
+                    v-for="pageNumber in pageCount"
+                    :key="pageNumber"
+                    :value="pageNumber"
+                    :is-active="pageNumber === page"
+                    :aria-label="`صفحه ${pageNumber}`"
+                    class="w-7! h-7! p-1! text-[14px]!"
+                >
+                    {{ pageNumber }}
+                </PaginationItem>
+                <PaginationNext aria-label="صفحه بعدی" />
+            </PaginationContent>
+        </Pagination>
+
         <Drawer v-model:open="open">
             <DrawerContent class="h-screen max-h-screen mt-0 rounded-none">
                 <DrawerHeader>
@@ -201,15 +227,24 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from "~/components/ui/pagination";
 
 import { useOrganizationStore } from "~/store/organization";
-import { or } from "vue-router/dist/index-BN0B0y8a.js";
 const organizationStore = useOrganizationStore();
 const { organizationList, organizationListMeta, organizationDetail } =
     storeToRefs(organizationStore);
 
 const page = ref(1);
-const pageSize = ref(10);
+const pageSize = 3;
+const pageCount = computed(() =>
+    Math.ceil((organizationListMeta.value?.total ?? 0) / pageSize),
+);
 
 const open = ref(false);
 const mode = ref<"add" | "edit">("add");
@@ -250,7 +285,7 @@ const openDeleteDialog = (id: number) => {
 const confirmDelete = () => {
     if (organizationId.value) {
         organizationStore.deleteOrganization(organizationId.value).then(() => {
-            organizationStore.getOrganizations();
+            loadOrganizations();
             open.value = false;
             resetForm();
         });
@@ -268,7 +303,7 @@ const handleSubmit = () => {
                 email: email.value,
             })
             .then(() => {
-                organizationStore.getOrganizations();
+                loadOrganizations();
                 open.value = false;
                 resetForm();
             });
@@ -282,12 +317,29 @@ const handleSubmit = () => {
                 email: email.value,
             })
             .then(() => {
-                organizationStore.getOrganizations();
+                loadOrganizations();
                 open.value = false;
                 resetForm();
             });
     }
 };
+
+const loadOrganizations = () => {
+    return organizationStore.getOrganizations({
+        page: page.value,
+        pageSize,
+    });
+};
+
+watch(page, () => {
+    loadOrganizations();
+});
+
+watch(pageCount, (newPageCount) => {
+    if (newPageCount > 0 && page.value > newPageCount) {
+        page.value = newPageCount;
+    }
+});
 
 watch(organizationDetail, (newValue) => {
     if (newValue) {
@@ -300,6 +352,6 @@ watch(organizationDetail, (newValue) => {
 });
 
 onMounted(() => {
-    organizationStore.getOrganizations();
+    loadOrganizations();
 });
 </script>

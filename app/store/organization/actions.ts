@@ -14,8 +14,15 @@ export function useOrganizationActions(state: StateType) {
     return axios
       .get("/organizations", { params: query })
       .then((res) => {
-        state.organizationList.value = res.data.data?.items ?? res.data.data ?? [];
-        state.organizationListMeta.value = res.data.data?.meta ?? null;
+        const data = res.data.data;
+        state.organizationList.value = data?.items ?? data ?? [];
+        state.organizationListMeta.value = data
+          ? {
+              total: data.total ?? state.organizationList.value.length,
+              page: data.page ?? query.page ?? 1,
+              pageSize: data.pageSize ?? query.pageSize ?? state.organizationList.value.length,
+            }
+          : null;
       })
       .catch((err) => {
         console.log(err);

@@ -2,7 +2,6 @@
 import type { PaginationLastProps } from "reka-ui"
 import type { HTMLAttributes } from "vue"
 import type { ButtonVariants } from '@/components/ui/button'
-import { ArrowRight01Icon } from '@hugeicons/vue'
 import { reactiveOmit } from "@vueuse/core"
 import { PaginationLast, useForwardProps } from "reka-ui"
 import { cn } from "@/lib/utils"
@@ -27,7 +26,7 @@ const forwarded = useForwardProps(delegatedProps)
   >
     <slot>
       <span class="hidden sm:block">Last</span>
-      <ArrowRight01Icon />
+      <icon-arrow-left class="size-4" />
     </slot>
   </PaginationLast>
 </template>
