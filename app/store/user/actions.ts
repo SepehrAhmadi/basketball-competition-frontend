@@ -48,23 +48,27 @@ export function useUserActions(state: StateType) {
       });
   };
 
-  const uploadUserAvatar = (value: any) => {
+  const uploadUserAvatar = (formData: FormData) => {
     const axios = useApi();
+  
     handlerStore.loadingBtn = true;
-
-    const formData = new FormData();
-    formData.append("file", value);
-
+  
     return axios
-      .post("/users/me/avatar", formData)
+      .post("/users/me/avatar", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         state.userProfile.value = res.data.data;
         handlerStore.setSuccess(res.data.message);
       })
       .catch((err) => {
         console.log(err);
-
-        const message = err.response?.data?.message || "خطای سرور";
+  
+        const message =
+          err.response?.data?.message || "خطای سرور";
+  
         handlerStore.setError(message);
       })
       .finally(() => {

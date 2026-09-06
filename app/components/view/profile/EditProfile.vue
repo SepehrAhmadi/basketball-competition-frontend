@@ -21,19 +21,23 @@
                             />
                         </div>
                     </div>
-                    <div class="text-[16px]">سپهر احمدی</div>
-                    <div class="text-[14px] text-gray-600 dark:text-gray-300">
-                        09335107437
+                    <div class="text-[16px]">
+                        {{ userProfile?.fullName || "نام کاربر" }}
                     </div>
-                    <Button
-                        class="mt-2 px-4"
-                        size="sm"
-                        aria-label="ویرایش پروفایل"
-                        @click="open = true"
-                    >
-                        <icon-edit class="size-3.75" />
-                        ویرایش پرافایل
-                    </Button>
+                    <div class="text-[14px] text-gray-600 dark:text-gray-300">
+                        {{ userProfile?.phone || "-" }}
+                    </div>
+                    <div class="flex justify-center items-center gap-2 mt-2">
+                        <Button
+                            class="px-4"
+                            size="sm"
+                            aria-label="ویرایش پروفایل"
+                            @click="openEditDrawer"
+                        >
+                            <icon-edit class="size-3.75" />
+                            ویرایش پرافایل
+                        </Button>
+                    </div>
                 </div>
             </CardContent>
         </Card>
@@ -79,14 +83,27 @@
                                 aria-label="انتخاب تصویر پروفایل"
                                 @change="handleAvatarChange"
                             />
-                            <Button
-                                class="text-[12px]"
-                                size="sm"
-                                aria-label="انتخاب تصویر پروفایل"
-                                @click="triggerFileInput"
-                            >
-                                انتخاب تصویر
-                            </Button>
+                            <div class="flex items-center gap-2">
+                                <Button
+                                    class="text-[12px]"
+                                    size="sm"
+                                    aria-label="انتخاب تصویر پروفایل"
+                                    :disabled="handlerStore.loadingBtn"
+                                    @click="triggerFileInput"
+                                >
+                                    انتخاب تصویر
+                                </Button>
+                                <Button
+                                    v-if="hasAvatar"
+                                    class="text-[12px] bg-red-500 hover:bg-red-500/90 dark:bg-red-600 dark:hover:bg-red-600/90"
+                                    size="sm"
+                                    aria-label="حذف تصویر پروفایل"
+                                    :disabled="handlerStore.loadingBtn"
+                                    @click="removeAvatar"
+                                >
+                                    <icon-trash class="text-white size-4" />
+                                </Button>
+                            </div>
                         </div>
                     </div>
 
@@ -171,7 +188,12 @@
                 </div>
 
                 <DrawerFooter>
-                    <Button aria-label="ذخیره تغییرات پروفایل">ثبت</Button>
+                    <Button
+                        aria-label="ذخیره تغییرات پروفایل"
+                        :disabled="handlerStore.loadingBtn"
+                        @click="handleSubmit"
+                        >ثبت</Button
+                    >
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
@@ -179,30 +201,106 @@
 </template>
 
 <script setup lang="ts">
-import avatar from "../../../assets/img/avatar.png";
+import defaultAvatar from "../../../assets/img/avatar.png";
+import { useHandlerStore } from "~/store/handler";
+import { useUserStore } from "~/store/user";
+
+const handlerStore = useHandlerStore();
+const userStore = useUserStore();
+const { userProfile } = storeToRefs(userStore);
 
 const open = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
-const avatarPreview = ref<string>(avatar);
+const avatarPreview = ref<string>(defaultAvatar);
+const hasAvatar = ref(false);
 
-function triggerFileInput() {
-    fileInputRef.value?.click();
-}
-
-function handleAvatarChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-    if (avatarPreview.value.startsWith("blob:")) {
-        URL.revokeObjectURL(avatarPreview.value);
-    }
-    avatarPreview.value = URL.createObjectURL(file);
-    input.value = "";
-}
-
+const avatar = ref<File | null>(null);
 const fullName = ref("");
 const phone = ref("");
 const email = ref("");
 const birthDate = ref("");
 const nationalId = ref("");
+
+const populateForm = (profile: any) => {
+    if (!profile) return;
+
+    fullName.value = profile.fullName ?? "";
+    phone.value = String(profile.phone ?? "");
+    email.value = profile.email ?? "";
+    birthDate.value = profile.birthDate ?? "";
+    nationalId.value = String(profile.nationalId ?? "");
+};
+
+const updateAvatarPreview = (profile: any) => {
+    if (profile?.avatarUrl) {
+        avatarPreview.value = profile.avatarUrl;
+        hasAvatar.value = true;
+    } else {
+        avatarPreview.value = defaultAvatar;
+        hasAvatar.value = false;
+    }
+};
+
+const openEditDrawer = () => {
+    populateForm(userProfile.value);
+    open.value = true;
+};
+
+const resetForm = () => {
+    fullName.value = "";
+    phone.value = "";
+    email.value = "";
+    birthDate.value = "";
+    nationalId.value = "";
+};
+
+const handleSubmit = () => {
+    userStore
+        .updateUserMe({
+            fullName: fullName.value,
+            phone: String(phone.value),
+            email: email.value,
+            birthDate: birthDate.value,
+            nationalId: String(nationalId.value),
+        })
+        .then(() => {
+            open.value = false;
+            resetForm();
+        });
+};
+
+watch(userProfile, (newProfile) => {
+    updateAvatarPreview(newProfile);
+});
+
+function triggerFileInput() {
+    fileInputRef.value?.click();
+}
+
+async function handleAvatarChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) return;
+
+    avatar.value = file;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    await userStore.uploadUserAvatar(formData).then(() => {
+        userStore.getUserMe();
+    });
+}
+
+async function removeAvatar() {
+    await userStore.removeUserAvatar().then(() => {
+        avatarPreview.value = defaultAvatar;
+        hasAvatar.value = false;
+    });
+}
+
+onMounted(() => {
+    userStore.getUserMe();
+});
 </script>
