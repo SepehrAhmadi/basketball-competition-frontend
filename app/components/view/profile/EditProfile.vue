@@ -29,13 +29,23 @@
                     </div>
                     <div class="flex justify-center items-center gap-2 mt-2">
                         <Button
-                            class="px-4"
+                            class="px-4 text-[13px]"
                             size="sm"
                             aria-label="ویرایش پروفایل"
                             @click="openEditDrawer"
                         >
                             <icon-edit class="size-3.75" />
-                            ویرایش پرافایل
+                            ویرایش پروفایل
+                        </Button>
+                        <Button
+                            class="px-4 text-[13px]"
+                            size="sm"
+                            variant="outline"
+                            aria-label="تغییر رمز عبور"
+                            @click="openPasswordDrawer"
+                        >
+                            <icon-lock class="size-3.75" />
+                            تغییر رمز عبور
                         </Button>
                     </div>
                 </div>
@@ -45,10 +55,16 @@
         <Drawer v-model:open="open">
             <DrawerContent class="h-screen max-h-screen mt-0 rounded-none">
                 <DrawerHeader>
-                    <DrawerTitle>ویرایش پروفایل</DrawerTitle>
-                    <DrawerDescription
-                        >اطلاعات پروفایل خود را ویرایش کنید</DrawerDescription
-                    >
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <DrawerTitle>ویرایش پروفایل</DrawerTitle>
+                            <DrawerDescription
+                                >اطلاعات پروفایل خود را ویرایش
+                                کنید</DrawerDescription
+                            >
+                        </div>
+                        <div></div>
+                    </div>
                 </DrawerHeader>
 
                 <div class="flex flex-col gap-4 px-4">
@@ -197,6 +213,134 @@
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
+
+        <Drawer v-model:open="passwordDrawerOpen">
+            <DrawerContent class="h-screen max-h-screen mt-0 rounded-none">
+                <DrawerHeader>
+                    <DrawerTitle>تغییر رمز عبور</DrawerTitle>
+                    <DrawerDescription
+                        >رمز عبور حساب کاربری خود را تغییر
+                        دهید</DrawerDescription
+                    >
+                </DrawerHeader>
+
+                <div class="flex flex-col gap-4 px-4">
+                    <div class="flex flex-col gap-1">
+                        <Label
+                            class="text-gray-600 text-xs"
+                            for="current-password"
+                            >رمز عبور فعلی</Label
+                        >
+                        <div class="relative">
+                            <Input
+                                v-model="currentPassword"
+                                class="custom-input-focus pe-9"
+                                id="current-password"
+                                :type="
+                                    showCurrentPassword ? 'text' : 'password'
+                                "
+                                aria-label="رمز عبور فعلی"
+                            />
+                            <button
+                                type="button"
+                                class="absolute inset-y-0 inset-e-0 flex items-center px-3 text-gray-500 hover:text-cyan-700"
+                                :aria-label="
+                                    showCurrentPassword
+                                        ? 'مخفی کردن رمز عبور فعلی'
+                                        : 'نمایش رمز عبور فعلی'
+                                "
+                                @click="
+                                    showCurrentPassword = !showCurrentPassword
+                                "
+                            >
+                                <icon-view-off
+                                    v-if="showCurrentPassword"
+                                    class="size-4"
+                                />
+                                <icon-view v-else class="size-4" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <Label class="text-gray-600 text-xs" for="new-password"
+                            >رمز عبور جدید</Label
+                        >
+                        <div class="relative">
+                            <Input
+                                v-model="newPassword"
+                                class="custom-input-focus pe-9"
+                                id="new-password"
+                                :type="showNewPassword ? 'text' : 'password'"
+                                aria-label="رمز عبور جدید"
+                            />
+                            <button
+                                type="button"
+                                class="absolute inset-y-0 inset-e-0 flex items-center px-3 text-gray-500 hover:text-cyan-700"
+                                :aria-label="
+                                    showNewPassword
+                                        ? 'مخفی کردن رمز عبور جدید'
+                                        : 'نمایش رمز عبور جدید'
+                                "
+                                @click="showNewPassword = !showNewPassword"
+                            >
+                                <icon-view-off
+                                    v-if="showNewPassword"
+                                    class="size-4"
+                                />
+                                <icon-view v-else class="size-4" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <Label
+                            class="text-gray-600 text-xs"
+                            for="confirm-password"
+                            >تکرار رمز عبور جدید</Label
+                        >
+                        <div class="relative">
+                            <Input
+                                v-model="confirmPassword"
+                                class="custom-input-focus pe-9"
+                                id="confirm-password"
+                                :type="
+                                    showConfirmPassword ? 'text' : 'password'
+                                "
+                                aria-label="تکرار رمز عبور جدید"
+                            />
+                            <button
+                                type="button"
+                                class="absolute inset-y-0 inset-e-0 flex items-center px-3 text-gray-500 hover:text-cyan-700"
+                                :aria-label="
+                                    showConfirmPassword
+                                        ? 'مخفی کردن تکرار رمز عبور جدید'
+                                        : 'نمایش تکرار رمز عبور جدید'
+                                "
+                                @click="
+                                    showConfirmPassword = !showConfirmPassword
+                                "
+                            >
+                                <icon-view-off
+                                    v-if="showConfirmPassword"
+                                    class="size-4"
+                                />
+                                <icon-view v-else class="size-4" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <DrawerFooter>
+                    <Button
+                        aria-label="ذخیره رمز عبور جدید"
+                        :disabled="handlerStore.loadingBtn"
+                        @click="handlePasswordSubmit"
+                        >ثبت</Button
+                    >
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
     </div>
 </template>
 
@@ -210,6 +354,7 @@ const userStore = useUserStore();
 const { userProfile } = storeToRefs(userStore);
 
 const open = ref(false);
+const passwordDrawerOpen = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const avatarPreview = ref<string>(defaultAvatar);
 const hasAvatar = ref(false);
@@ -220,6 +365,12 @@ const phone = ref("");
 const email = ref("");
 const birthDate = ref("");
 const nationalId = ref("");
+const currentPassword = ref("");
+const newPassword = ref("");
+const confirmPassword = ref("");
+const showCurrentPassword = ref(false);
+const showNewPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const populateForm = (profile: any) => {
     if (!profile) return;
@@ -246,6 +397,10 @@ const openEditDrawer = () => {
     open.value = true;
 };
 
+const openPasswordDrawer = () => {
+    passwordDrawerOpen.value = true;
+};
+
 const resetForm = () => {
     fullName.value = "";
     phone.value = "";
@@ -266,6 +421,41 @@ const handleSubmit = () => {
         .then(() => {
             open.value = false;
             resetForm();
+        });
+};
+
+const resetPasswordForm = () => {
+    currentPassword.value = "";
+    newPassword.value = "";
+    confirmPassword.value = "";
+    showCurrentPassword.value = false;
+    showNewPassword.value = false;
+    showConfirmPassword.value = false;
+};
+
+const handlePasswordSubmit = () => {
+    if (
+        !currentPassword.value ||
+        !newPassword.value ||
+        !confirmPassword.value
+    ) {
+        handlerStore.setError("لطفاً همه فیلدها را پر کنید");
+        return;
+    }
+
+    if (newPassword.value !== confirmPassword.value) {
+        handlerStore.setError("رمز عبور جدید و تکرار آن یکسان نیستند");
+        return;
+    }
+
+    userStore
+        .changeUserPassword({
+            currentPassword: currentPassword.value,
+            newPassword: newPassword.value,
+        })
+        .then(() => {
+            passwordDrawerOpen.value = false;
+            resetPasswordForm();
         });
 };
 
