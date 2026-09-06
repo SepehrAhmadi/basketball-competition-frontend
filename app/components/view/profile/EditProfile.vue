@@ -22,7 +22,9 @@
                         </div>
                     </div>
                     <div class="text-[16px]">سپهر احمدی</div>
-                    <div class="text-[14px] text-gray-600 dark:text-gray-300">09335107437</div>
+                    <div class="text-[14px] text-gray-600 dark:text-gray-300">
+                        09335107437
+                    </div>
                     <Button
                         class="mt-2 px-4"
                         size="sm"
@@ -40,7 +42,9 @@
             <DrawerContent class="h-screen max-h-screen mt-0 rounded-none">
                 <DrawerHeader>
                     <DrawerTitle>ویرایش پروفایل</DrawerTitle>
-                    <DrawerDescription>اطلاعات پروفایل خود را ویرایش کنید</DrawerDescription>
+                    <DrawerDescription
+                        >اطلاعات پروفایل خود را ویرایش کنید</DrawerDescription
+                    >
                 </DrawerHeader>
 
                 <div class="flex flex-col gap-4 px-4">
@@ -136,12 +140,14 @@
                             for="profile-birthDate"
                             >تاریخ تولد</Label
                         >
-                        <Input
+                        <date-picker
                             v-model="birthDate"
+                            simple
                             id="profile-birthDate"
-                            type="date"
-                            aria-label="تاریخ تولد"
-                            class="custom-input-focus text-[14px]"
+                            format="jYYYY/jMM/jDD"
+                            display-format="jYYYY/jMM/jDD"
+                            class="default-scroll tw:text-gray-300! tw:text-[14px]! tw:text-center!"
+                            color="#1d202e"
                         />
                     </div>
 
