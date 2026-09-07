@@ -124,7 +124,10 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <CustomLabel label="نام و نام خانوادگی" :is-required="true" />
+                        <CustomLabel
+                            label="نام و نام خانوادگی"
+                            :is-required="true"
+                        />
                         <Input
                             v-model="fullName"
                             id="profile-fullName"
@@ -192,8 +195,10 @@
                         aria-label="ذخیره تغییرات پروفایل"
                         :disabled="handlerStore.loadingBtn"
                         @click="handleSubmit"
-                        >ثبت</Button
                     >
+                        <Spinner v-if="handlerStore.loadingBtn" />
+                        <span v-else>ثبت</span>
+                    </Button>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
@@ -320,8 +325,10 @@
                         aria-label="ذخیره رمز عبور جدید"
                         :disabled="handlerStore.loadingBtn"
                         @click="handlePasswordSubmit"
-                        >ثبت</Button
                     >
+                        <Spinner v-if="handlerStore.loadingBtn" />
+                        <span v-else>ثبت</span>
+                    </Button>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>

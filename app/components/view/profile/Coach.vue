@@ -74,7 +74,8 @@
                         :disabled="!selectedDegree || handlerStore.loadingBtn"
                         @click="save"
                     >
-                        ثبت
+                        <Spinner v-if="handlerStore.loadingBtn" />
+                        <span v-else>ثبت</span>
                     </Button>
                 </DrawerFooter>
             </DrawerContent>
