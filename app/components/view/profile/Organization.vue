@@ -30,7 +30,14 @@
                     <div class="w-full flex justify-start items-center gap-2">
                         <div
                             class="w-15 h-15 bg-primary rounded-full border border-gray-300 mb-2"
-                        ></div>
+                        >
+                            <img
+                                v-if="organization.logoUrl"
+                                :src="organization.logoUrl"
+                                class="w-full h-full object-cover rounded-full"
+                                alt="logo"
+                            />
+                        </div>
                         <div
                             class="shrink w-full flex-1 flex justify-between items-center gap-4"
                         >
@@ -142,8 +149,8 @@
                             class="w-20 h-20 rounded-full border border-gray-300 mb-2"
                         >
                             <img
-                                :src="avatar"
-                                alt="avatar"
+                                :src="logoPreview"
+                                alt="لوگوی سازمان"
                                 class="object-cover w-full h-full rounded-full p-1.25"
                             />
                         </div>
@@ -160,13 +167,33 @@
                                     فرمت عکس باید PNG یا JPG باشد
                                 </div>
                             </div>
-                            <Button
-                                class="text-[12px]"
-                                size="sm"
-                                @click="openDrawer('add')"
-                            >
-                                انتخاب تصویر
-                            </Button>
+                            <input
+                                ref="fileInputRef"
+                                type="file"
+                                accept="image/png,image/jpeg,image/jpg"
+                                class="hidden"
+                                aria-label="انتخاب لوگوی سازمان"
+                                @change="handleLogoChange"
+                            />
+                            <div class="flex items-center gap-2">
+                                <Button
+                                    class="text-[12px]"
+                                    size="sm"
+                                    aria-label="انتخاب لوگوی سازمان"
+                                    @click="triggerFileInput"
+                                >
+                                    انتخاب تصویر
+                                </Button>
+                                <Button
+                                    v-if="hasLogo"
+                                    class="text-[12px] bg-red-500 hover:bg-red-500/90 dark:bg-red-600 dark:hover:bg-red-600/90"
+                                    size="sm"
+                                    aria-label="حذف لوگوی سازمان"
+                                    @click="removeLogo"
+                                >
+                                    <icon-trash class="text-white size-4" />
+                                </Button>
+                            </div>
                         </div>
                     </div>
 
@@ -249,6 +276,7 @@
 
 <script setup lang="ts">
 import { Textarea } from "~/components/ui/textarea";
+import defaultAvatar from "../../../assets/img/avatar.png";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -288,6 +316,10 @@ const description = ref("");
 const city = ref("");
 const phone = ref("");
 const email = ref("");
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const logo = ref<File | null>(null);
+const logoPreview = ref<string>(defaultAvatar);
+const hasLogo = computed(() => logoPreview.value !== defaultAvatar);
 
 const openDrawer = (value: "add" | "edit", id?: number) => {
     mode.value = value;
@@ -309,6 +341,11 @@ const resetForm = () => {
     city.value = "";
     phone.value = "";
     email.value = "";
+    logo.value = null;
+    logoPreview.value = defaultAvatar;
+    if (fileInputRef.value) {
+        fileInputRef.value.value = "";
+    }
 };
 
 const openDeleteDialog = (id: number) => {
@@ -325,30 +362,56 @@ const confirmDelete = () => {
     }
 };
 
+const triggerFileInput = () => {
+    fileInputRef.value?.click();
+};
+
+const handleLogoChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) return;
+
+    logo.value = file;
+    logoPreview.value = URL.createObjectURL(file);
+};
+
+const removeLogo = () => {
+    logo.value = null;
+    logoPreview.value = defaultAvatar;
+    if (fileInputRef.value) {
+        fileInputRef.value.value = "";
+    }
+};
+
+const buildFormData = () => {
+    const formData = new FormData();
+    formData.append("name", name.value);
+    formData.append("description", description.value);
+    formData.append("city", city.value);
+    formData.append("phone", String(phone.value));
+    formData.append("email", email.value);
+    if (logo.value) {
+        formData.append("logo", logo.value);
+    } else {
+        formData.append("logo", null);
+    }
+    return formData;
+};
+
 const handleSubmit = () => {
     if (mode.value == "add") {
-        organizationStore
-            .createOrganization({
-                name: name.value,
-                description: description.value,
-                city: city.value,
-                phone: String(phone.value),
-                email: email.value,
-            })
-            .then(() => {
-                loadOrganizations();
-                open.value = false;
-                resetForm();
-            });
+        organizationStore.createOrganization(buildFormData()).then(() => {
+            loadOrganizations();
+            open.value = false;
+            resetForm();
+        });
     } else {
         organizationStore
-            .updateOrganization(organizationId.value as number, {
-                name: name.value,
-                description: description.value,
-                city: city.value,
-                phone: String(phone.value),
-                email: email.value,
-            })
+            .updateOrganization(
+                organizationId.value as number,
+                buildFormData(),
+            )
             .then(() => {
                 loadOrganizations();
                 open.value = false;
@@ -381,6 +444,11 @@ watch(organizationDetail, (newValue) => {
         city.value = newValue.city;
         phone.value = String(newValue.phone);
         email.value = newValue.email;
+        logo.value = null;
+        logoPreview.value = newValue.logoUrl ?? defaultAvatar;
+        if (fileInputRef.value) {
+            fileInputRef.value.value = "";
+        }
     }
 });
 

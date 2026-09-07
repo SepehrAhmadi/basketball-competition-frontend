@@ -7,7 +7,9 @@ type StateType = ReturnType<typeof useOrganizationState>;
 export function useOrganizationActions(state: StateType) {
   const handlerStore = useHandlerStore();
 
-  const getOrganizations = (query: { page?: number; pageSize?: number } = {}) => {
+  const getOrganizations = (
+    query: { page?: number; pageSize?: number } = {},
+  ) => {
     const axios = useApi();
     state.loading.value = true;
 
@@ -20,7 +22,10 @@ export function useOrganizationActions(state: StateType) {
           ? {
               total: data.total ?? state.organizationList.value.length,
               page: data.page ?? query.page ?? 1,
-              pageSize: data.pageSize ?? query.pageSize ?? state.organizationList.value.length,
+              pageSize:
+                data.pageSize ??
+                query.pageSize ??
+                state.organizationList.value.length,
             }
           : null;
       })
@@ -55,12 +60,16 @@ export function useOrganizationActions(state: StateType) {
       });
   };
 
-  const createOrganization = (value: any) => {
+  const createOrganization = (formData: FormData) => {
     const axios = useApi();
     handlerStore.loadingBtn = true;
 
     return axios
-      .post("/organizations", value)
+      .post("/organizations", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         handlerStore.setSuccess(res.data.message);
         return res.data.data;
@@ -76,12 +85,16 @@ export function useOrganizationActions(state: StateType) {
       });
   };
 
-  const updateOrganization = (id: number | string, value: any) => {
+  const updateOrganization = (id: number | string, formData: FormData) => {
     const axios = useApi();
     handlerStore.loadingBtn = true;
 
     return axios
-      .put(`/organizations/${id}`, value)
+      .put(`/organizations/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         state.organizationDetail.value = res.data.data;
         handlerStore.setSuccess(res.data.message);
