@@ -37,6 +37,12 @@
                                 class="w-full h-full object-cover rounded-full"
                                 alt="logo"
                             />
+                            <img
+                                v-else
+                                :src="teamLogo"
+                                class="w-full h-full object-cover rounded-full p-1.5"
+                                alt="logo"
+                            />
                         </div>
                         <div
                             class="shrink w-full flex-1 flex justify-between items-center gap-4"
@@ -277,6 +283,7 @@
 <script setup lang="ts">
 import { Textarea } from "~/components/ui/textarea";
 import defaultAvatar from "../../../assets/img/avatar.png";
+import teamLogo from "../../../assets/img/icon/team.png";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -319,6 +326,7 @@ const email = ref("");
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const logo = ref<File | null>(null);
 const logoPreview = ref<string>(defaultAvatar);
+const removeLogoFlag = ref(false);
 const hasLogo = computed(() => logoPreview.value !== defaultAvatar);
 
 const openDrawer = (value: "add" | "edit", id?: number) => {
@@ -343,6 +351,7 @@ const resetForm = () => {
     email.value = "";
     logo.value = null;
     logoPreview.value = defaultAvatar;
+    removeLogoFlag.value = false;
     if (fileInputRef.value) {
         fileInputRef.value.value = "";
     }
@@ -374,11 +383,13 @@ const handleLogoChange = (event: Event) => {
 
     logo.value = file;
     logoPreview.value = URL.createObjectURL(file);
+    removeLogoFlag.value = false;
 };
 
 const removeLogo = () => {
     logo.value = null;
     logoPreview.value = defaultAvatar;
+    removeLogoFlag.value = true;
     if (fileInputRef.value) {
         fileInputRef.value.value = "";
     }
@@ -393,9 +404,8 @@ const buildFormData = () => {
     formData.append("email", email.value);
     if (logo.value) {
         formData.append("logo", logo.value);
-    } else {
-        formData.append("logo", null);
     }
+    formData.append("removeLogo", String(removeLogoFlag.value));
     return formData;
 };
 
@@ -446,6 +456,7 @@ watch(organizationDetail, (newValue) => {
         email.value = newValue.email;
         logo.value = null;
         logoPreview.value = newValue.logoUrl ?? defaultAvatar;
+        removeLogoFlag.value = false;
         if (fileInputRef.value) {
             fileInputRef.value.value = "";
         }
