@@ -124,11 +124,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label
-                            class="text-gray-600 text-xs"
-                            for="profile-fullName"
-                            >نام و نام خانوادگی</Label
-                        >
+                        <CustomLabel label="نام و نام خانوادگی" :is-required="true" />
                         <Input
                             v-model="fullName"
                             id="profile-fullName"
@@ -139,9 +135,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="profile-phone"
-                            >تلفن همراه</Label
-                        >
+                        <CustomLabel label="تلفن همراه" :is-required="true" />
                         <Input
                             v-model="phone"
                             id="profile-phone"
@@ -154,9 +148,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="profile-email"
-                            >ایمیل</Label
-                        >
+                        <CustomLabel label="ایمیل" :is-required="true" />
                         <Input
                             v-model="email"
                             id="profile-email"
@@ -168,11 +160,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label
-                            class="text-gray-600 text-xs"
-                            for="profile-birthDate"
-                            >تاریخ تولد</Label
-                        >
+                        <CustomLabel label="تاریخ تولد" />
                         <date-picker
                             v-model="birthDate"
                             simple
@@ -185,11 +173,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label
-                            class="text-gray-600 text-xs"
-                            for="profile-nationalId"
-                            >کد ملی</Label
-                        >
+                        <CustomLabel label="کد ملی" />
                         <Input
                             v-model="nationalId"
                             id="profile-nationalId"

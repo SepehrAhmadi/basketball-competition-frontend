@@ -55,9 +55,7 @@ onMounted(() => {
         <CardContent class="flex flex-col gap-4">
             <!-- full name -->
             <div class="flex flex-col gap-1">
-                <Label class="text-gray-600 text-xs" for="register-fullname"
-                    >نام و نام خانوادگی</Label
-                >
+                <customLabel label="نام و نام خانوادگی"  />
                 <Input
                     v-model="fullName"
                     class="custom-input-focus"
@@ -68,9 +66,7 @@ onMounted(() => {
 
             <!-- phone   -->
             <div class="flex flex-col gap-1">
-                <Label class="text-gray-600 text-xs" for="register-identifier"
-                    >شماره موبایل
-                </Label>
+                <customLabel label="شماره موبایل"  />
                 <Input
                     v-model="phone"
                     class="custom-input-focus"
@@ -81,9 +77,7 @@ onMounted(() => {
 
             <!-- email   -->
             <div class="flex flex-col gap-1">
-                <Label class="text-gray-600 text-xs" for="register-identifier"
-                    >ایمیل</Label
-                >
+                <customLabel label="ایمیل"  />
                 <Input
                     v-model="email"
                     class="custom-input-focus"
@@ -94,9 +88,7 @@ onMounted(() => {
 
             <!-- password -->
             <div class="flex flex-col gap-1">
-                <Label class="text-gray-600 text-xs" for="register-password"
-                    >رمز عبور</Label
-                >
+                <customLabel label="مز عبور"  />
                 <div class="relative">
                     <Input
                         v-model="password"
@@ -122,9 +114,7 @@ onMounted(() => {
 
             <!-- roles -->
             <div class="flex flex-col gap-1">
-                <Label class="text-gray-600 text-xs" for="register-roles"
-                    >نقش ها</Label
-                >
+                <customLabel label="نقش ها"/>
                 <Combobox
                     v-model="roles"
                     multiple

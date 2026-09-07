@@ -204,9 +204,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="org-name"
-                            >نام سازمان</Label
-                        >
+                        <CustomLabel :is-required="true" label="نام سازمان" />
                         <Input
                             v-model="name"
                             id="org-name"
@@ -217,22 +215,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label
-                            class="text-gray-600 text-xs"
-                            for="org-description"
-                            >توضیحات</Label
-                        >
-                        <Textarea
-                            v-model="description"
-                            aria-label="توضیحات سازمان"
-                            class="custom-input-focus text-[14px]"
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="org-city"
-                            >شهر</Label
-                        >
+                        <CustomLabel label="شهر" :is-required="true" />
                         <Input
                             v-model="city"
                             id="org-city"
@@ -243,9 +226,7 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="org-phone"
-                            >تلفن</Label
-                        >
+                        <CustomLabel label="تلفن" :is-required="true" />
                         <Input
                             v-model="phone"
                             id="org-phone"
@@ -258,15 +239,22 @@
                     </div>
 
                     <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="org-email"
-                            >ایمیل</Label
-                        >
+                        <CustomLabel label="ایمیل" :is-required="true" />
                         <Input
                             v-model="email"
                             id="org-email"
                             type="email"
                             inputmode="email"
                             aria-label="ایمیل"
+                            class="custom-input-focus text-[14px]"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <CustomLabel label="توضیحات" />
+                        <Textarea
+                            v-model="description"
+                            aria-label="توضیحات سازمان"
                             class="custom-input-focus text-[14px]"
                         />
                     </div>
@@ -418,10 +406,7 @@ const handleSubmit = () => {
         });
     } else {
         organizationStore
-            .updateOrganization(
-                organizationId.value as number,
-                buildFormData(),
-            )
+            .updateOrganization(organizationId.value as number, buildFormData())
             .then(() => {
                 loadOrganizations();
                 open.value = false;

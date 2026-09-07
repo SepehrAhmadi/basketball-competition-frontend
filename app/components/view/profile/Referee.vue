@@ -44,11 +44,7 @@
 
                 <div class="flex flex-col gap-4 px-4">
                     <div class="flex flex-col gap-1">
-                        <Label
-                            class="text-gray-600 text-xs"
-                            for="referee-degree"
-                            >درجه داوری</Label
-                        >
+                        <CustomLabel label="درجه داوری" :is-required="true" />
                         <Select v-model="selectedDegree" dir="rtl">
                             <SelectTrigger
                                 id="referee-degree"

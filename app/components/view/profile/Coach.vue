@@ -44,10 +44,7 @@
 
                 <div class="flex flex-col gap-4 px-4">
                     <div class="flex flex-col gap-1">
-                        <Label class="text-gray-600 text-xs" for="coach-degree"
-                            >درجه مربی‌گری</Label
-                        >
-
+                        <CustomLabel :is-required="true" label="درجه مربی‌گری" />
                         <Select v-model="selectedDegree" dir="rtl">
                             <SelectTrigger
                                 id="coach-degree"
