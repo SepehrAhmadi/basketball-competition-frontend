@@ -363,16 +363,6 @@ const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-const populateForm = (profile: any) => {
-    if (!profile) return;
-
-    fullName.value = profile.fullName ?? "";
-    phone.value = String(profile.phone ?? "");
-    email.value = profile.email ?? "";
-    birthDate.value = profile.birthDate ?? "";
-    nationalId.value = String(profile.nationalId ?? "");
-};
-
 const updateAvatarPreview = (profile: any) => {
     if (profile?.avatarUrl) {
         avatarPreview.value = profile.avatarUrl;
@@ -384,7 +374,7 @@ const updateAvatarPreview = (profile: any) => {
 };
 
 const openEditDrawer = () => {
-    populateForm(userProfile.value);
+    userStore.getUserMe();
     open.value = true;
 };
 
@@ -411,6 +401,7 @@ const handleSubmit = () => {
         })
         .then(() => {
             open.value = false;
+            userStore.getUserMe();
             resetForm();
         });
 };
@@ -451,7 +442,12 @@ const handlePasswordSubmit = () => {
 };
 
 watch(userProfile, (newProfile) => {
-    updateAvatarPreview(newProfile);
+    fullName.value = newProfile?.fullName ?? "";
+    phone.value = String(newProfile?.phone ?? "");
+    email.value = newProfile?.email ?? "";
+    birthDate.value = newProfile?.birthDate ?? "";
+    nationalId.value = String(newProfile?.nationalId ?? "");
+    updateAvatarPreview(newProfile.avatarUrl);
 });
 
 function triggerFileInput() {
