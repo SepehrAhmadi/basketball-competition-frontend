@@ -1,13 +1,6 @@
 <template>
     <div class="mt-2">
         <Card class="w-full shadow-xs! rounded-4xl py-5 gap-4">
-            <CardHeader class="flex gap-2 justify-start items-center px-5">
-                <icon-user class="size-3.75 text-gray-500 dark:text-gray-300" />
-                <CardTitle class="text-[13px] text-gray-500 dark:text-gray-300"
-                    >ویرایش پروفایل</CardTitle
-                >
-            </CardHeader>
-
             <CardContent class="tw-py-2">
                 <div class="flex flex-col justify-center items-center gap-1">
                     <div class="flex justify-start items-ceneter">
@@ -323,7 +316,12 @@
                 <DrawerFooter>
                     <Button
                         aria-label="ذخیره رمز عبور جدید"
-                        :disabled="handlerStore.loadingBtn"
+                        :disabled="
+                            handlerStore.loadingBtn ||
+                            !currentPassword ||
+                            !newPassword ||
+                            !confirmPassword
+                        "
                         @click="handlePasswordSubmit"
                     >
                         <Spinner v-if="handlerStore.loadingBtn" />
