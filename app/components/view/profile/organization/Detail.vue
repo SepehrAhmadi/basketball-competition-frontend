@@ -108,7 +108,7 @@
                         size="sm"
                         aria-label="ثبت تیم"
                     >
-                        <icon-plus class="size-5 text-white" />
+                        <icon-plus class="size-5" />
                         ثبت تیم
                     </Button>
                 </div>
@@ -258,12 +258,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
-import { useOrganizationStore } from "~/store/organization";
 
-const route = useRoute();
+import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();
 const { organizationDetail } = storeToRefs(organizationStore);
 
+import { useHandlerStore } from "~/store/handler";
+const handlerStore = useHandlerStore();
+
+const route = useRoute();
 const organizationId = computed(() => String(route.params.slug));
 
 const open = ref(false);
@@ -331,7 +334,7 @@ const removeLogo = () => {
 };
 
 const buildFormData = () => {
-    const formData = new FormData();
+  const formData = new FormData();
     formData.append("name", name.value);
     formData.append("description", description.value);
     formData.append("city", city.value);
@@ -345,6 +348,10 @@ const buildFormData = () => {
 };
 
 const handleSubmit = () => {
+    if (!name.value || !city.value || !phone.value || !email.value) {
+        handlerStore.setError("لطفا موارد الزامی را وارد کنید");
+        return;
+    }
     organizationStore
         .updateOrganization(organizationId.value, buildFormData())
         .then(() => {
