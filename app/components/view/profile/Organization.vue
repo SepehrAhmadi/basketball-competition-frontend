@@ -9,15 +9,6 @@
                     سازمان ها
                 </div>
             </div>
-            <div>
-                <Button
-                    class="w-full text-[13px]"
-                    size="sm"
-                    @click="openDrawer('add')"
-                >
-                    ثبت سازمان
-                </Button>
-            </div>
         </div>
         <Card
             v-if="organizationList.length > 0"
@@ -58,53 +49,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <Button
-                                variant="ghost"
-                                class="px-2.5!"
-                                aria-label="ویرایش سازمان"
-                                @click="openDrawer('edit', organization.id)"
-                            >
-                                <icon-edit class="size-4.5" />
-                            </Button>
-                            <AlertDialog>
-                                <AlertDialogTrigger as-child>
-                                    <Button
-                                        @click="
-                                            openDeleteDialog(organization.id)
-                                        "
-                                        variant="ghost"
-                                        class="px-2.5!"
-                                        aria-label="حذف سازمان"
-                                    >
-                                        <icon-trash class="size-5" />
-                                    </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle
-                                            >حذف سازمان</AlertDialogTitle
-                                        >
-                                        <AlertDialogDescription>
-                                            آیا از حذف «{{ organization.name }}»
-                                            مطمئن هستید؟ این عمل قابل بازگشت
-                                            نیست.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel
-                                            >انصراف</AlertDialogCancel
-                                        >
-                                        <AlertDialogAction
-                                            class="bg-destructive text-white hover:bg-destructive/90"
-                                            @click="confirmDelete()"
-                                        >
-                                            حذف
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-                        </div>
+                        <NuxtLink
+                            :to="`/profile/organization/${organization.id}`"
+                            class="flex items-center gap-1 text-[14px] font-semibold text-primary shrink-0"
+                            aria-label="مشاهده سازمان"
+                        >
+                            <div>مشاهده</div>
+                            <icon-arrow-left class="text-[17px]" />
+                        </NuxtLink>
                     </div>
                 </div>
             </CardContent>
@@ -135,155 +87,11 @@
                 <PaginationNext aria-label="صفحه بعدی" />
             </PaginationContent>
         </Pagination>
-
-        <Drawer v-model:open="open">
-            <DrawerContent class="h-screen max-h-screen mt-0 rounded-none">
-                <DrawerHeader>
-                    <DrawerTitle>{{
-                        mode === "add" ? "ثبت سازمان" : "ویرایش سازمان"
-                    }}</DrawerTitle>
-                    <DrawerDescription>{{
-                        mode === "add"
-                            ? "اطلاعات سازمان جدید را وارد کنید"
-                            : "اطلاعات سازمان را ویرایش کنید"
-                    }}</DrawerDescription>
-                </DrawerHeader>
-
-                <div class="flex flex-col gap-4 px-4">
-                    <div class="flex justify-start items-center gap-5">
-                        <div
-                            class="w-20 h-20 rounded-full border border-gray-300 mb-2"
-                        >
-                            <img
-                                :src="logoPreview"
-                                alt="لوگوی سازمان"
-                                class="object-cover w-full h-full rounded-full p-1.25"
-                            />
-                        </div>
-                        <div>
-                            <div class="flex flex-col gap-2 mb-2">
-                                <div
-                                    class="text-gray-600 dark:text-gray-400 text-xs"
-                                >
-                                    تصویر را در ابعاد مربعی انتخاب کنید
-                                </div>
-                                <div
-                                    class="text-gray-600 dark:text-gray-400 text-xs"
-                                >
-                                    فرمت عکس باید PNG یا JPG باشد
-                                </div>
-                            </div>
-                            <input
-                                ref="fileInputRef"
-                                type="file"
-                                accept="image/png,image/jpeg,image/jpg"
-                                class="hidden"
-                                aria-label="انتخاب لوگوی سازمان"
-                                @change="handleLogoChange"
-                            />
-                            <div class="flex items-center gap-2">
-                                <Button
-                                    class="text-[12px]"
-                                    size="sm"
-                                    aria-label="انتخاب لوگوی سازمان"
-                                    @click="triggerFileInput"
-                                >
-                                    انتخاب تصویر
-                                </Button>
-                                <Button
-                                    v-if="hasLogo"
-                                    class="text-[12px] bg-red-500 hover:bg-red-500/90 dark:bg-red-600 dark:hover:bg-red-600/90"
-                                    size="sm"
-                                    aria-label="حذف لوگوی سازمان"
-                                    @click="removeLogo"
-                                >
-                                    <icon-trash class="text-white size-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <CustomLabel :is-required="true" label="نام سازمان" />
-                        <Input
-                            v-model="name"
-                            id="org-name"
-                            type="text"
-                            aria-label="نام سازمان"
-                            class="custom-input-focus text-[14px]"
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <CustomLabel label="شهر" :is-required="true" />
-                        <Input
-                            v-model="city"
-                            id="org-city"
-                            type="text"
-                            aria-label="شهر"
-                            class="custom-input-focus text-[14px]"
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <CustomLabel label="تلفن" :is-required="true" />
-                        <Input
-                            v-model="phone"
-                            id="org-phone"
-                            type="number"
-                            inputmode="tel"
-                            aria-label="تلفن"
-                            class="custom-input-focus text-[14px]"
-                            dir="rtl"
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <CustomLabel label="ایمیل" :is-required="true" />
-                        <Input
-                            v-model="email"
-                            id="org-email"
-                            type="email"
-                            inputmode="email"
-                            aria-label="ایمیل"
-                            class="custom-input-focus text-[14px]"
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <CustomLabel label="توضیحات" />
-                        <Textarea
-                            v-model="description"
-                            aria-label="توضیحات سازمان"
-                            class="custom-input-focus text-[14px]"
-                        />
-                    </div>
-                </div>
-
-                <DrawerFooter>
-                    <Button @click="handleSubmit">ثبت</Button>
-                </DrawerFooter>
-            </DrawerContent>
-        </Drawer>
     </div>
 </template>
 
 <script setup lang="ts">
-import { Textarea } from "~/components/ui/textarea";
-import defaultAvatar from "../../../assets/img/avatar.png";
 import teamLogo from "../../../assets/img/icon/team.png";
-import { Spinner } from "~/components/ui/spinner";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
 import {
     Pagination,
     PaginationContent,
@@ -294,7 +102,7 @@ import {
 
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();
-const { organizationList, organizationListMeta, organizationDetail } =
+const { organizationList, organizationListMeta } =
     storeToRefs(organizationStore);
 
 const page = ref(1);
@@ -302,119 +110,6 @@ const pageSize = 3;
 const pageCount = computed(() =>
     Math.ceil((organizationListMeta.value?.total ?? 0) / pageSize),
 );
-
-const open = ref(false);
-const mode = ref<"add" | "edit">("add");
-
-const organizationId = ref<number | undefined>();
-const name = ref("");
-const description = ref("");
-const city = ref("");
-const phone = ref("");
-const email = ref("");
-const fileInputRef = ref<HTMLInputElement | null>(null);
-const logo = ref<File | null>(null);
-const logoPreview = ref<string>(defaultAvatar);
-const removeLogoFlag = ref(false);
-const hasLogo = computed(() => logoPreview.value !== defaultAvatar);
-
-const openDrawer = (value: "add" | "edit", id?: number) => {
-    mode.value = value;
-    if (id) {
-        organizationId.value = id;
-    }
-    if (mode.value == "edit") {
-        organizationStore.getOrganizationById(id as number);
-    } else {
-        resetForm();
-    }
-    open.value = true;
-};
-
-const resetForm = () => {
-    organizationId.value = undefined;
-    name.value = "";
-    description.value = "";
-    city.value = "";
-    phone.value = "";
-    email.value = "";
-    logo.value = null;
-    logoPreview.value = defaultAvatar;
-    removeLogoFlag.value = false;
-    if (fileInputRef.value) {
-        fileInputRef.value.value = "";
-    }
-};
-
-const openDeleteDialog = (id: number) => {
-    organizationId.value = id;
-};
-
-const confirmDelete = () => {
-    if (organizationId.value) {
-        organizationStore.deleteOrganization(organizationId.value).then(() => {
-            loadOrganizations();
-            open.value = false;
-            resetForm();
-        });
-    }
-};
-
-const triggerFileInput = () => {
-    fileInputRef.value?.click();
-};
-
-const handleLogoChange = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-
-    if (!file) return;
-
-    logo.value = file;
-    logoPreview.value = URL.createObjectURL(file);
-    removeLogoFlag.value = false;
-};
-
-const removeLogo = () => {
-    logo.value = null;
-    logoPreview.value = defaultAvatar;
-    removeLogoFlag.value = true;
-    if (fileInputRef.value) {
-        fileInputRef.value.value = "";
-    }
-};
-
-const buildFormData = () => {
-    const formData = new FormData();
-    formData.append("name", name.value);
-    formData.append("description", description.value);
-    formData.append("city", city.value);
-    formData.append("phone", String(phone.value));
-    formData.append("email", email.value);
-    if (logo.value) {
-        formData.append("logo", logo.value);
-    }
-    formData.append("removeLogo", String(removeLogoFlag.value));
-    return formData;
-};
-
-const handleSubmit = () => {
-    if (mode.value == "add") {
-        organizationStore.createOrganization(buildFormData()).then(() => {
-            loadOrganizations();
-            open.value = false;
-            resetForm();
-        });
-    } else {
-        organizationStore
-            .updateOrganization(organizationId.value as number, buildFormData())
-            .then(() => {
-                loadOrganizations();
-                open.value = false;
-                resetForm();
-            });
-    }
-};
 
 const loadOrganizations = () => {
     return organizationStore.getOrganizations({
@@ -430,22 +125,6 @@ watch(page, () => {
 watch(pageCount, (newPageCount) => {
     if (newPageCount > 0 && page.value > newPageCount) {
         page.value = newPageCount;
-    }
-});
-
-watch(organizationDetail, (newValue) => {
-    if (newValue) {
-        name.value = newValue.name;
-        description.value = newValue.description;
-        city.value = newValue.city;
-        phone.value = String(newValue.phone);
-        email.value = newValue.email;
-        logo.value = null;
-        logoPreview.value = newValue.logoUrl ?? defaultAvatar;
-        removeLogoFlag.value = false;
-        if (fileInputRef.value) {
-            fileInputRef.value.value = "";
-        }
     }
 });
 

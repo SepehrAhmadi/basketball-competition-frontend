@@ -70,7 +70,7 @@
                     </Select>
                     <div class="flex items-center gap-2 ms-1">
                         <div class="bg-cyan-500 dark:bg-gray-400 w-0.75 h-0.75"></div>
-                        <p class="text-cyan-500 dark:text-gray-400 text-[11px]">
+                        <p class="text-primary dark:text-gray-400 text-[11px]">
                             برای مشاهده اعضا ابتدا فصل را انتخاب کنید
                         </p>
                     </div>

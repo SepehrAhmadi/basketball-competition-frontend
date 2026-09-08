@@ -89,7 +89,7 @@ const submit = () => {
                 <Button
                     variant="link"
                     @click="$emit('switch')"
-                    class="text-cyan-500 font-bold px-0"
+                    class="text-primary font-bold px-0"
                 >
                     ثبت نام
                 </Button>

@@ -21,7 +21,7 @@
                             </div>
                             <button
                                 type="button"
-                                class="flex items-center gap-1 text-[14px] font-semibold text-cyan-500"
+                                class="flex items-center gap-1 text-[14px] font-semibold text-primary"
                                 @click="openDrawer"
                             >
                                 <div>مشاهده</div>
