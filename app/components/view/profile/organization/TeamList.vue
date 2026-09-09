@@ -64,28 +64,7 @@
 <script setup lang="ts">
 import teamLogo from "../../../../assets/img/icon/team.png";
 
-interface Team {
-    id: number;
-    name: string;
-    description: string;
-    logoUrl?: string;
-}
-
-const teams = ref<Team[]>([
-    {
-        id: 1,
-        name: "تیم نوجوانان طبیعت",
-        description: "آماده‌سازی نوجوانان زیر ۱۶ سال برای لیگ استان",
-    },
-    {
-        id: 2,
-        name: "تیم جوانان طبیعت",
-        description: "حضور در لیگ جوانان کشور با ترکیب بازیکنان آکادمی",
-    },
-    {
-        id: 3,
-        name: "تیم بزرگسالان طبیعت",
-        description: "تیم اصلی باشگاه برای لیگ برتر بسکتبال",
-    },
-]);
+defineProps<{
+    teams: any[];
+}>();
 </script>

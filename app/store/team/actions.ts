@@ -10,7 +10,7 @@ export function useTeamActions(state: StateType) {
   // ─── Read actions ──────────────────────────────────────────────────────
 
   const getTeams = (
-    query: { page?: number; pageSize?: number } = {},
+    query: { page?: number; pageSize?: number; organizationId?: number | string } = {},
   ) => {
     const axios = useApi();
     state.loading.value = true;

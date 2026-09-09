@@ -107,6 +107,7 @@
                         class="w-full px-4 text-[13px]"
                         size="sm"
                         aria-label="ثبت تیم"
+                        @click="openTeamDrawer"
                     >
                         <icon-plus class="size-5" />
                         ثبت تیم
@@ -240,6 +241,101 @@
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
+
+        <Drawer v-model:open="teamDrawerOpen">
+            <DrawerContent class="h-screen max-h-screen mt-0 rounded-none">
+                <DrawerHeader>
+                    <DrawerTitle>ثبت تیم</DrawerTitle>
+                    <DrawerDescription
+                        >اطلاعات تیم جدید را وارد کنید</DrawerDescription
+                    >
+                </DrawerHeader>
+
+                <div class="flex flex-col gap-4 px-4">
+                    <div class="flex justify-start items-center gap-5">
+                        <div
+                            class="w-20 h-20 rounded-full border border-gray-300 mb-2"
+                        >
+                            <img
+                                :src="teamLogoPreview"
+                                alt="لوگوی تیم"
+                                class="object-cover w-full h-full rounded-full p-1.25"
+                            />
+                        </div>
+                        <div>
+                            <div class="flex flex-col gap-2 mb-2">
+                                <div
+                                    class="text-gray-600 dark:text-gray-400 text-xs"
+                                >
+                                    تصویر را در ابعاد مربعی انتخاب کنید
+                                </div>
+                                <div
+                                    class="text-gray-600 dark:text-gray-400 text-xs"
+                                >
+                                    فرمت عکس باید PNG یا JPG باشد
+                                </div>
+                            </div>
+                            <input
+                                ref="teamFileInputRef"
+                                type="file"
+                                accept="image/png,image/jpeg,image/jpg"
+                                class="hidden"
+                                aria-label="انتخاب لوگوی تیم"
+                                @change="handleTeamLogoChange"
+                            />
+                            <div class="flex items-center gap-2">
+                                <Button
+                                    class="text-[12px]"
+                                    size="sm"
+                                    aria-label="انتخاب لوگوی تیم"
+                                    @click="teamFileInputRef?.click()"
+                                >
+                                    انتخاب تصویر
+                                </Button>
+                                <Button
+                                    v-if="teamHasLogo"
+                                    class="text-[12px] bg-red-500 hover:bg-red-500/90 dark:bg-red-600 dark:hover:bg-red-600/90"
+                                    size="sm"
+                                    aria-label="حذف لوگوی تیم"
+                                    @click="removeTeamLogo"
+                                >
+                                    <icon-trash class="text-white size-4" />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <CustomLabel :is-required="true" label="نام تیم" />
+                        <Input
+                            v-model="teamName"
+                            id="team-name"
+                            type="text"
+                            aria-label="نام تیم"
+                            class="custom-input-focus text-[14px]"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <CustomLabel label="سال تأسیس" />
+                        <date-picker
+                            v-model="teamFoundedYear"
+                            simple
+                            type="year"
+                            id="team-foundedYear"
+                            format="jYYYY"
+                            display-format="jYYYY"
+                            class="default-scroll tw:text-gray-300! tw:text-[14px]! tw:text-center!"
+                            color="#1d202e"
+                        />
+                    </div>
+                </div>
+
+                <DrawerFooter>
+                    <Button @click="handleTeamSubmit">ثبت</Button>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
     </div>
 </template>
 
@@ -262,6 +358,9 @@ import {
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();
 const { organizationDetail } = storeToRefs(organizationStore);
+
+import { useTeamStore } from "~/store/team";
+const teamStore = useTeamStore();
 
 import { useHandlerStore } from "~/store/handler";
 const handlerStore = useHandlerStore();
@@ -375,4 +474,81 @@ watch(organizationDetail, (newValue) => {
 onMounted(() => {
     organizationStore.getOrganizationById(organizationId.value);
 });
+
+// ─── Team creation ────────────────────────────────────────────────────
+
+const teamDrawerOpen = ref(false);
+const teamName = ref("");
+const teamFoundedYear = ref("");
+const teamFileInputRef = ref<HTMLInputElement | null>(null);
+const teamLogo = ref<File | null>(null);
+const teamLogoPreview = ref<string>(defaultAvatar);
+const teamRemoveLogoFlag = ref(false);
+const teamHasLogo = computed(() => teamLogoPreview.value !== defaultAvatar);
+
+const openTeamDrawer = () => {
+    resetTeamForm();
+    teamDrawerOpen.value = true;
+};
+
+const resetTeamForm = () => {
+    teamName.value = "";
+    teamFoundedYear.value = "";
+    teamLogo.value = null;
+    teamLogoPreview.value = defaultAvatar;
+    teamRemoveLogoFlag.value = false;
+    if (teamFileInputRef.value) {
+        teamFileInputRef.value.value = "";
+    }
+};
+
+const handleTeamLogoChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) return;
+
+    teamLogo.value = file;
+    teamLogoPreview.value = URL.createObjectURL(file);
+    teamRemoveLogoFlag.value = false;
+};
+
+const removeTeamLogo = () => {
+    teamLogo.value = null;
+    teamLogoPreview.value = defaultAvatar;
+    teamRemoveLogoFlag.value = true;
+    if (teamFileInputRef.value) {
+        teamFileInputRef.value.value = "";
+    }
+};
+
+const buildTeamFormData = () => {
+    const formData = new FormData();
+    formData.append("name", teamName.value);
+    formData.append("organizationId", organizationId.value);
+    if (teamFoundedYear.value) {
+        formData.append("foundedYear", teamFoundedYear.value);
+    }
+    if (teamLogo.value) {
+        formData.append("logo", teamLogo.value);
+    }
+    formData.append("removeLogo", String(teamRemoveLogoFlag.value));
+    return formData;
+};
+
+const handleTeamSubmit = () => {
+    if (!teamName.value) {
+        handlerStore.setError("لطفا نام تیم را وارد کنید");
+        return;
+    }
+    teamStore.createTeam(buildTeamFormData()).then(() => {
+        teamDrawerOpen.value = false;
+        resetTeamForm();
+        teamStore.getTeams({
+            organizationId: organizationId.value,
+            page: 1,
+            pageSize: 10,
+        });
+    });
+};
 </script>
