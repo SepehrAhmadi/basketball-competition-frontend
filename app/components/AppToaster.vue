@@ -10,7 +10,6 @@ watch(
     () => handlerStore.checkAlert,
     (value) => {
         if (!value) return;
-
         if (value === 1 && handlerStore.successMessage) {
             toast.success(handlerStore.successMessage);
         } else if (value === 2 && handlerStore.errorMessage) {
@@ -20,7 +19,6 @@ watch(
         } else if (value === 4 && handlerStore.infoMessage) {
             toast.info(handlerStore.infoMessage);
         }
-
         handlerStore.clearMessages();
     },
 );
