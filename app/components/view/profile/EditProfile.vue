@@ -445,7 +445,7 @@ watch(userProfile, (newProfile) => {
     email.value = newProfile?.email ?? "";
     birthDate.value = newProfile?.birthDate ?? "";
     nationalId.value = String(newProfile?.nationalId ?? "");
-    updateAvatarPreview(newProfile.avatarUrl);
+    updateAvatarPreview(newProfile);
 });
 
 function triggerFileInput() {
