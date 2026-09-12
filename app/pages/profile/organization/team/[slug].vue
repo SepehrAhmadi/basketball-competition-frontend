@@ -91,7 +91,7 @@
           </div>
         </div>
         <div class="w-full mt-5 flex flex-col gap-1">
-          <Select dir="rtl">
+          <Select v-model="selectedSeason" dir="rtl">
             <SelectTrigger
               id="coach-degree"
               class="w-full custom-input-focus px-2 shadow-xs"
@@ -101,7 +101,14 @@
             </SelectTrigger>
             <SelectContent dir="rtl">
               <SelectGroup>
-                <SelectItem class="px-3"> </SelectItem>
+                <SelectItem
+                  v-for="season in seasons"
+                  :key="season.value"
+                  :value="season.value"
+                  class="px-3"
+                >
+                  {{ season.label }}
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -115,8 +122,14 @@
       </CardContent>
     </Card>
 
+    <!-- Player Roster -->
+    <view-profile-team-player-roster
+      v-if="selectedSeason"
+      :season-id="selectedSeason"
+    />
+
     <!-- No selected season -->
-    <div class="mt-8">
+    <div v-if="!selectedSeason" class="mt-8" >
       <div class="flex flex-col justify-center items-center gap-1">
         <icon-date class="w-8 h-8 text-gray-500 dark:text-gray-300 mb-1" />
         <p class="text-gray-500 dark:text-gray-300 text-[15px]">
@@ -249,13 +262,21 @@ const { teamDetail } = storeToRefs(teamStore);
 import { useHandlerStore } from "~/store/handler";
 const handlerStore = useHandlerStore();
 
+import { useBaseStore } from "~/store/base";
+const baseStore = useBaseStore();
+const { seasons } = storeToRefs(baseStore);
+
 const route = useRoute();
 const teamId = computed(() => Number(route.params.slug));
+
+const selectedSeason = ref<number | null>(null);
 
 const teamOrganizationName = computed(() => {
   const detail: any = teamDetail.value;
   return detail?.organization?.name ?? "";
 });
+
+// ─── Team roster ────────────────────────────────────────────────
 
 // ─── Edit drawer state ────────────────────────────────────────────────
 
@@ -357,7 +378,7 @@ const handleSubmit = () => {
 const confirmDelete = () => {
   organizationId.value = teamDetail.value.organizationId;
   teamStore.deleteTeam(teamId.value).then(() => {
-      navigateTo(`/profile/organization/${organizationId.value}`);
+    navigateTo(`/profile/organization/${organizationId.value}`);
   });
 };
 
@@ -370,6 +391,7 @@ watch(teamDetail, (newValue) => {
 });
 
 onMounted(() => {
+  baseStore.getSeasons();
   teamStore.getTeamById(teamId.value);
 });
 </script>

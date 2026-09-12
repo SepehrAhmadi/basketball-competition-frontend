@@ -10,7 +10,11 @@ export function useTeamActions(state: StateType) {
   // ─── Read actions ──────────────────────────────────────────────────────
 
   const getTeams = (
-    query: { page?: number; pageSize?: number; organizationId?: number | string } = {},
+    query: {
+      page?: number;
+      pageSize?: number;
+      organizationId?: number | string;
+    } = {},
   ) => {
     const axios = useApi();
     state.loading.value = true;
@@ -25,9 +29,7 @@ export function useTeamActions(state: StateType) {
               total: data.total ?? state.teamList.value.length,
               page: data.page ?? query.page ?? 1,
               pageSize:
-                data.pageSize ??
-                query.pageSize ??
-                state.teamList.value.length,
+                data.pageSize ?? query.pageSize ?? state.teamList.value.length,
             }
           : null;
       })
@@ -62,7 +64,12 @@ export function useTeamActions(state: StateType) {
 
   const getRoster = (
     teamId: number | string,
-    query: { page?: number; pageSize?: number } = {},
+    query: {
+      page?: number;
+      pageSize?: number;
+      seasonId?: number | string;
+      role?: string;
+    } = {},
   ) => {
     const axios = useApi();
     state.loading.value = true;
@@ -72,16 +79,32 @@ export function useTeamActions(state: StateType) {
       .then((res) => {
         const data = res.data.data;
         state.roster.value = data?.items ?? data ?? [];
-        state.rosterMeta.value = data
-          ? {
-              total: data.total ?? state.roster.value.length,
-              page: data.page ?? query.page ?? 1,
-              pageSize:
-                data.pageSize ??
-                query.pageSize ??
-                state.roster.value.length,
-            }
-          : null;
+        if (query.role === "COACH") {
+          state.coachRoster.value = data?.items ?? data ?? [];
+          state.coachRosterMeta.value = data
+            ? {
+                total: data.total ?? state.coachRoster.value.length,
+                page: data.page ?? query.page ?? 1,
+                pageSize:
+                  data.pageSize ??
+                  query.pageSize ??
+                  state.coachRoster.value.length,
+              }
+            : null;
+        }
+        if (query.role === "PLAYER") {
+          state.playerRoster.value = data?.items ?? data ?? [];
+          state.playerRosterMeta.value = data
+            ? {
+                total: data.total ?? state.playerRoster.value.length,
+                page: data.page ?? query.page ?? 1,
+                pageSize:
+                  data.pageSize ??
+                  query.pageSize ??
+                  state.playerRoster.value.length,
+              }
+            : null;
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -247,13 +270,14 @@ export function useTeamActions(state: StateType) {
   const removeRosterMember = (
     teamId: number | string,
     memberId: number | string,
+    seasonId: any,
   ) => {
     const axios = useApi();
     handlerStore.loadingBtn = true;
     handlerStore.postCheck = true;
 
     return axios
-      .delete(`/teams/${teamId}/roster/${memberId}`)
+      .delete(`/teams/${teamId}/roster/${memberId}`, { data: { seasonId } })
       .then((res) => {
         state.roster.value = state.roster.value.filter(
           (member: any) => member.id !== memberId,

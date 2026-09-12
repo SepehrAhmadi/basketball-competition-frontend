@@ -8,7 +8,10 @@ export function useTeamState() {
   const teamDetail = ref<any>(null);
 
   const roster = ref<any[]>([]);
-  const rosterMeta = ref<any>(null);
+  const coachRoster = ref<any[]>([]);
+  const coachRosterMeta = ref<any>(null);
+  const playerRoster = ref<any[]>([]);
+  const playerRosterMeta = ref<any>(null);
 
   return {
     loading,
@@ -16,6 +19,9 @@ export function useTeamState() {
     teamListMeta,
     teamDetail,
     roster,
-    rosterMeta,
+    coachRoster,
+    coachRosterMeta,
+    playerRoster,
+    playerRosterMeta,
   };
 }
