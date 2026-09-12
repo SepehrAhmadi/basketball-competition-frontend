@@ -319,12 +319,12 @@
                     <div class="flex flex-col gap-1">
                         <CustomLabel label="سال تأسیس" />
                         <date-picker
-                            v-model="teamFoundedYear"
+                            v-model="teamFoundedDate"
                             simple
-                            type="year"
+                            type="date"
                             id="team-foundedYear"
-                            format="jYYYY"
-                            display-format="jYYYY"
+                            format="jYYYY/jMM/jDD"
+                            display-format="jYYYY/jMM/jDD"
                             class="default-scroll tw:text-gray-300! tw:text-[14px]! tw:text-center!"
                             color="#1d202e"
                         />
@@ -479,7 +479,7 @@ onMounted(() => {
 
 const teamDrawerOpen = ref(false);
 const teamName = ref("");
-const teamFoundedYear = ref("");
+const teamFoundedDate = ref("");
 const teamFileInputRef = ref<HTMLInputElement | null>(null);
 const teamLogo = ref<File | null>(null);
 const teamLogoPreview = ref<string>(defaultAvatar);
@@ -493,7 +493,7 @@ const openTeamDrawer = () => {
 
 const resetTeamForm = () => {
     teamName.value = "";
-    teamFoundedYear.value = "";
+    teamFoundedDate.value = "";
     teamLogo.value = null;
     teamLogoPreview.value = defaultAvatar;
     teamRemoveLogoFlag.value = false;
@@ -526,8 +526,8 @@ const buildTeamFormData = () => {
     const formData = new FormData();
     formData.append("name", teamName.value);
     formData.append("organizationId", organizationId.value);
-    if (teamFoundedYear.value) {
-        formData.append("foundedYear", teamFoundedYear.value);
+    if (teamFoundedDate.value) {
+        formData.append("foundedDate", teamFoundedDate.value);
     }
     if (teamLogo.value) {
         formData.append("logo", teamLogo.value);
