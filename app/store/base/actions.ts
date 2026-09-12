@@ -26,7 +26,7 @@ export function useBaseActions(state: StateType) {
         state.loading.value = false;
       });
   };
-  
+
   const getCoachDegree = () => {
     const axios = useApi();
     state.loading.value = true;
@@ -67,9 +67,30 @@ export function useBaseActions(state: StateType) {
       });
   };
 
+  const getSeasons = () => {
+    const axios = useApi();
+    state.loading.value = true;
+
+    return axios
+      .get("/seasons")
+      .then((res) => {
+        state.seasons.value = res.data.data.seasons;
+      })
+      .catch((err) => {
+        console.log(err);
+
+        const message = err.response?.data?.message || "خطای سرور";
+        handlerStore.setError(message);
+      })
+      .finally(() => {
+        state.loading.value = false;
+      });
+  };
+
   return {
     getRoles,
     getCoachDegree,
-    getRefereeDegree
+    getRefereeDegree,
+    getSeasons, 
   };
 }

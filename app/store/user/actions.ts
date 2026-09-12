@@ -50,9 +50,9 @@ export function useUserActions(state: StateType) {
 
   const uploadUserAvatar = (formData: FormData) => {
     const axios = useApi();
-  
+
     handlerStore.loadingBtn = true;
-  
+
     return axios
       .post("/users/me/avatar", formData, {
         headers: {
@@ -65,10 +65,9 @@ export function useUserActions(state: StateType) {
       })
       .catch((err) => {
         console.log(err);
-  
-        const message =
-          err.response?.data?.message || "خطای سرور";
-  
+
+        const message = err.response?.data?.message || "خطای سرور";
+
         handlerStore.setError(message);
       })
       .finally(() => {
@@ -145,6 +144,33 @@ export function useUserActions(state: StateType) {
       });
   };
 
+  const getUserSearch = (
+    query: {
+      page?: number;
+      pageSize?: number;
+      role?: ["COACH", "PLAYER", "REFEREE"];
+      query?: string;
+    } = {},
+  ) => {
+    const axios = useApi();
+    state.loading.value = true;
+
+    return axios
+      .get("/users/search", { params: query })
+      .then((res) => {
+        state.usersSearchResult.value = res.data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+
+        const message = err.response?.data?.message || "خطای سرور";
+        handlerStore.setError(message);
+      })
+      .finally(() => {
+        state.loading.value = false;
+      });
+  };
+
   return {
     getUserMe,
     updateUserMe,
@@ -152,5 +178,6 @@ export function useUserActions(state: StateType) {
     removeUserAvatar,
     changeUserPassword,
     deleteUserMe,
+    getUserSearch,
   };
 }

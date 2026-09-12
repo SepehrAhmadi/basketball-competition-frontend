@@ -5,11 +5,13 @@ export function useBaseState() {
   const roles = ref<any>(null);
   const coachDegree = ref<any>(null);
   const refereeDegrees = ref<any>(null);
+  const seasons = ref<any>(null);
 
   return {
     loading,
     roles,
     coachDegree,
     refereeDegrees,
+    seasons,
   };
 }
