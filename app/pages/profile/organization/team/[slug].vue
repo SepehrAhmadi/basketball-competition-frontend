@@ -128,8 +128,14 @@
       :season-id="selectedSeason"
     />
 
+    <!-- Coach Roster -->
+    <view-profile-team-coach-roster
+      v-if="selectedSeason"
+      :season-id="selectedSeason"
+    />
+
     <!-- No selected season -->
-    <div v-if="!selectedSeason" class="mt-8" >
+    <div v-if="!selectedSeason" class="mt-8">
       <div class="flex flex-col justify-center items-center gap-1">
         <icon-date class="w-8 h-8 text-gray-500 dark:text-gray-300 mb-1" />
         <p class="text-gray-500 dark:text-gray-300 text-[15px]">
