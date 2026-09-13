@@ -445,7 +445,9 @@ const handleEditSubmit = () => {
 
   teamStore
     .updateRosterMember(teamId.value, editingMember.value.id, {
+      seasonId: props.seasonId,
       jerseyNumber: Number(editJerseyNumber.value),
+      role: "PLAYER",
     })
     .then(() => {
       editDrawerOpen.value = false;
