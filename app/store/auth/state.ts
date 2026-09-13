@@ -3,11 +3,12 @@ import { ref } from "vue";
 export function useAuthState() {
   const loginResult = ref<any>(null);
   const loading = ref<boolean>(false);
-  const profileResult = ref<any>(null);
+
+  const isAuthResolved = ref<boolean>(false);
 
   return {
     loginResult,
     loading,
-    profileResult,
+    isAuthResolved,
   };
 }

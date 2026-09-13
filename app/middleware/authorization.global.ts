@@ -1,6 +1,24 @@
 import { useHandlerStore } from "~/store/handler";
+import { useAuthStore } from "~/store/auth";
+import { usePermissions } from "~/composables/usePermissions";
+import type { RoleType } from "~/constants/roles";
 
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware(async  (to) => {
+  const authStore = useAuthStore()
+
+  if (!authStore.isAuthResolved) {
+    await authStore.resolveAuth()
+  }
+
+  const requiredRoles = to.meta.roles as RoleType[] | undefined
+  if (!requiredRoles) return 
+
+  const { hasAnyRole } = usePermissions()
+  if (!hasAnyRole(requiredRoles)) {
+    return navigateTo('/403')
+  }
+
+
   const token = useCookie("token").value;
   const handlerStore = useHandlerStore();
 

@@ -1,11 +1,13 @@
 import { useApi } from "~/composables/useApi";
 import type { useAuthState } from "./state";
 import { useHandlerStore } from "../handler";
+import { useUserStore } from "../user";
 
 type StateType = ReturnType<typeof useAuthState>;
 
 export function useAuthActions(state: StateType) {
   const handlerStore = useHandlerStore();
+  const userStore = useUserStore();
 
   const register = (value: any) => {
     const axios = useApi();
@@ -121,11 +123,35 @@ export function useAuthActions(state: StateType) {
       });
   };
 
+  const resolveAuth = () => {
+    if (state.isAuthResolved.value) return;
+
+    const axios = useApi();
+    const tokenCookie = useCookie("token");
+
+    return axios
+      .post("/auth/refresh-token", {}, { withCredentials: true })
+      .then((res) => {
+        if (res.data.data?.accessToken) {
+          tokenCookie.value = res.data.data.accessToken;
+          return userStore.getUserMe();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        tokenCookie.value = null;
+      })
+      .finally(() => {
+        state.isAuthResolved.value = true;
+      });
+  };
+
   return {
     register,
     login,
     refreshToken,
     logout,
     deleteAccount,
+    resolveAuth,
   };
 }
