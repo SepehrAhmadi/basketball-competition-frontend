@@ -4,7 +4,6 @@ import { useUserStore } from "~/store/user";
 import { ROLES, type RoleType } from "~/constants/roles";
 
 export function usePermissions() {
-  const authStore = useAuthStore();
   const userStore = useUserStore();
 
   const isAuthenticated = computed(() => !!userStore.userProfile);

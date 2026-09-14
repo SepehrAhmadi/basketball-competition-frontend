@@ -19,9 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { AUTHENTICATED_ROLES } from "~/constants/roles";
-
 definePageMeta({
-  roles: AUTHENTICATED_ROLES,
+  middleware: ["auth"],
 });
 </script>
