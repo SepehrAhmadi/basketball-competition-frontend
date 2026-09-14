@@ -262,6 +262,12 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 
+import { AUTHENTICATED_ROLES } from "~/constants/roles";
+
+definePageMeta({
+  roles: AUTHENTICATED_ROLES,
+});
+
 const { canAddAndEditTeam, canDeleteTeam } = usePermissions();
 
 import { useTeamStore } from "~/store/team";

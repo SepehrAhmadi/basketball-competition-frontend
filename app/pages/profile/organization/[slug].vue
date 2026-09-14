@@ -40,6 +40,12 @@ import {
     PaginationPrevious,
 } from "~/components/ui/pagination";
 
+import { AUTHENTICATED_ROLES } from "~/constants/roles";
+
+definePageMeta({
+  roles: AUTHENTICATED_ROLES,
+});
+
 import { useTeamStore } from "~/store/team";
 const teamStore = useTeamStore();
 const { teamList, teamListMeta } = storeToRefs(teamStore);

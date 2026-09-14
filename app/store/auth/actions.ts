@@ -40,8 +40,10 @@ export function useAuthActions(state: StateType) {
         if (res.data.data?.accessToken) {
           const token = res.data.data.accessToken;
           useCookie("token").value = token;
-          navigateTo("/");
-          handlerStore.setSuccess(res.data.message);
+          return userStore.getUserMe().then(() => {
+            navigateTo("/");
+            handlerStore.setSuccess(res.data.message);
+          });
         }
       })
       .catch((err) => {

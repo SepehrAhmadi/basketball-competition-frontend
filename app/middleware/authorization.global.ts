@@ -1,26 +1,28 @@
 import { useHandlerStore } from "~/store/handler";
 import { useAuthStore } from "~/store/auth";
+import { useUserStore } from "~/store/user";
 import { usePermissions } from "~/composables/usePermissions";
 import type { RoleType } from "~/constants/roles";
+import { ROLES } from "~/constants/roles";
 
-export default defineNuxtRouteMiddleware(async  (to) => {
-  const authStore = useAuthStore()
+export default defineNuxtRouteMiddleware(async (to) => {
+  const authStore = useAuthStore();
+  const userStore = useUserStore();
+  const handlerStore = useHandlerStore();
 
   if (!authStore.isAuthResolved) {
-    await authStore.resolveAuth()
+    await authStore.resolveAuth();
   }
 
-  const requiredRoles = to.meta.roles as RoleType[] | undefined
-  if (!requiredRoles) return 
+  const requiredRoles = to.meta.roles as RoleType[] | undefined;
+  if (!requiredRoles) return;
 
-  const { hasAnyRole } = usePermissions()
+  const { hasAnyRole } = usePermissions();
   if (!hasAnyRole(requiredRoles)) {
-    return navigateTo('/403')
+    const isGuest =
+      requiredRoles.includes(ROLES.PUBLIC) === false && !userStore.userProfile;
+    return navigateTo(isGuest ? "/auth" : "/403");
   }
-
-
-  const token = useCookie("token").value;
-  const handlerStore = useHandlerStore();
 
   // unauthorized (set by axios plugin interceptor on failed refresh)
   if (handlerStore.unauthorized) {
@@ -41,13 +43,8 @@ export default defineNuxtRouteMiddleware(async  (to) => {
     return navigateTo(redirect);
   }
 
-  // guest guard: no token and not already on the auth page
-  if (!token && to.path !== "/auth") {
-    return navigateTo("/auth");
-  }
-
   // logged-in users should not see the auth page
-  if (token && to.path === "/auth") {
+  if (to.path === "/auth" && userStore.userProfile) {
     return navigateTo("/");
   }
 });
