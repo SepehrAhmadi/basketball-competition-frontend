@@ -47,7 +47,7 @@
                 </div>
               </div>
               <div class="flex gap-2">
-                <AlertDialog>
+                <AlertDialog v-if="canDeleteTeam">
                   <AlertDialogTrigger as-child>
                     <Button
                       class="text-[12px]"
@@ -78,6 +78,7 @@
                   </AlertDialogContent>
                 </AlertDialog>
                 <Button
+                  v-if="canAddAndEditTeam"
                   class="text-[12px]"
                   size="sm"
                   variant="outline"
@@ -260,6 +261,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
+
+const { canAddAndEditTeam, canDeleteTeam } = usePermissions();
 
 import { useTeamStore } from "~/store/team";
 const teamStore = useTeamStore();

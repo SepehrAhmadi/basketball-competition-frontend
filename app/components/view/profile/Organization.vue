@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="organizationList && organizationList.length > 0">
     <div class="flex justify-between items-center gap-2 mb-2">
       <div class="flex items-center gap-2">
         <icon-building class="size-3.75 text-gray-500 dark:text-gray-300" />
@@ -7,7 +7,7 @@
           سازمان ها
         </div>
       </div>
-      <div>
+      <div v-if="canAddAndEditOrganization" class="flex items-center gap-2">
         <Button class="w-full text-[13px]" size="sm" @click="openDrawer()">
           ثبت سازمان
         </Button>
@@ -224,6 +224,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
+
+const { canAddAndEditOrganization } = usePermissions();
 
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();
