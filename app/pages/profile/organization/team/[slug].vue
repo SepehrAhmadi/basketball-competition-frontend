@@ -262,10 +262,8 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 
-import { AUTHENTICATED_ROLES } from "~/constants/roles";
-
 definePageMeta({
-  roles: AUTHENTICATED_ROLES,
+  middleware: ["auth"],
 });
 
 const { canAddAndEditTeam, canDeleteTeam } = usePermissions();

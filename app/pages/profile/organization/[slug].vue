@@ -40,10 +40,8 @@ import {
     PaginationPrevious,
 } from "~/components/ui/pagination";
 
-import { AUTHENTICATED_ROLES } from "~/constants/roles";
-
 definePageMeta({
-  roles: AUTHENTICATED_ROLES,
+  middleware: ["auth"],
 });
 
 import { useTeamStore } from "~/store/team";
