@@ -1,6 +1,25 @@
 <template>
   <div class="mt-2" v-if="canSetPlayerInfo">
-    <Card class="w-full shadow-xs! rounded-4xl gap-4 py-3">
+    <Card
+      v-if="isPlayerLoading"
+      class="w-full shadow-xs! rounded-4xl gap-4 py-3"
+      aria-hidden="true"
+    >
+      <CardContent class="px-3">
+        <div class="flex justify-start items-center gap-1">
+          <div class="w-full flex justify-start items-center gap-2">
+            <Skeleton class="w-15 h-15 rounded-full mb-2 shrink-0" />
+            <div
+              class="shrink w-full flex-1 flex justify-between items-center gap-4"
+            >
+              <Skeleton class="h-5.25 w-24 rounded-md" />
+              <Skeleton class="h-5.25 w-18 rounded-md" />
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+    <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3">
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-center gap-2">
@@ -83,6 +102,7 @@
 
 <script setup lang="ts">
 import ball from "../../../assets/img/icon/ball.png";
+import { Skeleton } from "~/components/ui/skeleton";
 import { usePeopleStore } from "~/store/people";
 import { useHandlerStore } from "~/store/handler";
 
@@ -90,7 +110,10 @@ const { canSetPlayerInfo } = usePermissions();
 
 const peopleStore = usePeopleStore();
 const handlerStore = useHandlerStore();
-const { playerProfile } = storeToRefs(peopleStore);
+const { playerProfile, loading: peopleLoading } = storeToRefs(peopleStore);
+const isPlayerLoading = computed(
+  () => peopleLoading.value && !playerProfile.value,
+);
 
 const open = ref(false);
 const height = ref<number | undefined>(undefined);

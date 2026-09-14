@@ -1,5 +1,5 @@
 <template>
-  <div v-if="organizationList && organizationList.length > 0">
+  <div v-if="isOrgLoading || (organizationList && organizationList.length > 0)">
     <div class="flex justify-between items-center gap-2 mb-2">
       <div class="flex items-center gap-2">
         <icon-building class="size-3.75 text-gray-500 dark:text-gray-300" />
@@ -8,17 +8,53 @@
         </div>
       </div>
       <div v-if="canAddAndEditOrganization" class="flex items-center gap-2">
-        <Button class="w-full text-[13px]" size="sm" @click="openDrawer()">
+        <Skeleton
+          v-if="isOrgLoading"
+          class="h-8 w-23 rounded-md"
+          aria-hidden="true"
+        />
+        <Button
+          v-else
+          class="w-full text-[13px]"
+          size="sm"
+          @click="openDrawer()"
+        >
           ثبت سازمان
         </Button>
       </div>
     </div>
-    <Card
-      v-if="organizationList.length > 0"
-      v-for="organization in organizationList"
-      :key="organization.id"
-      class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
-    >
+    <template v-if="isOrgLoading">
+      <Card
+        v-for="n in pageSize"
+        :key="`org-skeleton-${n}`"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+        aria-hidden="true"
+      >
+        <CardContent class="px-3">
+          <div class="flex justify-start items-center gap-1">
+            <div class="w-full flex justify-start items-center gap-2">
+              <Skeleton class="w-15 h-15 rounded-full mb-2 shrink-0" />
+              <div
+                class="shrink w-full flex-1 flex justify-between items-center gap-4"
+              >
+                <div class="flex flex-col gap-1">
+                  <Skeleton class="h-5.25 w-28 rounded-md" />
+                  <Skeleton class="h-4.5 w-40 rounded-md" />
+                </div>
+              </div>
+              <Skeleton class="h-5.25 w-18 rounded-md shrink-0" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </template>
+    <template v-else>
+      <Card
+        v-if="organizationList.length > 0"
+        v-for="organization in organizationList"
+        :key="organization.id"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+      >
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-center gap-2">
@@ -63,10 +99,11 @@
           </div>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+    </template>
 
     <Pagination
-      v-if="pageCount > 1"
+      v-if="!isOrgLoading && pageCount > 1"
       v-model:page="page"
       :items-per-page="pageSize"
       :total="organizationListMeta?.total ?? 0"
@@ -215,6 +252,7 @@
 
 <script setup lang="ts">
 import { Textarea } from "~/components/ui/textarea";
+import { Skeleton } from "~/components/ui/skeleton";
 import defaultAvatar from "../../../assets/img/avatar.png";
 import teamLogo from "../../../assets/img/icon/team.png";
 import {
@@ -231,6 +269,8 @@ import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();
 const { organizationList, organizationListMeta, organizationDetail } =
   storeToRefs(organizationStore);
+const { loading: orgLoading } = storeToRefs(organizationStore);
+const isOrgLoading = computed(() => orgLoading.value);
 
 const open = ref(false);
 const name = ref("");

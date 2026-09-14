@@ -1,6 +1,25 @@
 <template>
   <div class="mt-2" v-if="canSetRefereeInfo">
-    <Card class="w-full shadow-xs! rounded-4xl gap-4 py-3">
+    <Card
+      v-if="isRefereeLoading"
+      class="w-full shadow-xs! rounded-4xl gap-4 py-3"
+      aria-hidden="true"
+    >
+      <CardContent class="px-3">
+        <div class="flex justify-start items-center gap-1">
+          <div class="w-full flex justify-start items-center gap-2">
+            <Skeleton class="w-15 h-15 rounded-full mb-2 shrink-0" />
+            <div
+              class="shrink w-full flex-1 flex justify-between items-center gap-4"
+            >
+              <Skeleton class="h-5.25 w-24 rounded-md" />
+              <Skeleton class="h-5.25 w-18 rounded-md" />
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+    <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3">
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-center gap-2">
@@ -81,6 +100,7 @@
 
 <script setup lang="ts">
 import whistle from "../../../assets/img/icon/whistle.png";
+import { Skeleton } from "~/components/ui/skeleton";
 import { usePeopleStore } from "~/store/people";
 import { useHandlerStore } from "~/store/handler";
 import { useBaseStore } from "~/store/base";
@@ -91,7 +111,10 @@ const peopleStore = usePeopleStore();
 const handlerStore = useHandlerStore();
 const baseStore = useBaseStore();
 const { refereeDegrees: refereeDegreeList } = storeToRefs(baseStore);
-const { refereeProfile } = storeToRefs(peopleStore);
+const { refereeProfile, loading: peopleLoading } = storeToRefs(peopleStore);
+const isRefereeLoading = computed(
+  () => peopleLoading.value && !refereeProfile.value,
+);
 
 const open = ref(false);
 const selectedDegree = ref<string | undefined>(undefined);

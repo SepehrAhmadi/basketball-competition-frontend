@@ -1,6 +1,37 @@
 <template>
   <div>
-    <Card class="w-full shadow-xs! rounded-4xl py-5 gap-4">
+    <Card
+      v-if="isOrgDetailLoading"
+      class="w-full shadow-xs! rounded-4xl py-5 gap-4"
+      aria-hidden="true"
+    >
+      <CardContent class="tw-py-2">
+        <div class="flex justify-start items-center gap-1">
+          <div class="w-full flex justify-start items-start gap-3">
+            <div class="w-full tw-flex-1 flex justify-start items-center gap-3">
+              <Skeleton class="shrink-0 w-20 h-20 rounded-full" />
+              <div class="flex flex-col gap-1">
+                <Skeleton class="h-5.75 w-36 rounded-md" />
+                <Skeleton class="h-5 w-24 rounded-md" />
+                <Skeleton class="h-5 w-32 rounded-md" />
+                <Skeleton class="h-5 w-28 rounded-md" />
+              </div>
+            </div>
+            <div class="flex justify-end items-start">
+              <div class="flex gap-2">
+                <Skeleton class="h-8 w-8 rounded-md" />
+                <Skeleton class="h-8 w-8 rounded-md" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <Skeleton class="w-full h-5 rounded-md mt-2" />
+        <div class="w-full mt-4">
+          <Skeleton class="w-full h-8 rounded-md" />
+        </div>
+      </CardContent>
+    </Card>
+    <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
       <CardContent class="tw-py-2">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-start gap-3">
@@ -313,6 +344,7 @@
 <script setup lang="ts">
 import building from "../../../../assets/img/icon/building.png";
 import defaultAvatar from "../../../../assets/img/avatar.png";
+import { Skeleton } from "~/components/ui/skeleton";
 import { Textarea } from "~/components/ui/textarea";
 import {
   AlertDialog,
@@ -330,7 +362,11 @@ const { canAddAndEditOrganization, canDeleteOrganization } = usePermissions();
 
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();
-const { organizationDetail } = storeToRefs(organizationStore);
+const { organizationDetail, loading: orgLoading } =
+  storeToRefs(organizationStore);
+const isOrgDetailLoading = computed(
+  () => orgLoading.value && !organizationDetail.value,
+);
 
 import { useTeamStore } from "~/store/team";
 const teamStore = useTeamStore();

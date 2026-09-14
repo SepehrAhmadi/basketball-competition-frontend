@@ -17,6 +17,35 @@
     </div>
 
     <!-- Player Cards -->
+    <template v-if="loading">
+      <Card
+        v-for="n in pageSize"
+        :key="`player-skeleton-${n}`"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+        aria-hidden="true"
+      >
+        <CardContent class="px-3">
+          <div class="flex justify-start items-center gap-1">
+            <div class="w-full flex justify-start items-center gap-2">
+              <Skeleton class="w-15 h-15 rounded-full mb-2 shrink-0" />
+              <div
+                class="shrink w-full flex-1 flex justify-between items-center gap-4"
+              >
+                <div class="flex flex-col gap-1">
+                  <Skeleton class="h-5.25 w-28 rounded-md" />
+                  <Skeleton class="h-4.5 w-24 rounded-md" />
+                </div>
+              </div>
+              <div class="flex items-center gap-1 shrink-0">
+                <Skeleton class="h-8 w-8 rounded-md" />
+                <Skeleton class="h-8 w-8 rounded-md" />
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </template>
+    <template v-else>
     <Card
       v-for="member in playerRoster"
       :key="member.id"
@@ -102,6 +131,7 @@
         </div>
       </CardContent>
     </Card>
+    </template>
 
     <!-- Empty state -->
     <div
@@ -116,7 +146,7 @@
 
     <!-- Pagination -->
     <Pagination
-      v-if="pageCount > 1"
+      v-if="!loading && pageCount > 1"
       v-model:page="page"
       :items-per-page="pageSize"
       :total="playerRosterMeta?.total ?? 0"
@@ -300,6 +330,7 @@
 
 <script setup lang="ts">
 import defaultAvatar from "../../../../assets/img/avatar.png";
+import { Skeleton } from "~/components/ui/skeleton";
 import {
   Pagination,
   PaginationContent,

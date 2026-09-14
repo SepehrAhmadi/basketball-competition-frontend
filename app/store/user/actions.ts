@@ -23,7 +23,9 @@ export function useUserActions(state: StateType) {
         handlerStore.setError(message);
       })
       .finally(() => {
-        state.loading.value = false;
+        setTimeout(() => {
+          state.loading.value = false;
+        }, 2000);
       });
   };
 
@@ -167,7 +169,9 @@ export function useUserActions(state: StateType) {
         handlerStore.setError(message);
       })
       .finally(() => {
-        state.loading.value = false;
+        setTimeout(() => {
+          state.loading.value = false;
+        }, 2000);
       });
   };
 

@@ -4,7 +4,7 @@
         <ViewProfileOrganizationTeamList :teams="teamList" class="mt-2" />
 
         <Pagination
-            v-if="pageCount > 1"
+            v-if="!teamLoading && pageCount > 1"
             v-model:page="page"
             :items-per-page="pageSize"
             :total="teamListMeta?.total ?? 0"
@@ -46,7 +46,8 @@ definePageMeta({
 
 import { useTeamStore } from "~/store/team";
 const teamStore = useTeamStore();
-const { teamList, teamListMeta } = storeToRefs(teamStore);
+const { teamList, teamListMeta, loading: teamLoading } =
+  storeToRefs(teamStore);
 
 const route = useRoute();
 const organizationId = computed(() => String(route.params.slug));

@@ -1,6 +1,25 @@
 <template>
   <div v-if="canSetCoachInfo" class="mt-2">
-    <Card class="w-full shadow-xs! rounded-4xl gap-4 py-3">
+    <Card
+      v-if="isCoachLoading"
+      class="w-full shadow-xs! rounded-4xl gap-4 py-3"
+      aria-hidden="true"
+    >
+      <CardContent class="px-3">
+        <div class="flex justify-start items-center gap-1">
+          <div class="w-full flex justify-start items-center gap-2">
+            <Skeleton class="w-15 h-15 rounded-full mb-2 shrink-0" />
+            <div
+              class="shrink w-full flex-1 flex justify-between items-center gap-4"
+            >
+              <Skeleton class="h-5.25 w-24 rounded-md" />
+              <Skeleton class="h-5.25 w-18 rounded-md" />
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+    <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3">
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-center gap-2">
@@ -83,6 +102,7 @@
 
 <script setup lang="ts">
 import court from "../../../assets/img/icon/basketball-court.png";
+import { Skeleton } from "~/components/ui/skeleton";
 import { usePeopleStore } from "~/store/people";
 import { useHandlerStore } from "~/store/handler";
 import { useBaseStore } from "~/store/base";
@@ -93,7 +113,10 @@ const peopleStore = usePeopleStore();
 const handlerStore = useHandlerStore();
 const baseStore = useBaseStore();
 const { coachDegree: coachDegreeList } = storeToRefs(baseStore);
-const { coachProfile } = storeToRefs(peopleStore);
+const { coachProfile, loading: peopleLoading } = storeToRefs(peopleStore);
+const isCoachLoading = computed(
+  () => peopleLoading.value && !coachProfile.value,
+);
 
 const open = ref(false);
 const selectedDegree = ref<string | undefined>(undefined);

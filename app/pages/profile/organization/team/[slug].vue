@@ -1,7 +1,36 @@
 <template>
   <div class="mt-2">
     <!-- Team Detail -->
-    <Card class="w-full shadow-xs! rounded-4xl py-5 gap-4">
+    <Card
+      v-if="isTeamDetailLoading"
+      class="w-full shadow-xs! rounded-4xl py-5 gap-4"
+      aria-hidden="true"
+    >
+      <CardContent class="tw-py-2">
+        <div class="flex justify-start items-center gap-1">
+          <div class="w-full flex justify-start items-ceneter gap-3">
+            <Skeleton class="shrink-0 w-20 h-20 rounded-full mb-2" />
+            <div class="w-full tw-flex-1 flex justify-between items-start">
+              <div class="flex flex-col gap-1">
+                <Skeleton class="h-6 w-36 rounded-md" />
+                <Skeleton class="h-5.25 w-28 rounded-md" />
+                <Skeleton class="h-5.25 w-32 rounded-md" />
+                <Skeleton class="h-5.25 w-40 rounded-md" />
+              </div>
+              <div class="flex gap-2">
+                <Skeleton class="h-8 w-8 rounded-md" />
+                <Skeleton class="h-8 w-8 rounded-md" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full mt-5 flex flex-col gap-1">
+          <Skeleton class="w-full h-9 rounded-md" />
+          <Skeleton class="h-4.25 w-56 rounded-md ms-1" />
+        </div>
+      </CardContent>
+    </Card>
+    <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
       <CardContent class="tw-py-2">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-ceneter gap-3">
@@ -270,7 +299,10 @@ const { canAddAndEditTeam, canDeleteTeam } = usePermissions();
 
 import { useTeamStore } from "~/store/team";
 const teamStore = useTeamStore();
-const { teamDetail } = storeToRefs(teamStore);
+const { teamDetail, loading: teamLoading } = storeToRefs(teamStore);
+const isTeamDetailLoading = computed(
+  () => teamLoading.value && !teamDetail.value,
+);
 
 import { useHandlerStore } from "~/store/handler";
 const handlerStore = useHandlerStore();

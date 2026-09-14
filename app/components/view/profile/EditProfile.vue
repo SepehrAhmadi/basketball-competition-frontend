@@ -1,6 +1,27 @@
 <template>
     <div class="mt-2">
-        <Card class="w-full shadow-xs! rounded-4xl py-5 gap-4">
+        <Card
+            v-if="isProfileLoading"
+            class="w-full shadow-xs! rounded-4xl py-5 gap-4"
+            aria-hidden="true"
+        >
+            <CardContent class="tw-py-2">
+                <div class="flex flex-col justify-center items-center gap-1">
+                    <div class="flex justify-start items-ceneter">
+                        <Skeleton
+                            class="w-20 h-20 rounded-full mb-2"
+                        />
+                    </div>
+                    <Skeleton class="h-6 w-32 rounded-md" />
+                    <Skeleton class="h-5.25 w-24 rounded-md" />
+                    <div class="flex justify-center items-center gap-2 mt-2">
+                        <Skeleton class="h-8 w-33 rounded-md" />
+                        <Skeleton class="h-8 w-33 rounded-md" />
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+        <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
             <CardContent class="tw-py-2">
                 <div class="flex flex-col justify-center items-center gap-1">
                     <div class="flex justify-start items-ceneter">
@@ -335,12 +356,16 @@
 
 <script setup lang="ts">
 import defaultAvatar from "../../../assets/img/avatar.png";
+import { Skeleton } from "~/components/ui/skeleton";
 import { useHandlerStore } from "~/store/handler";
 import { useUserStore } from "~/store/user";
 
 const handlerStore = useHandlerStore();
 const userStore = useUserStore();
-const { userProfile } = storeToRefs(userStore);
+const { userProfile, loading: userLoading } = storeToRefs(userStore);
+const isProfileLoading = computed(
+    () => userLoading.value && !userProfile.value,
+);
 
 const open = ref(false);
 const passwordDrawerOpen = ref(false);
