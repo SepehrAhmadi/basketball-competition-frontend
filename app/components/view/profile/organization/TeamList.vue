@@ -11,6 +11,7 @@
             </div>
         </div>
         <template v-if="isTeamListLoading">
+            <!-- Skeleton content: shown while team list is loading -->
             <Card
                 v-for="n in 10"
                 :key="`team-skeleton-${n}`"
@@ -36,6 +37,7 @@
             </Card>
         </template>
         <template v-else>
+        <!-- Real content: shown after team list is loaded -->
         <Card
             v-for="team in teams"
             :key="team.id"

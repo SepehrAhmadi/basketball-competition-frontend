@@ -1,5 +1,6 @@
 <template>
   <div class="mt-2" v-if="canSetRefereeInfo">
+    <!-- Skeleton content: shown while referee profile is loading -->
     <Card
       v-if="isRefereeLoading"
       class="w-full shadow-xs! rounded-4xl gap-4 py-3"
@@ -19,6 +20,7 @@
         </div>
       </CardContent>
     </Card>
+    <!-- Real content: shown after referee profile is loaded -->
     <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3">
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">

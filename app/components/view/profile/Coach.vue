@@ -1,5 +1,6 @@
 <template>
   <div v-if="canSetCoachInfo" class="mt-2">
+    <!-- Skeleton content: shown while coach profile is loading -->
     <Card
       v-if="isCoachLoading"
       class="w-full shadow-xs! rounded-4xl gap-4 py-3"
@@ -19,6 +20,7 @@
         </div>
       </CardContent>
     </Card>
+    <!-- Real content: shown after coach profile is loaded -->
     <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3">
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">

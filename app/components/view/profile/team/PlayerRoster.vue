@@ -18,6 +18,7 @@
 
     <!-- Player Cards -->
     <template v-if="loading">
+      <!-- Skeleton content: shown while player roster is loading -->
       <Card
         v-for="n in pageSize"
         :key="`player-skeleton-${n}`"
@@ -46,6 +47,7 @@
       </Card>
     </template>
     <template v-else>
+    <!-- Real content: shown after player roster is loaded -->
     <Card
       v-for="member in playerRoster"
       :key="member.id"

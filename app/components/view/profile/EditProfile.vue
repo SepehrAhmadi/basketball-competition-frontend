@@ -1,5 +1,6 @@
 <template>
     <div class="mt-2">
+        <!-- Skeleton content: shown while user profile is loading -->
         <Card
             v-if="isProfileLoading"
             class="w-full shadow-xs! rounded-4xl py-5 gap-4"
@@ -21,6 +22,7 @@
                 </div>
             </CardContent>
         </Card>
+        <!-- Real content: shown after user profile is loaded -->
         <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
             <CardContent class="tw-py-2">
                 <div class="flex flex-col justify-center items-center gap-1">

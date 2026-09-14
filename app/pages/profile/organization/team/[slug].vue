@@ -1,6 +1,7 @@
 <template>
   <div class="mt-2">
     <!-- Team Detail -->
+    <!-- Skeleton content: shown while team detail is loading -->
     <Card
       v-if="isTeamDetailLoading"
       class="w-full shadow-xs! rounded-4xl py-5 gap-4"
@@ -30,6 +31,7 @@
         </div>
       </CardContent>
     </Card>
+    <!-- Real content: shown after team detail is loaded -->
     <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
       <CardContent class="tw-py-2">
         <div class="flex justify-start items-center gap-1">

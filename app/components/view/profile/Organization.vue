@@ -24,6 +24,7 @@
       </div>
     </div>
     <template v-if="isOrgLoading">
+      <!-- Skeleton content: shown while organization list is loading -->
       <Card
         v-for="n in pageSize"
         :key="`org-skeleton-${n}`"
@@ -49,6 +50,7 @@
       </Card>
     </template>
     <template v-else>
+      <!-- Real content: shown after organization list is loaded -->
       <Card
         v-if="organizationList.length > 0"
         v-for="organization in organizationList"
