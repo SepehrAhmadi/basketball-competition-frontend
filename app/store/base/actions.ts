@@ -80,7 +80,7 @@ export function useBaseActions(state: StateType) {
     return axios
       .get("/seasons")
       .then((res) => {
-        state.seasons.value = res.data.data.seasons;
+        state.seasons.value = res.data.data.items;
       })
       .catch((err) => {
         console.log(err);
