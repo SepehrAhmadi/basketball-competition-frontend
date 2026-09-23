@@ -1,7 +1,7 @@
 <template>
     <div>
         <Label for="register-fullname">
-            <span class="text-gray-600 text-xs">{{ label }}</span>
+            <span class="text-gray-600 tw:dark:text-gray-200 text-xs">{{ label }}</span>
             <span
                 v-if="isRequired"
                 class="text-red-500 dark:text-red-600 text-[10px]"

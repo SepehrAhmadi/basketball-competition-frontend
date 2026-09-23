@@ -135,11 +135,11 @@
               <SelectGroup>
                 <SelectItem
                   v-for="season in seasons"
-                  :key="season.value"
-                  :value="season.value"
+                  :key="season.id"
+                  :value="season.id"
                   class="px-3"
                 >
-                  {{ season.label }}
+                  {{ season.name }}
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
