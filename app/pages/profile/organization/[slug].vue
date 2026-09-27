@@ -1,6 +1,7 @@
 <template>
     <div>
         <ViewProfileOrganizationDetail class="mt-2" />
+        <ViewProfileOrganizationMembershipList class="mt-2" />
         <ViewProfileOrganizationTeamList :teams="teamList" class="mt-2" />
 
         <Pagination
