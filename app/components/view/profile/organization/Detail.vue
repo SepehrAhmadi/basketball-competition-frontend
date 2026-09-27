@@ -71,7 +71,7 @@
             </div>
             <div class="flex justify-end items-start">
               <div class="flex gap-2">
-                <AlertDialog v-if="canDeleteOrganization">
+                <AlertDialog>
                   <AlertDialogTrigger as-child>
                     <Button
                       class="text-[12px]"
@@ -102,7 +102,7 @@
                   </AlertDialogContent>
                 </AlertDialog>
                 <Button
-                  v-if="canAddAndEditOrganization"
+                 
                   class="text-[12px]"
                   size="sm"
                   variant="outline"
@@ -123,7 +123,7 @@
         </div>
         <div class="w-full mt-4">
           <Button
-            v-if="canAddAndEditOrganization"
+            
             class="w-full px-4 text-[13px]"
             size="sm"
             aria-label="ثبت تیم"
@@ -359,8 +359,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
-
-const { canAddAndEditOrganization, canDeleteOrganization } = usePermissions();
 
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();

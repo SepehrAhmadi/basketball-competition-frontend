@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2" v-if="canSetRefereeInfo">
+  <div class="mt-2">
     <!-- Skeleton content: shown while referee profile is loading -->
     <Card
       v-if="isRefereeLoading"
@@ -106,8 +106,6 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { usePeopleStore } from "~/store/people";
 import { useHandlerStore } from "~/store/handler";
 import { useBaseStore } from "~/store/base";
-
-const { canSetRefereeInfo } = usePermissions();
 
 const peopleStore = usePeopleStore();
 const handlerStore = useHandlerStore();

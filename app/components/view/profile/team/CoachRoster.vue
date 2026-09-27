@@ -8,7 +8,6 @@
       </div>
       <div>
         <Button
-          v-if="canAddAndEditCoach"
           class="w-full text-[13px]" size="sm" @click="openAddDrawer"
           aria-label="افزودن مربی"
         >
@@ -95,7 +94,6 @@
             </div>
             <div class="flex items-center gap-1 shrink-0">
               <Button
-                v-if="canAddAndEditCoach"
                 class="text-[12px]"
                 size="sm"
                 variant="ghost"
@@ -104,7 +102,7 @@
               >
                 <icon-edit class="size-4" />
               </Button>
-              <AlertDialog v-if="canDeleteCoach">
+              <AlertDialog>
                 <AlertDialogTrigger as-child>
                   <Button
                     class="text-[12px]"
@@ -351,8 +349,6 @@ import {
   ComboboxList,
 } from "~/components/ui/combobox";
 import { Switch } from "~/components/ui/switch";
-
-const { canAddAndEditCoach, canDeleteCoach } = usePermissions();
 
 import { useTeamStore } from "~/store/team";
 import { useUserStore } from "~/store/user";

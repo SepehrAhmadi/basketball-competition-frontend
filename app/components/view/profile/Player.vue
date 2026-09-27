@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2" v-if="canSetPlayerInfo">
+  <div class="mt-2">
     <!-- Skeleton content: shown while player profile is loading -->
     <Card
       v-if="isPlayerLoading"
@@ -107,8 +107,6 @@ import ball from "../../../assets/img/icon/ball.png";
 import { Skeleton } from "~/components/ui/skeleton";
 import { usePeopleStore } from "~/store/people";
 import { useHandlerStore } from "~/store/handler";
-
-const { canSetPlayerInfo } = usePermissions();
 
 const peopleStore = usePeopleStore();
 const handlerStore = useHandlerStore();

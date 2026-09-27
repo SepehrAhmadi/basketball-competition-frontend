@@ -78,7 +78,7 @@
                 </div>
               </div>
               <div class="flex gap-2">
-                <AlertDialog v-if="canDeleteTeam">
+                <AlertDialog>
                   <AlertDialogTrigger as-child>
                     <Button
                       class="text-[12px]"
@@ -109,7 +109,6 @@
                   </AlertDialogContent>
                 </AlertDialog>
                 <Button
-                  v-if="canAddAndEditTeam"
                   class="text-[12px]"
                   size="sm"
                   variant="outline"
@@ -296,8 +295,6 @@ import {
 definePageMeta({
   middleware: ["auth"],
 });
-
-const { canAddAndEditTeam, canDeleteTeam } = usePermissions();
 
 import { useTeamStore } from "~/store/team";
 const teamStore = useTeamStore();

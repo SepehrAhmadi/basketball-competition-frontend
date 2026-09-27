@@ -8,7 +8,6 @@
       </div>
       <div>
         <Button
-          v-if="canAddAndEditPlayer"
           class="w-full text-[13px]" size="sm" @click="openAddDrawer"
           aria-label="افزودن بازیکن">
           افزودن بازیکن
@@ -89,7 +88,6 @@
             </div>
             <div class="flex items-center gap-1 shrink-0">
               <Button
-                v-if="canAddAndEditPlayer"
                 class="text-[12px]"
                 size="sm"
                 variant="ghost"
@@ -98,7 +96,7 @@
               >
                 <icon-edit class="size-4" />
               </Button>
-              <AlertDialog v-if="canDeletePlayer">
+              <AlertDialog>
                 <AlertDialogTrigger as-child>
                   <Button
                     class="text-[12px]"
@@ -361,8 +359,6 @@ import {
   ComboboxItemIndicator,
   ComboboxList,
 } from "~/components/ui/combobox";
-
-const { canAddAndEditPlayer, canDeletePlayer } = usePermissions();
 
 import { useTeamStore } from "~/store/team";
 import { useUserStore } from "~/store/user";

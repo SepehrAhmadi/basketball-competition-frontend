@@ -7,7 +7,7 @@
           سازمان ها
         </div>
       </div>
-      <div v-if="canAddAndEditOrganization" class="flex items-center gap-2">
+      <div  class="flex items-center gap-2">
         <Skeleton
           v-if="isOrgLoading"
           class="h-8 w-23 rounded-md"
@@ -265,7 +265,6 @@ import {
   PaginationPrevious,
 } from "~/components/ui/pagination";
 
-const { canAddAndEditOrganization } = usePermissions();
 
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="canSetCoachInfo" class="mt-2">
+  <div class="mt-2">
     <!-- Skeleton content: shown while coach profile is loading -->
     <Card
       v-if="isCoachLoading"
@@ -109,7 +109,6 @@ import { usePeopleStore } from "~/store/people";
 import { useHandlerStore } from "~/store/handler";
 import { useBaseStore } from "~/store/base";
 
-const { canSetCoachInfo } = usePermissions();
 
 const peopleStore = usePeopleStore();
 const handlerStore = useHandlerStore();
