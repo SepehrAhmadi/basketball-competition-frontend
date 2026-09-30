@@ -78,7 +78,7 @@
                 </div>
               </div>
               <div class="flex gap-2">
-                <AlertDialog>
+                <AlertDialog v-if="teamDetail?.can?.delete">
                   <AlertDialogTrigger as-child>
                     <Button
                       class="text-[12px]"
@@ -109,6 +109,7 @@
                   </AlertDialogContent>
                 </AlertDialog>
                 <Button
+                  v-if="teamDetail?.can?.edit"
                   class="text-[12px]"
                   size="sm"
                   variant="outline"

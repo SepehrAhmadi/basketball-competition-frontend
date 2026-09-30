@@ -71,7 +71,7 @@
             </div>
             <div class="flex justify-end items-start">
               <div class="flex gap-2">
-                <AlertDialog>
+                <AlertDialog v-if="organizationDetail?.can?.delete">
                   <AlertDialogTrigger as-child>
                     <Button
                       class="text-[12px]"
@@ -102,7 +102,7 @@
                   </AlertDialogContent>
                 </AlertDialog>
                 <Button
-                 
+                  v-if="organizationDetail?.can?.edit"
                   class="text-[12px]"
                   size="sm"
                   variant="outline"
@@ -123,7 +123,7 @@
         </div>
         <div class="w-full mt-4">
           <Button
-            
+            v-if="organizationDetail?.can?.createTeam"
             class="w-full px-4 text-[13px]"
             size="sm"
             aria-label="ثبت تیم"

@@ -8,8 +8,11 @@
       </div>
       <div>
         <Button
-          class="w-full text-[13px]" size="sm" @click="openAddDrawer"
-          aria-label="افزودن بازیکن">
+          class="w-full text-[13px]"
+          size="sm"
+          @click="openAddDrawer"
+          aria-label="افزودن بازیکن"
+        >
           افزودن بازیکن
         </Button>
       </div>
@@ -46,91 +49,92 @@
       </Card>
     </template>
     <template v-else>
-    <!-- Real content: shown after player roster is loaded -->
-    <Card
-      v-for="member in playerRoster"
-      :key="member.id"
-      class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
-    >
-      <CardContent class="px-3">
-        <div class="flex justify-start items-center gap-1">
-          <div class="w-full flex justify-start items-center gap-2">
-            <div
-              class="w-15 h-15 rounded-full border border-gray-300 mb-2"
-              :class="member.user?.avatarUrl ? '' : 'bg-primary'"
-            >
-              <img
-                v-if="member.user?.avatarUrl"
-                :src="member.user.avatarUrl"
-                class="w-full h-full object-cover rounded-full"
-                alt="آواتار بازیکن"
-              />
-              <img
-                v-else
-                :src="defaultAvatar"
-                class="w-full h-full object-cover rounded-full p-1.5"
-                alt="آواتار بازیکن"
-              />
-            </div>
-            <div
-              class="shrink w-full flex-1 flex justify-between items-center gap-4"
-            >
-              <div>
-                <div class="text-[14px] font-semibold">
-                  {{ member.user?.fullName ?? "—" }}
-                </div>
-                <div
-                  class="text-[12px] text-gray-600 dark:text-gray-400 font-semibold"
-                >
-                  پیراهن: {{ member.jerseyNumber ?? "—" }}
+      <!-- Real content: shown after player roster is loaded -->
+      {{ playerRoster }}
+      <Card
+        v-for="member in playerRoster"
+        :key="member.id"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+      >
+        <CardContent class="px-3">
+          <div class="flex justify-start items-center gap-1">
+            <div class="w-full flex justify-start items-center gap-2">
+              <div
+                class="w-15 h-15 rounded-full border border-gray-300 mb-2"
+                :class="member.user?.avatarUrl ? '' : 'bg-primary'"
+              >
+                <img
+                  v-if="member.user?.avatarUrl"
+                  :src="member.user.avatarUrl"
+                  class="w-full h-full object-cover rounded-full"
+                  alt="آواتار بازیکن"
+                />
+                <img
+                  v-else
+                  :src="defaultAvatar"
+                  class="w-full h-full object-cover rounded-full p-1.5"
+                  alt="آواتار بازیکن"
+                />
+              </div>
+              <div
+                class="shrink w-full flex-1 flex justify-between items-center gap-4"
+              >
+                <div>
+                  <div class="text-[14px] font-semibold">
+                    {{ member.user?.fullName ?? "—" }}
+                  </div>
+                  <div
+                    class="text-[12px] text-gray-600 dark:text-gray-400 font-semibold"
+                  >
+                    پیراهن: {{ member.jerseyNumber ?? "—" }}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="flex items-center gap-1 shrink-0">
-              <Button
-                class="text-[12px]"
-                size="sm"
-                variant="ghost"
-                aria-label="ویرایش بازیکن"
-                @click="openEditDrawer(member)"
-              >
-                <icon-edit class="size-4" />
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger as-child>
-                  <Button
-                    class="text-[12px]"
-                    size="sm"
-                    variant="ghost"
-                    aria-label="حذف بازیکن"
-                  >
-                    <icon-trash class="size-4.5" />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>حذف بازیکن</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      آیا از حذف «{{ member.user?.fullName }}» مطمئن هستید؟ این
-                      عمل قابل بازگشت نیست.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>انصراف</AlertDialogCancel>
-                    <AlertDialogAction
-                      class="bg-destructive text-white hover:bg-destructive/90"
-                      @click="confirmDelete(member)"
+              <div class="flex items-center gap-1 shrink-0">
+                <Button
+                  class="text-[12px]"
+                  size="sm"
+                  variant="ghost"
+                  aria-label="ویرایش بازیکن"
+                  @click="openEditDrawer(member)"
+                >
+                  <icon-edit class="size-4" />
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger as-child>
+                    <Button
+                      class="text-[12px]"
+                      size="sm"
+                      variant="ghost"
+                      aria-label="حذف بازیکن"
                     >
-                      حذف
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                      <icon-trash class="size-4.5" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>حذف بازیکن</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        آیا از حذف «{{ member.user?.fullName }}» مطمئن هستید؟
+                        این عمل قابل بازگشت نیست.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>انصراف</AlertDialogCancel>
+                      <AlertDialogAction
+                        class="bg-destructive text-white hover:bg-destructive/90"
+                        @click="confirmDelete(member)"
+                      >
+                        حذف
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
     </template>
 
     <!-- Empty state -->
