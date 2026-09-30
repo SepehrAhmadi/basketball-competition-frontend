@@ -8,7 +8,10 @@
       </div>
       <div>
         <Button
-          class="w-full text-[13px]" size="sm" @click="openAddDrawer"
+          v-if="coachRoster?.can?.manageCoaches"
+          class="w-full text-[13px]"
+          size="sm"
+          @click="openAddDrawer"
           aria-label="افزودن مربی"
         >
           افزودن مربی
@@ -47,96 +50,97 @@
       </Card>
     </template>
     <template v-else>
-    <!-- Real content: shown after coach roster is loaded -->
-    <Card
-      v-for="member in coachRoster"
-      :key="member.id"
-      class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
-    >
-      <CardContent class="px-3">
-        <div class="flex justify-start items-center gap-1">
-          <div class="w-full flex justify-start items-center gap-2">
-            <div
-              class="w-15 h-15 rounded-full border border-gray-300 mb-2"
-              :class="member.user?.avatarUrl ? '' : 'bg-primary'"
-            >
-              <img
-                v-if="member.user?.avatarUrl"
-                :src="member.user.avatarUrl"
-                class="w-full h-full object-cover rounded-full"
-                alt="آواتار مربی"
-              />
-              <img
-                v-else
-                :src="defaultAvatar"
-                class="w-full h-full object-cover rounded-full p-1.5"
-                alt="آواتار مربی"
-              />
-            </div>
-            <div
-              class="shrink w-full flex-1 flex justify-between items-center gap-4"
-            >
-              <div>
-                <div class="text-[14px] font-semibold">
-                  {{ member.user?.fullName ?? "—" }}
-                </div>
-                <div
-                  class="text-[12px] font-semibold"
-                  :class="
-                    member.isHeadCoach
-                      ? 'text-primary dark:text-primary'
-                      : 'text-gray-600 dark:text-gray-400'
-                  "
-                >
-                  {{ member.isHeadCoach ? "سرمربی" : "مربی" }}
+      <!-- Real content: shown after coach roster is loaded -->
+      <Card
+        v-for="member in coachRoster.items"
+        :key="member.id"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+      >
+        <CardContent class="px-3">
+          <div class="flex justify-start items-center gap-1">
+            <div class="w-full flex justify-start items-center gap-2">
+              <div
+                class="w-15 h-15 rounded-full border border-gray-300 mb-2"
+                :class="member.user?.avatarUrl ? '' : 'bg-primary'"
+              >
+                <img
+                  v-if="member.user?.avatarUrl"
+                  :src="member.user.avatarUrl"
+                  class="w-full h-full object-cover rounded-full"
+                  alt="آواتار مربی"
+                />
+                <img
+                  v-else
+                  :src="defaultAvatar"
+                  class="w-full h-full object-cover rounded-full p-1.5"
+                  alt="آواتار مربی"
+                />
+              </div>
+              <div
+                class="shrink w-full flex-1 flex justify-between items-center gap-4"
+              >
+                <div>
+                  <div class="text-[14px] font-semibold">
+                    {{ member.user?.fullName ?? "—" }}
+                  </div>
+                  <div
+                    class="text-[12px] font-semibold"
+                    :class="
+                      member.isHeadCoach
+                        ? 'text-primary dark:text-primary'
+                        : 'text-gray-600 dark:text-gray-400'
+                    "
+                  >
+                    {{ member.isHeadCoach ? "سرمربی" : "مربی" }}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="flex items-center gap-1 shrink-0">
-              <Button
-                class="text-[12px]"
-                size="sm"
-                variant="ghost"
-                aria-label="ویرایش مربی"
-                @click="openEditDrawer(member)"
-              >
-                <icon-edit class="size-4" />
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger as-child>
-                  <Button
-                    class="text-[12px]"
-                    size="sm"
-                    variant="ghost"
-                    aria-label="حذف مربی"
-                  >
-                    <icon-trash class="size-4.5" />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>حذف مربی</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      آیا از حذف «{{ member.user?.fullName }}» مطمئن هستید؟ این
-                      عمل قابل بازگشت نیست.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>انصراف</AlertDialogCancel>
-                    <AlertDialogAction
-                      class="bg-destructive text-white hover:bg-destructive/90"
-                      @click="confirmDelete(member)"
+              <div class="flex items-center gap-1 shrink-0">
+                <Button
+                  v-if="member?.can?.edit"
+                  class="text-[12px]"
+                  size="sm"
+                  variant="ghost"
+                  aria-label="ویرایش مربی"
+                  @click="openEditDrawer(member)"
+                >
+                  <icon-edit class="size-4" />
+                </Button>
+                <AlertDialog v-if="member?.can?.delete">
+                  <AlertDialogTrigger as-child>
+                    <Button
+                      class="text-[12px]"
+                      size="sm"
+                      variant="ghost"
+                      aria-label="حذف مربی"
                     >
-                      حذف
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                      <icon-trash class="size-4.5" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>حذف مربی</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        آیا از حذف «{{ member.user?.fullName }}» مطمئن هستید؟
+                        این عمل قابل بازگشت نیست.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>انصراف</AlertDialogCancel>
+                      <AlertDialogAction
+                        class="bg-destructive text-white hover:bg-destructive/90"
+                        @click="confirmDelete(member)"
+                      >
+                        حذف
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
     </template>
 
     <!-- Empty state -->
@@ -249,7 +253,7 @@
 
           <!-- isHeadCoach Switch (shown after user is selected) -->
           <div
-            v-if="selectedUser"
+            v-if="selectedUser && coachRoster?.can?.assignHeadCoach"
             class="flex items-center justify-between p-3 rounded-xl border"
           >
             <CustomLabel label="سرمربی" />
@@ -303,7 +307,10 @@
           </div>
 
           <!-- isHeadCoach Switch -->
-          <div class="flex items-center justify-between p-3 rounded-xl border">
+          <div
+            v-if="coachRoster?.can?.assignHeadCoach"
+            class="flex items-center justify-between p-3 rounded-xl border"
+          >
             <CustomLabel label="سرمربی" />
             <Switch v-model="editIsHeadCoach" />
           </div>

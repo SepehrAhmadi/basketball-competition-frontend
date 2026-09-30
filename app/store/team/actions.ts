@@ -80,7 +80,7 @@ state.loading.value = false;
         const data = res.data.data;
         state.roster.value = data?.items ?? data ?? [];
         if (query.role === "COACH") {
-          state.coachRoster.value = data?.items ?? data ?? [];
+          state.coachRoster.value = data ?? data ?? [];
           state.coachRosterMeta.value = data
             ? {
                 total: data.total ?? state.coachRoster.value.length,
@@ -93,7 +93,7 @@ state.loading.value = false;
             : null;
         }
         if (query.role === "PLAYER") {
-          state.playerRoster.value = data?.items ?? data ?? [];
+          state.playerRoster.value = data ?? data ?? [];
           state.playerRosterMeta.value = data
             ? {
                 total: data.total ?? state.playerRoster.value.length,

@@ -8,6 +8,7 @@
       </div>
       <div>
         <Button
+          v-if="playerRoster?.can?.managePlayers"
           class="w-full text-[13px]"
           size="sm"
           @click="openAddDrawer"
@@ -50,9 +51,8 @@
     </template>
     <template v-else>
       <!-- Real content: shown after player roster is loaded -->
-      {{ playerRoster }}
       <Card
-        v-for="member in playerRoster"
+        v-for="member in playerRoster?.items"
         :key="member.id"
         class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
       >
@@ -92,6 +92,7 @@
               </div>
               <div class="flex items-center gap-1 shrink-0">
                 <Button
+                  v-if="member?.can?.edit"
                   class="text-[12px]"
                   size="sm"
                   variant="ghost"
@@ -100,7 +101,7 @@
                 >
                   <icon-edit class="size-4" />
                 </Button>
-                <AlertDialog>
+                <AlertDialog v-if="member?.can?.delete">
                   <AlertDialogTrigger as-child>
                     <Button
                       class="text-[12px]"
