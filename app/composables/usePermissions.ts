@@ -28,16 +28,7 @@ export function usePermissions() {
   const canSetCoachInfo = computed(() => hasAnyRole([ROLES.COACH]));
   const canSetPlayerInfo = computed(() => hasAnyRole([ROLES.PLAYER]));
   const canSetRefereeInfo = computed(() => hasAnyRole([ROLES.REFEREE]));
-  const canAddAndEditOrganization = computed(() =>
-    hasAnyRole([ROLES.ORG_MANAGER]),
-  );
-  const canDeleteOrganization = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
-  const canAddAndEditTeam = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
-  const canDeleteTeam = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
-  const canAddAndEditPlayer = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
-  const canDeletePlayer = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
-  const canAddAndEditCoach = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
-  const canDeleteCoach = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
+  const canAddOrg = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
 
   return {
     currentRoles,
@@ -47,13 +38,6 @@ export function usePermissions() {
     canSetCoachInfo,
     canSetPlayerInfo,
     canSetRefereeInfo,
-    canAddAndEditOrganization,
-    canDeleteOrganization,
-    canAddAndEditTeam,
-    canDeleteTeam,
-    canAddAndEditPlayer,
-    canDeletePlayer,
-    canAddAndEditCoach,
-    canDeleteCoach,
+    canAddOrg
   };
 }

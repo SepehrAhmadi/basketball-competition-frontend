@@ -8,9 +8,9 @@
           اطلاعات تکمیلی
         </div>
       </div>
-      <view-profile-coach />
-      <view-profile-referee />
-      <view-profile-player />
+      <view-profile-coach v-if="canSetCoachInfo" />
+      <view-profile-referee v-if="canSetRefereeInfo"/>
+      <view-profile-player v-if="canSetPlayerInfo"/>
     </div>
     <div class="mt-6">
       <view-profile-organization />
@@ -19,6 +19,9 @@
 </template>
 
 <script setup lang="ts">
+const { canSetCoachInfo, canSetRefereeInfo, canSetPlayerInfo } =
+  usePermissions();
+
 definePageMeta({
   middleware: ["auth"],
 });
