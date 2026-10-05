@@ -204,6 +204,77 @@
                             dir="rtl"
                         />
                     </div>
+
+                    <div class="flex flex-col gap-1">
+                        <CustomLabel label="نقش ها" />
+                        <Combobox
+                            v-model="selectedRoles"
+                            multiple
+                            by="label"
+                            for="profile-roles"
+                            class="rtl"
+                            dir="rtl"
+                        >
+                            <ComboboxAnchor as-child class="rtl">
+                                <ComboboxTrigger as-child>
+                                    <Button
+                                        variant="outline"
+                                        class="w-full! justify-between"
+                                    >
+                                        <span
+                                            v-if="selectedRoles.length > 0"
+                                            class="truncate text-gray-700 text-[14px]"
+                                        >
+                                            {{
+                                                selectedRoles
+                                                    .map(
+                                                        (role: any) =>
+                                                            role.label,
+                                                    )
+                                                    .join(", ")
+                                            }}
+                                        </span>
+                                        <span
+                                            v-if="selectedRoles.length <= 0"
+                                            class="truncate text-gray-700 text-[12px]"
+                                        >
+                                            انتخاب نقش
+                                        </span>
+                                        <icon-arrow-down class="opacity-50" />
+                                    </Button>
+                                </ComboboxTrigger>
+                            </ComboboxAnchor>
+                            <ComboboxList class="w-full" align="start">
+                                <ComboboxInput
+                                    dir="rtl"
+                                    placeholder="جستجو نقش"
+                                />
+                                <ComboboxEmpty dir="rtl"
+                                    >نقشی یافت نشد.</ComboboxEmpty
+                                >
+                                <ComboboxGroup dir="rtl">
+                                    <ComboboxItem
+                                        v-for="role in rolesList ?? []"
+                                        :key="role.value"
+                                        :value="role"
+                                    >
+                                        <div
+                                            class="border-input data-[selected=true]:border-primary data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground pointer-events-none size-4 shrink-0 rounded-lg border transition-all select-none *:[svg]:opacity-0 data-[selected=true]:*:[svg]:opacity-100"
+                                            :data-selected="
+                                                selectedRoles.some(
+                                                    (f: any) =>
+                                                        f.value === role.value,
+                                                )
+                                            "
+                                        >
+                                            <icon-check class="size-3.5" />
+                                        </div>
+                                        {{ role.label }}
+                                    </ComboboxItem>
+                                </ComboboxGroup>
+                            </ComboboxList>
+                        </Combobox>
+                    </div>
                 </div>
 
                 <DrawerFooter>
@@ -361,10 +432,13 @@ import defaultAvatar from "../../../assets/img/avatar.png";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useHandlerStore } from "~/store/handler";
 import { useUserStore } from "~/store/user";
+import { useBaseStore } from "~/store/base";
 
 const handlerStore = useHandlerStore();
 const userStore = useUserStore();
+const baseStore = useBaseStore();
 const { userProfile, loading: userLoading } = storeToRefs(userStore);
+const { roles: rolesList } = storeToRefs(baseStore);
 const isProfileLoading = computed(
     () => userLoading.value && !userProfile.value,
 );
@@ -381,6 +455,7 @@ const phone = ref("");
 const email = ref("");
 const birthDate = ref("");
 const nationalId = ref("");
+const selectedRoles = ref<any[]>([]);
 const currentPassword = ref("");
 const newPassword = ref("");
 const confirmPassword = ref("");
@@ -407,12 +482,25 @@ const openPasswordDrawer = () => {
     passwordDrawerOpen.value = true;
 };
 
+const syncRolesFromProfile = (profile: any) => {
+    const profileRoles: string[] = profile?.roles ?? [];
+    const availableRoles: any[] = rolesList.value ?? [];
+    selectedRoles.value = profileRoles.map(
+        (roleValue: string) =>
+            availableRoles.find((r: any) => r.value === roleValue) ?? {
+                label: roleValue,
+                value: roleValue,
+            },
+    );
+};
+
 const resetForm = () => {
     fullName.value = "";
     phone.value = "";
     email.value = "";
     birthDate.value = "";
     nationalId.value = "";
+    selectedRoles.value = [];
 };
 
 const handleSubmit = () => {
@@ -423,6 +511,7 @@ const handleSubmit = () => {
             email: email.value,
             birthDate: birthDate.value,
             nationalId: String(nationalId.value),
+            roles: selectedRoles.value.map((role: any) => role.value),
         })
         .then(() => {
             open.value = false;
@@ -472,7 +561,14 @@ watch(userProfile, (newProfile) => {
     email.value = newProfile?.email ?? "";
     birthDate.value = newProfile?.birthDate ?? "";
     nationalId.value = String(newProfile?.nationalId ?? "");
+    syncRolesFromProfile(newProfile);
     updateAvatarPreview(newProfile);
+});
+
+watch(rolesList, () => {
+    if (userProfile.value) {
+        syncRolesFromProfile(userProfile.value);
+    }
 });
 
 function triggerFileInput() {
@@ -504,5 +600,6 @@ async function removeAvatar() {
 
 onMounted(() => {
     userStore.getUserMe();
+    baseStore.getRoles();
 });
 </script>
