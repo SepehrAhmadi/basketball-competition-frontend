@@ -1,32 +1,14 @@
 <template>
-  <div v-if="isOrgLoading || (organizationList && organizationList.length > 0)">
-    <div class="flex justify-between items-center gap-2 mb-2">
-      <div class="flex items-center gap-2">
-        <icon-building class="size-3.75 text-gray-500 dark:text-gray-300" />
-        <div class="text-[13px] text-gray-500 dark:text-gray-300">
-          سازمان ها
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <Skeleton
-          v-if="isOrgLoading"
-          class="h-8 w-23 rounded-md"
-          aria-hidden="true"
-        />
-
-        <div v-else>
-          <Button
-            v-if="canAddOrg"
-            class="w-full text-[13px]"
-            size="sm"
-            @click="openDrawer()"
-          >
-            ثبت سازمان
-          </Button>
-        </div>
-      </div>
-    </div>
+  <div>
     <template v-if="isOrgLoading">
+      <!-- Skeleton header -->
+      <div class="flex justify-between items-center gap-2 mb-2">
+        <div class="flex items-center gap-2">
+          <Skeleton class="size-3.75 rounded-md" aria-hidden="true" />
+          <Skeleton class="h-5 w-16 rounded-md" aria-hidden="true" />
+        </div>
+        <Skeleton class="h-8 w-23 rounded-md" aria-hidden="true" />
+      </div>
       <!-- Skeleton content: shown while organization list is loading -->
       <Card
         v-for="n in pageSize"
@@ -53,6 +35,26 @@
       </Card>
     </template>
     <template v-else>
+      <!-- header -->
+      <div class="flex justify-between items-center gap-2 mb-2">
+        <div class="flex items-center gap-2">
+          <icon-building class="size-3.75 text-gray-500 dark:text-gray-300" />
+          <div class="text-[13px] text-gray-500 dark:text-gray-300">
+            سازمان ها
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div v-if="canAddOrg">
+            <Button
+              class="w-full text-[13px]"
+              size="sm"
+              @click="openDrawer()"
+            >
+              ثبت سازمان
+            </Button>
+          </div>
+        </div>
+      </div>
       <!-- Real content: shown after organization list is loaded -->
       <Card
         v-if="organizationList.length > 0"
