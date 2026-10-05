@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <div v-if="canAddOrg">
+          <div>
             <Button
               class="w-full text-[13px]"
               size="sm"
@@ -269,8 +269,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
-
-const { canAddOrg } = usePermissions();
 
 import { useOrganizationStore } from "~/store/organization";
 const organizationStore = useOrganizationStore();

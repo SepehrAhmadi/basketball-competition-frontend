@@ -28,7 +28,6 @@ export function usePermissions() {
   const canSetCoachInfo = computed(() => hasAnyRole([ROLES.COACH]));
   const canSetPlayerInfo = computed(() => hasAnyRole([ROLES.PLAYER]));
   const canSetRefereeInfo = computed(() => hasAnyRole([ROLES.REFEREE]));
-  const canAddOrg = computed(() => hasAnyRole([ROLES.ORG_MANAGER]));
 
   return {
     currentRoles,
@@ -38,6 +37,5 @@ export function usePermissions() {
     canSetCoachInfo,
     canSetPlayerInfo,
     canSetRefereeInfo,
-    canAddOrg
   };
 }

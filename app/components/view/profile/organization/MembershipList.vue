@@ -82,7 +82,6 @@ const getRoleLabel = (membership: Membership) => {
   }
   if (membership.role === "PLAYER") return "بازیکن";
   if (membership.role === "REFEREE") return "داور";
-  if (membership.role === "ORG_MANAGER") return "مدیر سازمان";
   if (membership.role === "ADMIN") return "مدیر";
   return membership.role ?? "—";
 };

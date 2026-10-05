@@ -1,6 +1,5 @@
 export const ROLES = {
   ADMIN: "ADMIN",
-  ORG_MANAGER: "ORG_MANAGER",
   COACH: "COACH",
   PLAYER: "PLAYER",
   REFEREE: "REFEREE",
