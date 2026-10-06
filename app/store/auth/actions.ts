@@ -17,12 +17,14 @@ export function useAuthActions(state: StateType) {
       .post("/auth/register", value)
       .then((res) => {
         handlerStore.setSuccess(res.data.message);
+        return res;
       })
       .catch((err) => {
         console.log(err);
 
         const message = err.response?.data?.message || "خطای سرور";
         handlerStore.setError(message);
+        throw err;
       })
       .finally(() => {
         state.loading.value = false;

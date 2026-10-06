@@ -8,7 +8,7 @@ const handlerStore = useHandlerStore();
 const baseStore = useBaseStore();
 const { roles: rolesList } = storeToRefs(baseStore);
 
-defineEmits<{ (e: "switch"): void }>();
+const emit = defineEmits<{ (e: "switch"): void }>();
 
 const showPassword = ref(false);
 
@@ -18,7 +18,7 @@ const email = ref("");
 const password = ref("");
 const roles = ref([]);
 
-const submit = () => {
+const submit = async () => {
     const selectedRoles = roles.value.map((role: any) => role.value);
 
     if (
@@ -28,13 +28,18 @@ const submit = () => {
         password.value &&
         selectedRoles.length
     ) {
-        authStore.register({
-            fullName: fullName.value,
-            phone: phone.value,
-            email: email.value,
-            password: password.value,
-            roles: selectedRoles,
-        });
+        try {
+            await authStore.register({
+                fullName: fullName.value,
+                phone: phone.value,
+                email: email.value,
+                password: password.value,
+                roles: selectedRoles,
+            });
+            emit("switch");
+        } catch {
+            // error toast already handled in auth store
+        }
     } else {
         handlerStore.setError("لطفاً تمام فیلدها را وارد کنید");
     }
