@@ -35,78 +35,95 @@
       </Card>
     </template>
     <template v-else>
-      <!-- header -->
-      <div class="flex justify-between items-center gap-2 mb-2">
-        <div class="flex items-center gap-2">
-          <icon-building class="size-3.75 text-gray-500 dark:text-gray-300" />
-          <div class="text-[13px] text-gray-500 dark:text-gray-300">
-            سازمان ها
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <div>
-            <Button
-              class="w-full text-[13px]"
-              size="sm"
-              @click="openDrawer()"
-            >
-              ثبت سازمان
-            </Button>
-          </div>
-        </div>
-      </div>
-      <!-- Real content: shown after organization list is loaded -->
       <Card
-        v-if="organizationList.length > 0"
-        v-for="organization in organizationList"
-        :key="organization.id"
-        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+        v-if="organizationList.length <= 0"
+        class="w-full shadow-xs! rounded-4xl"
+        aria-hidden="true"
       >
-        <CardContent class="px-3">
-          <div class="flex justify-start items-center gap-1">
-            <div class="w-full flex justify-start items-center gap-2">
-              <div
-                class="w-15 h-15 bg-primary rounded-full border border-gray-300 mb-2"
-              >
-                <img
-                  v-if="organization.logoUrl"
-                  :src="organization.logoUrl"
-                  class="w-full h-full object-cover rounded-full"
-                  alt="logo"
-                />
-                <img
-                  v-else
-                  :src="teamLogo"
-                  class="w-full h-full object-cover rounded-full p-1.5"
-                  alt="logo"
-                />
-              </div>
-              <div
-                class="shrink w-full flex-1 flex justify-between items-center gap-4"
-              >
-                <div>
-                  <div class="text-[14px] font-semibold">
-                    {{ organization.name }}
-                  </div>
-                  <div
-                    class="text-[12px] text-gray-600 dark:text-gray-400 font-semibold line-clamp-1"
-                  >
-                    {{ organization.description }}
-                  </div>
-                </div>
-              </div>
-              <NuxtLink
-                :to="`/profile/organization/${organization.id}`"
-                class="flex items-center gap-1 text-[14px] font-semibold text-primary shrink-0"
-                aria-label="مشاهده سازمان"
-              >
-                <div>مشاهده</div>
-                <icon-arrow-left class="text-[17px]" />
-              </NuxtLink>
-            </div>
-          </div>
+        <CardContent
+          class="flex flex-col justify-center items-center gap-3 p-4"
+        >
+          <icon-building class="size-9 text-gray-500 dark:text-gray-300" />
+          <div class="text-gray-500 dark:text-gray-300 text-[15px]">در حال حاضر در هیچ سازمانی شما حضور ندارید</div>
+          <Button class="w-full text-[13px]" @click="openDrawer()">
+            ثبت سازمان
+          </Button>
         </CardContent>
       </Card>
+      <template v-else>
+        <!-- header -->
+        <div class="flex justify-between items-center gap-2 mb-2">
+          <div class="flex items-center gap-2">
+            <icon-building class="size-3.75 text-gray-500 dark:text-gray-300" />
+            <div class="text-[13px] text-gray-500 dark:text-gray-300">
+              سازمان ها
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div>
+              <Button
+                class="w-full text-[13px]"
+                size="sm"
+                @click="openDrawer()"
+              >
+                ثبت سازمان
+              </Button>
+            </div>
+          </div>
+        </div>
+        <!-- Real content: shown after organization list is loaded -->
+        <Card
+          v-if="organizationList.length > 0"
+          v-for="organization in organizationList"
+          :key="organization.id"
+          class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+        >
+          <CardContent class="px-3">
+            <div class="flex justify-start items-center gap-1">
+              <div class="w-full flex justify-start items-center gap-2">
+                <div
+                  class="w-15 h-15 bg-primary rounded-full border border-gray-300 mb-2"
+                >
+                  <img
+                    v-if="organization.logoUrl"
+                    :src="organization.logoUrl"
+                    class="w-full h-full object-cover rounded-full"
+                    alt="logo"
+                  />
+                  <img
+                    v-else
+                    :src="teamLogo"
+                    class="w-full h-full object-cover rounded-full p-1.5"
+                    alt="logo"
+                  />
+                </div>
+                <div
+                  class="shrink w-full flex-1 flex justify-between items-center gap-4"
+                >
+                  <div>
+                    <div class="text-[14px] font-semibold">
+                      {{ organization.name }}
+                    </div>
+                    <div
+                      class="text-[12px] text-gray-600 dark:text-gray-400 font-semibold line-clamp-1"
+                    >
+                      {{ organization.description }}
+                    </div>
+                  </div>
+                </div>
+                <NuxtLink
+                  :to="`/profile/organization/${organization.id}`"
+                  class="flex items-center gap-1 text-[14px] font-semibold text-primary shrink-0"
+                  aria-label="مشاهده سازمان"
+                >
+                  <div>مشاهده</div>
+                  <icon-arrow-left class="text-[17px]" />
+                </NuxtLink>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </template>
     </template>
 
     <Pagination
