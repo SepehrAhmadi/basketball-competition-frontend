@@ -267,7 +267,7 @@
                                                 )
                                             "
                                         >
-                                            <icon-check class="size-3.5" />
+                                            <icon-check class="size-3.5 text-white" />
                                         </div>
                                         {{ role.label }}
                                     </ComboboxItem>
