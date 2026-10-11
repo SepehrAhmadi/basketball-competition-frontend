@@ -15,6 +15,9 @@
     <div class="mt-6">
       <view-profile-organization />
     </div>
+    <div class="mt-6">
+      <view-profile-league />
+    </div>
   </div>
 </template>
 
