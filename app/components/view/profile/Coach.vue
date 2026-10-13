@@ -3,7 +3,7 @@
     <!-- Skeleton content: shown while coach profile is loading -->
     <Card
       v-if="isCoachLoading"
-      class="w-full shadow-xs! rounded-4xl gap-4 py-3"
+      class="w-full shadow-xs! rounded-4xl gap-4 py-3 px-1"
       aria-hidden="true"
     >
       <CardContent class="px-3">
@@ -21,7 +21,7 @@
       </CardContent>
     </Card>
     <!-- Real content: shown after coach profile is loaded -->
-    <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3">
+    <Card v-else class="w-full shadow-xs! rounded-4xl gap-4 py-3 px-1">
       <CardContent class="px-3">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-center gap-2">

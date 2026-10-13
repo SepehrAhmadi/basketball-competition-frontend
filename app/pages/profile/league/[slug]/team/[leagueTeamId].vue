@@ -40,16 +40,10 @@
           </div>
           <div class="w-full flex-1 flex justify-between items-start gap-2">
             <div class="flex flex-col gap-1">
-              <div class="text-[16px]">
-                {{ teamDetail?.team?.name ?? "—" }}
-              </div>
-              <div
-                v-if="teamDetail?.organization?.name"
-                class="text-[14px] text-gray-600 dark:text-gray-300"
-              >
-                سازمان : {{ teamDetail.organization.name }}
-              </div>
-              <div class="flex items-center gap-2">
+              <div class="flex justify-start items-center gap-2">
+                <div class="text-[16px]">
+                  {{ teamDetail?.team?.name ?? "—" }}
+                </div>
                 <span
                   v-if="leagueDetail?.status"
                   :class="
@@ -61,12 +55,13 @@
                 >
                   {{ getStatusLabel(leagueDetail.status) }}
                 </span>
-                <span
-                  v-if="teamDetail?.membersCount != null"
-                  class="text-[13px] text-gray-600 dark:text-gray-300"
-                >
-                  {{ teamDetail.membersCount }} عضو
-                </span>
+              </div>
+
+              <div
+                v-if="teamDetail?.organization?.name"
+                class="text-[13px] text-gray-600 dark:text-gray-300"
+              >
+              {{ teamDetail.organization.name }}
               </div>
             </div>
             <AlertDialog v-if="teamDetail?.can?.unregister">
@@ -117,7 +112,7 @@
         <Card
           v-for="n in 3"
           :key="`${section.role}-skeleton-${n}`"
-          class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+          class="w-full shadow-xs! rounded-4xl gap-4 py-3 px-1 mb-2"
           aria-hidden="true"
         >
           <CardContent class="px-3">
@@ -127,7 +122,7 @@
                 <Skeleton class="h-5.25 w-28 rounded-md" />
                 <Skeleton class="h-4.5 w-24 rounded-md" />
               </div>
-              <Skeleton class="h-8 w-8 rounded-md" />
+              <Skeleton class="size-8 rounded-full shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -148,9 +143,8 @@
           :key="person.teamSeasonMemberId"
           :class="
             cn(
-              'w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2 transition',
+              'w-full shadow-xs! rounded-4xl gap-4 py-3 px-1 mb-2 transition',
               person.selected && 'border-gray-300',
-              isLocked(person) && 'opacity-50',
             )
           "
         >
@@ -161,7 +155,7 @@
                 :class="person.avatarUrl ? '' : 'bg-primary'"
               >
                 <img
-                  v-if="person.avatarUrl"
+                  v-if="person.avatarUrl && person.avatarUrl !== null"
                   :src="person.avatarUrl"
                   class="w-full h-full object-cover rounded-full"
                   alt="آواتار"
@@ -191,7 +185,7 @@
                     سرمربی
                   </span>
                   <span
-                    v-if="!person.eligible && !person.selected"
+                    v-if="isManageMode && !person.eligible && !person.selected"
                     class="w-fit text-[10px] font-semibold rounded-full px-2 py-0.5 bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400"
                   >
                     {{ reasonLabel(person.ineligibleReason) }}
@@ -199,9 +193,11 @@
                 </div>
               </div>
               <Button
-                size="sm"
+                v-if="!isLocked(person)"
+                size="icon-sm"
+                class="rounded-full! shrink-0"
                 :variant="person.selected ? 'default' : 'outline'"
-                :disabled="isLocked(person) || busyId !== null"
+                :disabled="busyId !== null"
                 :aria-label="
                   person.selected ? 'حذف از ترکیب' : 'افزودن به ترکیب'
                 "
@@ -224,7 +220,7 @@
 
 <script setup lang="ts">
 import teamLogo from "../../../../../assets/img/icon/team.png";
-import defaultAvatar from "../../../../../assets/img/icon/team.png";
+import defaultAvatar from "../../../../../assets/img/avatar.png";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -246,8 +242,7 @@ definePageMeta({
 
 const handlerStore = useHandlerStore();
 const leagueStore = useLeagueStore();
-const { leagueTeamDetail: teamDetail, leagueDetail } =
-  storeToRefs(leagueStore);
+const { leagueTeamDetail: teamDetail, leagueDetail } = storeToRefs(leagueStore);
 
 const route = useRoute();
 const leagueId = computed(() => String(route.params.slug));
@@ -302,6 +297,17 @@ const reasonLabel = (reason: string | null): string =>
     IN_OTHER_TEAM: "در تیم دیگری عضو است",
   })[reason ?? ""] ?? "غیرمجاز";
 
+// Manage mode: league in REGISTRATION + backend allows roster management.
+// Status source is teamDetail.league.status with leagueDetail.status fallback.
+const effectiveLeagueStatus = computed(
+  () => teamDetail.value?.league?.status ?? leagueDetail.value?.status ?? null,
+);
+const isManageMode = computed(
+  () =>
+    effectiveLeagueStatus.value === "REGISTRATION" &&
+    teamDetail.value?.can?.manageRoster === true,
+);
+
 // The backend is the source of truth: team-level `can` plus per-row `canToggle`.
 const isLocked = (person: any): boolean =>
   teamDetail.value?.can?.manageRoster !== true || person.canToggle !== true;
@@ -326,6 +332,28 @@ const loadCandidates = async () => {
   players.value = playerData?.items ?? [];
 };
 
+// Read-only mode: public members list, no per-row toggle flags.
+const loadMembers = async () => {
+  const [coachData, playerData] = await Promise.all([
+    leagueStore.getLeagueTeamMembers(leagueId.value, leagueTeamId.value, {
+      role: "COACH",
+      pageSize: 100,
+    }),
+    leagueStore.getLeagueTeamMembers(leagueId.value, leagueTeamId.value, {
+      role: "PLAYER",
+      pageSize: 100,
+    }),
+  ]);
+  rosterError.value = !coachData && !playerData;
+  coaches.value = coachData?.items ?? [];
+  players.value = playerData?.items ?? [];
+};
+
+const loadRoster = async () => {
+  if (isManageMode.value) return loadCandidates();
+  return loadMembers();
+};
+
 const toggle = async (person: any) => {
   if (isLocked(person) || busyId.value !== null) return;
   busyId.value = person.teamSeasonMemberId;
@@ -343,7 +371,7 @@ const toggle = async (person: any) => {
       });
     }
     // Refresh rows (new member ids, lock state) and the member count.
-    await Promise.all([loadCandidates(), loadDetail()]);
+    await Promise.all([loadDetail(), loadRoster()]);
   } finally {
     busyId.value = null;
   }
@@ -359,9 +387,8 @@ const confirmDelete = async () => {
 onMounted(async () => {
   leagueStore.leagueTeamDetail = null;
   leagueStore.getLeagueById(leagueId.value);
-  await Promise.all([
-    loadDetail().finally(() => (isDetailLoading.value = false)),
-    loadCandidates().finally(() => (isRosterLoading.value = false)),
-  ]);
+  // Detail first: roster mode depends on league status + can.manageRoster.
+  await loadDetail().finally(() => (isDetailLoading.value = false));
+  await loadRoster().finally(() => (isRosterLoading.value = false));
 });
 </script>

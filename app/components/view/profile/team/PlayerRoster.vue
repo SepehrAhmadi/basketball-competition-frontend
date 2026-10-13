@@ -25,7 +25,7 @@
       <Card
         v-for="n in pageSize"
         :key="`player-skeleton-${n}`"
-        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 px-1 mb-2"
         aria-hidden="true"
       >
         <CardContent class="px-3">
@@ -54,7 +54,7 @@
       <Card
         v-for="member in playerRoster?.items"
         :key="member.id"
-        class="w-full shadow-xs! rounded-4xl gap-4 py-3 mb-2"
+        class="w-full shadow-xs! rounded-4xl gap-4 py-3 px-1 mb-2"
       >
         <CardContent class="px-3">
           <div class="flex justify-start items-center gap-1">
