@@ -59,22 +59,31 @@
         <CardContent class="px-3">
           <div class="flex justify-start items-center gap-1">
             <div class="w-full flex justify-start items-center gap-2">
-              <div
-                class="w-15 h-15 rounded-full border border-gray-300 mb-2"
-                :class="member.user?.avatarUrl ? '' : 'bg-primary'"
-              >
-                <img
-                  v-if="member.user?.avatarUrl"
-                  :src="member.user.avatarUrl"
-                  class="w-full h-full object-cover rounded-full"
-                  alt="آواتار بازیکن"
-                />
-                <img
-                  v-else
-                  :src="defaultAvatar"
-                  class="w-full h-full object-cover rounded-full p-1.5"
-                  alt="آواتار بازیکن"
-                />
+              <div class="relative mb-2 shrink-0">
+                <div
+                  class="w-15 h-15 rounded-full border border-gray-300"
+                  :class="member.user?.avatarUrl ? '' : 'bg-primary'"
+                >
+                  <img
+                    v-if="member.user?.avatarUrl"
+                    :src="member.user.avatarUrl"
+                    class="w-full h-full object-cover rounded-full"
+                    alt="آواتار بازیکن"
+                  />
+                  <img
+                    v-else
+                    :src="defaultAvatar"
+                    class="w-full h-full object-cover rounded-full p-1.5"
+                    alt="آواتار بازیکن"
+                  />
+                </div>
+                <span
+                  v-if="member.jerseyNumber != null"
+                  class="absolute -bottom-1 -right-1 flex items-center justify-center min-w-6 h-6 px-1 rounded-full bg-primary text-white text-[11px] font-bold border-2 border-white dark:border-gray-900 shadow-sm"
+                  dir="ltr"
+                >
+                  {{ member.jerseyNumber }}
+                </span>
               </div>
               <div
                 class="shrink w-full flex-1 flex justify-between items-center gap-4"
