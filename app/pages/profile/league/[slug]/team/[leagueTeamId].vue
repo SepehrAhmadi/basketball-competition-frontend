@@ -150,22 +150,31 @@
         >
           <CardContent class="px-3">
             <div class="w-full flex items-center gap-2">
-              <div
-                class="w-15 h-15 rounded-full border border-gray-300 shrink-0"
-                :class="person.avatarUrl ? '' : 'bg-primary'"
-              >
-                <img
-                  v-if="person.avatarUrl && person.avatarUrl !== null"
-                  :src="person.avatarUrl"
-                  class="w-full h-full object-cover rounded-full"
-                  alt="آواتار"
-                />
-                <img
-                  v-else
-                  :src="defaultAvatar"
-                  class="w-full h-full object-cover rounded-full p-1.5"
-                  alt="آواتار"
-                />
+              <div class="relative shrink-0">
+                <div
+                  class="w-15 h-15 rounded-full border border-gray-300"
+                  :class="person.avatarUrl ? '' : 'bg-primary'"
+                >
+                  <img
+                    v-if="person.avatarUrl && person.avatarUrl !== null"
+                    :src="person.avatarUrl"
+                    class="w-full h-full object-cover rounded-full"
+                    alt="آواتار"
+                  />
+                  <img
+                    v-else
+                    :src="defaultAvatar"
+                    class="w-full h-full object-cover rounded-full p-1.5"
+                    alt="آواتار"
+                  />
+                </div>
+                <span
+                  v-if="person.role === 'PLAYER' && person.jerseyNumber != null"
+                  class="absolute -bottom-1 -right-1 flex items-center justify-center min-w-6 h-6 px-1 rounded-full bg-primary text-white text-[11px] font-bold border-2 border-white dark:border-gray-900 shadow-sm"
+                  dir="ltr"
+                >
+                  {{ person.jerseyNumber }}
+                </span>
               </div>
               <div class="flex-1 min-w-0 flex flex-col gap-1">
                 <div class="text-[14px] font-semibold truncate">
