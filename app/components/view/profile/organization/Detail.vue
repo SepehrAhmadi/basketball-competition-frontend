@@ -37,7 +37,7 @@
       <CardContent class="tw-py-2">
         <div class="flex justify-start items-center gap-1">
           <div class="w-full flex justify-start items-start gap-3">
-            <div class="w-full tw-flex-1 flex justify-start items-center gap-3">
+            <div class="min-w-0 flex-1 flex justify-start items-center gap-3">
               <div
                 class="shrink-0 w-20 h-20 rounded-full border border-gray-300 bg-primary"
               >
@@ -69,7 +69,7 @@
                 </div>
               </div>
             </div>
-            <div class="flex justify-end items-start">
+            <div class="flex shrink-0 justify-end items-start">
               <div class="flex gap-2">
                 <AlertDialog v-if="organizationDetail?.can?.delete">
                   <AlertDialogTrigger as-child>

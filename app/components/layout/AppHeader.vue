@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "~/store/auth";
+import logoLight from "~/assets/img/logo.png";
+import logoDark from "~/assets/img/logo-dark.png";
+
+const props = defineProps<{ scrolled?: boolean }>();
 
 const authStore = useAuthStore();
 
@@ -47,17 +51,21 @@ onMounted(() => {
 
 <template>
     <header
-        class="flex items-center justify-between gap-4 border-b border-border bg-background px-4 py-3 sm:px-6"
+        class="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b px-4 transition-colors duration-500 sm:px-6"
+        :class="
+            props.scrolled
+                ? 'border-white/20 bg-white/10 text-foreground shadow-2xl backdrop-blur-xl'
+                : 'border-transparent text-primary-foreground'
+        "
     >
-        <img
-            v-if="theme === 'light'"
-            src="~/assets/img/logo.png"
-            alt="Logo"
-            class="h-8 w-auto object-contain sm:h-10"
+        <!-- gradient layer: fades out when scrolled so the glass shows -->
+        <span
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--primary)_0,color-mix(in_oklab,var(--primary),black_25%)_120px)] transition-opacity duration-300"
+            :class="props.scrolled ? 'opacity-0' : 'opacity-100'"
         />
         <img
-            v-else
-            src="~/assets/img/logo-dark.png"
+            :src="props.scrolled && theme === 'light' ? logoLight : logoDark"
             alt="Logo"
             class="h-8 w-auto object-contain sm:h-10"
         />
@@ -67,7 +75,12 @@ onMounted(() => {
                 type="button"
                 variant="ghost"
                 size="icon-sm"
-                class="cursor-pointer"
+                class="cursor-pointer hover:bg-white/15"
+                                :class="
+                                    props.scrolled
+                                        ? 'text-foreground'
+                                        : 'text-primary-foreground hover:text-primary-foreground'
+                                "
                 aria-label="Toggle theme"
                 :aria-pressed="theme === 'dark'"
                 @click="toggleTheme"
