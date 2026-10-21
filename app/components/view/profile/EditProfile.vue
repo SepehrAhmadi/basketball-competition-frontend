@@ -23,7 +23,7 @@
             </CardContent>
         </Card>
         <!-- Real content: shown after user profile is loaded -->
-        <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
+        <Card v-else class="card-decor w-full shadow-xs! rounded-4xl py-5 gap-4">
             <CardContent class="tw-py-2">
                 <div class="flex flex-col justify-center items-center gap-1">
                     <div class="flex justify-start items-ceneter">
