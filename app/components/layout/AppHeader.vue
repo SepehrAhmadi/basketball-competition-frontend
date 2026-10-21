@@ -67,7 +67,7 @@ onMounted(() => {
     <img
       :src="props.scrolled && theme === 'light' ? logoLight : logoDark"
       alt="Logo"
-      class="h-8 w-auto object-contain sm:h-10"
+      class="h-9 w-auto object-contain sm:h-10"
     />
 
     <div class="flex items-center gap-2 sm:gap-3">
