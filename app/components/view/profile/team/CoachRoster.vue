@@ -60,7 +60,7 @@
           <div class="flex justify-start items-center gap-1">
             <div class="w-full flex justify-start items-center gap-2">
               <div
-                class="w-15 h-15 rounded-full border border-gray-300 mb-2"
+                class="w-15 h-15 rounded-full border border-gray-300"
                 :class="member.user?.avatarUrl ? '' : 'bg-primary'"
               >
                 <img

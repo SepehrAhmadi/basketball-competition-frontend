@@ -145,7 +145,7 @@
 
         <div class="flex flex-col gap-4 px-4">
           <div class="flex justify-start items-center gap-5">
-            <div class="w-20 h-20 rounded-full border border-gray-300 mb-2">
+            <div class="w-20 h-20 rounded-full border border-gray-300">
               <img
                 :src="logoPreview"
                 alt="لوگوی سازمان"
@@ -263,7 +263,7 @@
 
         <div class="flex flex-col gap-4 px-4">
           <div class="flex justify-start items-center gap-5">
-            <div class="w-20 h-20 rounded-full border border-gray-300 mb-2">
+            <div class="w-20 h-20 rounded-full border border-gray-300">
               <img
                 :src="teamLogoPreview"
                 alt="لوگوی تیم"

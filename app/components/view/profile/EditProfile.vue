@@ -28,7 +28,7 @@
                 <div class="flex flex-col justify-center items-center gap-1">
                     <div class="flex justify-start items-ceneter">
                         <div
-                            class="w-20 h-20 rounded-full border border-gray-300 mb-2"
+                            class="w-20 h-20 rounded-full border border-gray-300"
                         >
                             <img
                                 :src="avatarPreview"
@@ -86,7 +86,7 @@
                 <div class="flex flex-col gap-4 px-4">
                     <div class="flex justify-start items-center gap-5">
                         <div
-                            class="w-20 h-20 rounded-full border border-gray-300 mb-2"
+                            class="w-20 h-20 rounded-full border border-gray-300"
                         >
                             <img
                                 :src="avatarPreview"
