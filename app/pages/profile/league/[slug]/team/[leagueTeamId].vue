@@ -19,7 +19,7 @@
       </CardContent>
     </Card>
     <!-- Real content: shown after team detail is loaded -->
-    <Card v-else class="w-full shadow-xs! rounded-4xl py-5 gap-4">
+    <Card v-else class="card-decor w-full shadow-xs! rounded-4xl py-5 gap-4">
       <CardContent>
         <div class="w-full flex justify-start items-center gap-3">
           <div

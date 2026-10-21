@@ -69,7 +69,7 @@
                             class="w-full flex justify-start items-center gap-2"
                         >
                             <div
-                                class="w-15 h-15 bg-primary rounded-full border border-gray-300 mb-2 shrink-0"
+                                class="w-15 h-15 bg-primary rounded-full border border-gray-300 shrink-0"
                             >
                                 <img
                                     v-if="item.team?.logoUrl"
