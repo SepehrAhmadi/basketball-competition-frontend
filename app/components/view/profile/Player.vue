@@ -40,7 +40,7 @@
               <div class="text-[14px] font-semibold">اطلاعات بازیکن</div>
               <button
                 type="button"
-                class="flex items-center gap-1 text-[14px] font-semibold text-primary"
+                class="flex items-center gap-1 text-[14px] font-semibold text-primary dark:text-gray-300"
                 @click="openDrawer"
               >
                 <div>مشاهده</div>
@@ -61,7 +61,7 @@
 
         <div class="flex flex-col gap-4 px-4">
           <div class="flex flex-col gap-1">
-            <Label class="text-gray-600 text-xs" for="player-height">قد</Label>
+             <CustomLabel label="قد" />
             <Input
               id="player-height"
               v-model.number="height"
@@ -73,9 +73,7 @@
           </div>
 
           <div class="flex flex-col gap-1">
-            <Label class="text-gray-600 text-xs" for="player-position"
-              >پست بازی</Label
-            >
+            <CustomLabel label="پست بازی" />
             <Input
               id="player-position"
               v-model="position"
@@ -88,6 +86,7 @@
 
         <DrawerFooter>
           <Button
+          class="dark:text-gray-300"
             :disabled="
               height === undefined || !position || handlerStore.loadingBtn
             "

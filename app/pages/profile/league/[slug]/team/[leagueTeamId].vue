@@ -204,7 +204,7 @@
               <Button
                 v-if="!isLocked(person)"
                 size="icon-sm"
-                class="rounded-full! shrink-0"
+                class="rounded-full! shrink-0 dark:text-gray-300"
                 :variant="person.selected ? 'default' : 'outline'"
                 :disabled="busyId !== null"
                 :aria-label="

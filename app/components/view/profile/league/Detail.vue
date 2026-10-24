@@ -142,7 +142,7 @@
         <div class="w-full mt-3">
           <Button
             v-if="leagueDetail?.can?.registerTeam"
-            class="w-full px-4 text-[13px]"
+            class="w-full px-4 text-[13px] dark:text-gray-300"
             size="sm"
             aria-label="ثبت تیم در لیگ"
             @click="openRegisterDrawer"

@@ -124,7 +124,7 @@
         <div class="w-full mt-4">
           <Button
             v-if="organizationDetail?.can?.createTeam"
-            class="w-full px-4 text-[13px]"
+            class="w-full px-4 text-[13px] dark:text-gray-300"
             size="sm"
             aria-label="ثبت تیم"
             @click="openTeamDrawer"

@@ -9,7 +9,7 @@
       <div>
         <Button
           v-if="coachRoster?.can?.manageCoaches"
-          class="w-full text-[13px]"
+          class="w-full text-[13px] dark:text-gray-300"
           size="sm"
           @click="openAddDrawer"
           aria-label="افزودن مربی"
@@ -262,7 +262,7 @@
         </div>
 
         <DrawerFooter>
-          <Button :disabled="!selectedUser" @click="handleAddSubmit">
+          <Button :disabled="!selectedUser" @click="handleAddSubmit" class="dark:text-gray-300">
             ثبت
           </Button>
         </DrawerFooter>
@@ -317,7 +317,9 @@
         </div>
 
         <DrawerFooter>
-          <Button @click="handleEditSubmit">ذخیره</Button>
+          <Button @click="handleEditSubmit" class="dark:text-gray-300">
+            ذخیره
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

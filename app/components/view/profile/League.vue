@@ -86,7 +86,7 @@
                 </div>
                 <NuxtLink
                   :to="`/profile/league/${getLeagueId(item)}`"
-                  class="flex items-center gap-1 text-[14px] font-semibold text-primary shrink-0"
+                  class="flex items-center gap-1 text-[14px] dark:text-gray-300 font-semibold text-primary shrink-0"
                   aria-label="مشاهده لیگ"
                 >
                   <div>مشاهده</div>
