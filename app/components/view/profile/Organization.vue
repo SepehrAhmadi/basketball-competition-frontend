@@ -45,7 +45,7 @@
         >
           <icon-building class="size-9 text-gray-500 dark:text-gray-300" />
           <div class="text-gray-500 dark:text-gray-300 text-[15px]">در حال حاضر در هیچ سازمانی شما حضور ندارید</div>
-          <Button class="w-full text-[13px]" @click="openDrawer()">
+          <Button class="w-full text-[13px] dark:text-gray-300" @click="openDrawer()">
             ثبت سازمان
           </Button>
         </CardContent>
@@ -62,7 +62,7 @@
           <div class="flex items-center gap-2">
             <div>
               <Button
-                class="w-full text-[13px]"
+                class="w-full text-[13px] dark:text-gray-300"
                 size="sm"
                 @click="openDrawer()"
               >
@@ -113,7 +113,7 @@
                 </div>
                 <NuxtLink
                   :to="`/profile/organization/${organization.id}`"
-                  class="flex items-center gap-1 text-[14px] font-semibold text-primary shrink-0"
+                  class="flex items-center gap-1 text-[14px] dark:text-gray-300 font-semibold text-primary shrink-0"
                   aria-label="مشاهده سازمان"
                 >
                   <div>مشاهده</div>
@@ -189,7 +189,7 @@
               />
               <div class="flex items-center gap-2">
                 <Button
-                  class="text-[12px]"
+                  class="text-[12px] dark:text-gray-300"
                   size="sm"
                   aria-label="انتخاب لوگوی سازمان"
                   @click="triggerFileInput"
@@ -267,7 +267,7 @@
         </div>
 
         <DrawerFooter>
-          <Button @click="handleSubmit">ثبت</Button>
+          <Button @click="handleSubmit" class="dark:text-gray-300">ثبت</Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

@@ -89,7 +89,7 @@
     --card-foreground: #fafafa;
     --popover: #18181b;
     --popover-foreground: #fafafa;
-    --primary: #00B8DB;
+    --primary: rgb(11, 61, 86);
     --primary-foreground: #18181b;
     --secondary: #27272a;
     --secondary-foreground: #fafafa;

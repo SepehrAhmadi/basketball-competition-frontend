@@ -9,7 +9,7 @@
       <div>
         <Button
           v-if="playerRoster?.can?.managePlayers"
-          class="w-full text-[13px]"
+          class="w-full text-[13px] dark:text-gray-300"
           size="sm"
           @click="openAddDrawer"
           aria-label="افزودن بازیکن"
@@ -274,6 +274,7 @@
           <Button
             :disabled="!selectedUser || !addJerseyNumber"
             @click="handleAddSubmit"
+            class="dark:text-gray-300"
           >
             ثبت
           </Button>
@@ -333,7 +334,7 @@
         </div>
 
         <DrawerFooter>
-          <Button :disabled="!editJerseyNumber" @click="handleEditSubmit">
+          <Button :disabled="!editJerseyNumber" @click="handleEditSubmit" class="dark:text-gray-300">
             ذخیره
           </Button>
         </DrawerFooter>

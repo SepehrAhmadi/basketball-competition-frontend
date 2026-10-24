@@ -45,7 +45,7 @@
                     </div>
                     <div class="flex justify-center items-center gap-2 mt-2">
                         <Button
-                            class="px-4 text-[13px]"
+                            class="px-4 text-[13px] dark:text-gray-300"
                             size="sm"
                             aria-label="ویرایش پروفایل"
                             @click="openEditDrawer"
@@ -117,7 +117,7 @@
                             />
                             <div class="flex items-center gap-2">
                                 <Button
-                                    class="text-[12px]"
+                                    class="text-[12px] dark:text-gray-300"
                                     size="sm"
                                     aria-label="انتخاب تصویر پروفایل"
                                     :disabled="handlerStore.loadingBtn"
@@ -282,6 +282,7 @@
                         aria-label="ذخیره تغییرات پروفایل"
                         :disabled="handlerStore.loadingBtn"
                         @click="handleSubmit"
+                        class="dark:text-gray-300"
                     >
                         <Spinner v-if="handlerStore.loadingBtn" />
                         <span v-else>ثبت</span>

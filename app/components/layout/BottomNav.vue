@@ -58,7 +58,7 @@ watch(activeIndex, (next) => {
                 class="relative flex h-9.5 w-9.5 items-center justify-center overflow-hidden rounded-full text-foreground transition-all duration-300"
                 :class="
                     index === activeIndex
-                        ? 'bg-cyan-700 text-white'
+                        ? 'bg-primary text-white'
                         : 'hover:bg-white/10'
                 "
             >

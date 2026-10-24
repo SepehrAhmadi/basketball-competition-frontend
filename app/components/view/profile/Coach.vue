@@ -40,7 +40,7 @@
               <div class="text-[14px] font-semibold">اطلاعات مربی</div>
               <button
                 type="button"
-                class="flex items-center gap-1 text-[14px] font-semibold text-primary"
+                class="flex items-center gap-1 text-[14px] font-semibold text-primary dark:text-gray-300"
                 @click="openDrawer"
               >
                 <div>مشاهده</div>
@@ -92,6 +92,7 @@
           <Button
             :disabled="!selectedDegree || handlerStore.loadingBtn"
             @click="save"
+            class="dark:text-gray-300"
           >
             <Spinner v-if="handlerStore.loadingBtn" />
             <span v-else>ثبت</span>

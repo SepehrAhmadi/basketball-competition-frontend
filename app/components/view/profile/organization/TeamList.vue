@@ -77,7 +77,7 @@
                             </div>
                         </div>
                         <nuxt-link :to="`/profile/organization/team/${team.id}`">
-                            <div class="flex items-center gap-1 text-[14px] font-semibold text-primary">
+                            <div class="flex items-center gap-1 text-[14px] dark:text-gray-300 font-semibold text-primary">
                                 <div>مشاهده</div>
                                 <icon-arrow-left class="text-[17px]" />
                             </div>

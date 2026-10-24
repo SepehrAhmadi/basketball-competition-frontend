@@ -40,7 +40,7 @@
               <div class="text-[14px] font-semibold">اطلاعات داور</div>
               <button
                 type="button"
-                class="flex items-center gap-1 text-[14px] font-semibold text-primary"
+                class="flex items-center gap-1 text-[14px] font-semibold text-primar dark:text-gray-300"
                 @click="openDrawer"
               >
                 <div>مشاهده</div>
@@ -88,6 +88,7 @@
 
         <DrawerFooter>
           <Button
+          class="dark:text-gray-300"
             :disabled="!selectedDegree || handlerStore.loadingBtn"
             @click="save"
           >
