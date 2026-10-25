@@ -12,7 +12,7 @@ export function useBaseActions(state: StateType) {
     state.loading.value = true;
 
     return axios
-      .get("/roles")
+      .get("/dropdown/roles")
       .then((res) => {
         state.roles.value = res.data.data.roles;
       })
@@ -32,7 +32,7 @@ state.loading.value = false;
     state.loading.value = true;
 
     return axios
-      .get("/coach-degrees")
+      .get("/dropdown/coach-degrees")
       .then((res) => {
         state.coachDegree.value = res.data.data.degrees;
       })
@@ -52,7 +52,7 @@ state.loading.value = false;
     state.loading.value = true;
 
     return axios
-      .get("/referee-levels")
+      .get("/dropdown/referee-levels")
       .then((res) => {
         state.refereeDegrees.value = res.data.data.levels;
       })
