@@ -193,12 +193,10 @@
                   >
                     سرمربی
                   </span>
-                  <span
+                  <AdvisoryChip
                     v-if="isManageMode && !person.eligible && !person.selected"
-                    class="w-fit text-[10px] font-semibold rounded-full px-2 py-0.5 bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400"
-                  >
-                    {{ reasonLabel(person.ineligibleReason) }}
-                  </span>
+                    :advisory="person.ineligibility"
+                  />
                 </div>
               </div>
               <Button
@@ -298,13 +296,6 @@ const getStatusClass = (status: string): string => {
       return "bg-gray-200 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400";
   }
 };
-
-const reasonLabel = (reason: string | null): string =>
-  ({
-    BIRTH_DATE_MISSING: "تاریخ تولد ثبت نشده",
-    TOO_OLD: "خارج از رده سنی",
-    IN_OTHER_TEAM: "در تیم دیگری عضو است",
-  })[reason ?? ""] ?? "غیرمجاز";
 
 // Manage mode: league in REGISTRATION + backend allows roster management.
 // Status source is teamDetail.league.status with leagueDetail.status fallback.
