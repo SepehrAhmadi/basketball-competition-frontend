@@ -224,7 +224,7 @@
               />
               <div class="flex items-center gap-2">
                 <Button
-                  class="text-[12px]"
+                  class="text-[12px] dark:text-gray-300"
                   size="sm"
                   aria-label="انتخاب لوگوی تیم"
                   @click="triggerFileInput"
@@ -271,7 +271,7 @@
         </div>
 
         <DrawerFooter>
-          <Button @click="handleSubmit">ثبت</Button>
+          <Button @click="handleSubmit" class="dark:text-gray-300">ثبت</Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
