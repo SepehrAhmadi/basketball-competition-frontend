@@ -30,6 +30,11 @@ export function useLeagueState() {
   const memberCandidates = ref<any[]>([]);
   const memberCandidatesMeta = ref<any>(null);
 
+  const competitionList = ref<any[]>([]);
+  const competitionListMeta = ref<any>(null);
+  const competitionLoading = ref<boolean>(false);
+  const competitionLoadingMore = ref<boolean>(false);
+
   return {
     loading,
     leagueList,
@@ -50,5 +55,9 @@ export function useLeagueState() {
     eligibleTeamsMeta,
     memberCandidates,
     memberCandidatesMeta,
+    competitionList,
+    competitionListMeta,
+    competitionLoading,
+    competitionLoadingMore,
   };
 }

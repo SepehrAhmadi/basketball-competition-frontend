@@ -10,7 +10,7 @@
         <AppHeader :scrolled="scrolled" />
 
         <div
-            class="relative z-10 px-3 pb-28!"
+            class="relative z-10 pb-28!"
             :style="{ paddingTop: `${contentPaddingTop}px` }"
         >
             <slot />

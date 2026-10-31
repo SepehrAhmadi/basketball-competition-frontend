@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-3!">
     <view-profile-edit-profile />
     <div class="mt-6">
       <div class="flex items-center gap-2">

@@ -24,6 +24,76 @@ export function useLeagueActions(state: StateType) {
 
   // ─── Read actions ──────────────────────────────────────────────────────
 
+  let competitionRequestId = 0;
+
+  const getCompetitions = (
+    query: {
+      page?: number | null;
+      pageSize?: number | null;
+      status?: "REGISTRATION" | "ACTIVE" | "FINISHED" | null;
+      seasonId?: number | string | null;
+      ageCategoryId?: number | string | null;
+      search?: string | null;
+    } = {},
+    append = false,
+  ) => {
+    const axios = useApi();
+    const cleaned: Record<string, unknown> = {};
+    Object.entries(query).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      if (typeof value === "string" && value.trim() === "") return;
+      cleaned[key] = value;
+    });
+
+    const requestId = append ? competitionRequestId : ++competitionRequestId;
+    if (append) {
+      state.competitionLoadingMore.value = true;
+    } else {
+      state.competitionLoading.value = true;
+    }
+
+    return axios
+      .get("/leagues", { params: cleaned })
+      .then((res) => {
+        if (!append && requestId !== competitionRequestId) {
+          return res.data.data;
+        }
+        const data = res.data.data;
+        const items = data?.items ?? data ?? [];
+        if (append) {
+          const existingIds = new Set(
+            state.competitionList.value.map((item: any) => Number(item.id)),
+          );
+          items.forEach((item: any) => {
+            if (!existingIds.has(Number(item.id))) {
+              state.competitionList.value.push(item);
+            }
+          });
+        } else {
+          state.competitionList.value = items;
+        }
+        setListMeta(
+          state.competitionListMeta,
+          state.competitionList,
+          data,
+          query,
+        );
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+        const message = err.response?.data?.message || "خطای سرور";
+        handlerStore.setError(message);
+      })
+      .finally(() => {
+        if (append) {
+          state.competitionLoadingMore.value = false;
+        } else {
+          state.competitionLoading.value = false;
+        }
+      });
+  };
+
   const getLeagues = (
     query: {
       page?: number;
@@ -382,6 +452,7 @@ export function useLeagueActions(state: StateType) {
   };
 
   return {
+    getCompetitions,
     getLeagues,
     getMyLeagues,
     getLeagueById,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-3!">
     <ViewProfileLeagueDetail class="mt-2" />
     <ViewProfileLeagueMyTeamList class="mt-2" />
   </div>

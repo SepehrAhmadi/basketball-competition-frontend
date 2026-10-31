@@ -15,7 +15,7 @@ type NavItem = {
 
 const items: NavItem[] = [
     { label: "خانه", to: "/", icon: IconHome },
-    { label: "مسابقات", to: "/", icon: IconCup },
+    { label: "مسابقات", to: "/competitions", icon: IconCup },
     { label: "زمان بندی", to: "/", icon: IconDate },
     { label: "پروفایل", to: "/profile", icon: IconUser },
 ];

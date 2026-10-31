@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="px-3!"> 
         <ViewProfileOrganizationDetail class="mt-2" />
         <ViewProfileOrganizationMembershipList class="mt-2" />
         <ViewProfileOrganizationTeamList :teams="teamList" class="mt-2" />
