@@ -83,7 +83,7 @@
                     </div>
                 </DrawerHeader>
 
-                <div class="flex flex-col gap-4 px-4">
+                <div class="flex flex-col gap-4 px-4 flex-1 min-h-0 overflow-y-auto pb-4">
                     <div class="flex justify-start items-center gap-5">
                         <div
                             class="w-20 h-20 rounded-full border border-gray-300"
@@ -277,7 +277,7 @@
                     </div>
                 </div>
 
-                <DrawerFooter>
+                <DrawerFooter class="shrink-0 border-t border-gray-100 dark:border-gray-800">
                     <Button
                         aria-label="ذخیره تغییرات پروفایل"
                         :disabled="handlerStore.loadingBtn"
@@ -301,7 +301,7 @@
                     >
                 </DrawerHeader>
 
-                <div class="flex flex-col gap-4 px-4">
+                <div class="flex flex-col gap-4 px-4 flex-1 min-h-0 overflow-y-auto pb-4">
                     <div class="flex flex-col gap-1">
                         <Label
                             class="text-gray-600 text-xs"
@@ -408,7 +408,7 @@
                     </div>
                 </div>
 
-                <DrawerFooter>
+                <DrawerFooter class="shrink-0 border-t border-gray-100 dark:border-gray-800">
                     <Button
                         aria-label="ذخیره رمز عبور جدید"
                         :disabled="
@@ -418,6 +418,7 @@
                             !confirmPassword
                         "
                         @click="handlePasswordSubmit"
+                        class="dark:text-gray-300"
                     >
                         <Spinner v-if="handlerStore.loadingBtn" />
                         <span v-else>ثبت</span>

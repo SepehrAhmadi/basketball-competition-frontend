@@ -29,6 +29,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     <DrawerContent
       data-slot="drawer-content"
       v-bind="{ ...$attrs, ...forwarded }"
+      :initial-focus="false"
       :class="cn(
         'group/drawer-content bg-background fixed z-50 flex h-auto flex-col',
         'will-change-transform transform-[translate3d(var(--drawer-swipe-movement-x,0px),var(--drawer-swipe-movement-y,0px),0)]',
