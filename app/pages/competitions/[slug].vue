@@ -72,7 +72,7 @@
           </span>
         </div>
         
-        <div class="flex flex-col divide-y divide-gray-200 dark:divide-gray-500">
+        <div class="flex flex-col divide-y divide-gray-200 dark:divide-gray-700">
           <div
             v-for="item in infoItems"
             :key="item.label"
@@ -103,9 +103,10 @@ import IconDateNumber from "~/components/icon/date-number.vue";
 import IconDatePlus from "~/components/icon/date-plus.vue";
 import IconDate from "~/components/icon/date.vue";
 import IconDocument from "~/components/icon/document.vue";
-import IconCheck from "~/components/icon/check.vue";
-import IconClose from "~/components/icon/close.vue";
+import IconCheckCircle from "~/components/icon/checkCircle.vue";
+import IconCloseCircle from "~/components/icon/closeCircle.vue";
 import IconCup from "~/components/icon/cup.vue";
+import IconRefresh from "~/components/icon/refresh.vue";
 
 const route = useRoute();
 const leagueId = computed(() => String(route.params.slug));
@@ -192,17 +193,17 @@ const infoItems = computed(() => [
   {
     label: "امتیاز برد",
     value: leagueDetail.value?.winPoints ?? "—",
-    icon: IconCheck,
+    icon: IconCheckCircle,
   },
   {
     label: "امتیاز باخت",
     value: leagueDetail.value?.lossPoints ?? "—",
-    icon: IconClose,
+    icon: IconCloseCircle,
   },
   {
     label: "نوع دور گروهی",
     value: getGroupRoundTypeLabel(leagueDetail.value?.groupRoundType),
-    icon: IconCup,
+    icon: IconRefresh,
   },
 ]);
 
