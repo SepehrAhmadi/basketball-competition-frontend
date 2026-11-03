@@ -19,8 +19,8 @@ export function usePeopleActions(state: StateType) {
       .catch((err) => {
         console.log(err);
 
-        const message = err.response?.data?.message || "خطای سرور";
-        handlerStore.setError(message);
+        // const message = err.response?.data?.message || "خطای سرور";
+        // handlerStore.setError(message);
       })
       .finally(() => {
 state.loading.value = false;
@@ -60,8 +60,8 @@ state.loading.value = false;
       .catch((err) => {
         console.log(err);
 
-        const message = err.response?.data?.message || "خطای سرور";
-        handlerStore.setError(message);
+        // const message = err.response?.data?.message || "خطای سرور";
+        // handlerStore.setError(message);
       })
       .finally(() => {
 state.loading.value = false;
@@ -101,8 +101,8 @@ state.loading.value = false;
       .catch((err) => {
         console.log(err);
 
-        const message = err.response?.data?.message || "خطای سرور";
-        handlerStore.setError(message);
+        // const message = err.response?.data?.message || "خطای سرور";
+        // handlerStore.setError(message);
       })
       .finally(() => {
 state.loading.value = false;
