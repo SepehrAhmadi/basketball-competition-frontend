@@ -75,8 +75,13 @@
         </div>
       </div>
 
-      <Button as-child size="sm" class="w-full mt-auto" aria-label="مشاهده لیگ">
-        <NuxtLink :to="`/competitions/${league?.id}`"> مشاهده </NuxtLink>
+      <Button
+        size="sm"
+        class="w-full mt-auto dark:text-gray-300"
+        aria-label="مشاهده لیگ"
+        @click="goToLeague"
+      >
+        مشاهده
       </Button>
     </CardContent>
   </Card>
@@ -85,9 +90,16 @@
 <script setup lang="ts">
 import { cn } from "~/lib/utils";
 
-defineProps<{
+const props = defineProps<{
   league: any;
 }>();
+
+const router = useRouter();
+
+const goToLeague = () => {
+  if (props.league?.id == null) return;
+  router.push(`/competitions/${props.league.id}`);
+};
 
 const statusLabels: Record<string, string> = {
   REGISTRATION: "در حال ثبت‌نام",
