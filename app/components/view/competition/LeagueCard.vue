@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <Button as-child size="sm" class="w-full mt-auto" aria-label="مشاهده لیگ">
+      <Button as-child size="sm" class="w-full mt-auto dark:text-gray-300" aria-label="مشاهده لیگ">
         <NuxtLink :to="`/competitions/${league?.id}`"> مشاهده </NuxtLink>
       </Button>
     </CardContent>

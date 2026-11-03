@@ -1,14 +1,17 @@
 <template>
   <div class="mt-2">
-    <div class="flex justify-between items-center gap-2 mb-2 px-3!">
-      <ScrollAdaptive class="flex items-center gap-2">
+    <ScrollAdaptive
+      v-slot="{ scrolled }"
+      class="flex justify-between items-center gap-2 mb-2 px-3!"
+    >
+      <div class="flex items-center gap-2">
         <icon-cup class="size-3.75" />
         <div class="text-[13px]">لیگ‌ها</div>
-      </ScrollAdaptive>
+      </div>
       <Button
         size="sm"
         variant="outline"
-        class="relative"
+        class="relative transition-colors duration-300 bg-white! text-primary!"
         aria-label="فیلتر لیگ‌ها"
         @click="filterOpen = true"
       >
@@ -16,12 +19,15 @@
         فیلتر
         <span
           v-if="hasActiveFilter"
-          class="absolute -top-1 -inset-s-1 size-2.5 rounded-full bg-primary"
+          class="absolute -top-1 -inset-s-1 size-2.5 rounded-full transition-colors duration-300 bg-white"
         />
       </Button>
-    </div>
+    </ScrollAdaptive>
 
-    <ViewCompetitionLeagueSlider :filters="appliedFilters" @clear="clearFilters" />
+    <ViewCompetitionLeagueSlider
+      :filters="appliedFilters"
+      @clear="clearFilters"
+    />
 
     <ViewCompetitionFilterDrawer
       v-model:open="filterOpen"
