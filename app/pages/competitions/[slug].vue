@@ -92,6 +92,9 @@
         </div>
       </CardContent>
     </Card>
+
+    <ViewCompetitionLeagueGroupSlider :league-id="leagueId" class="mt-4" />
+    <ViewCompetitionLeagueGameList :league-id="leagueId" class="mt-4" />
   </div>
 </template>
 
@@ -99,6 +102,7 @@
 import { cn } from "~/lib/utils";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useLeagueStore } from "~/store/league";
+import { useCompetitionStore } from "~/store/competition";
 import IconDateNumber from "~/components/icon/date-number.vue";
 import IconDatePlus from "~/components/icon/date-plus.vue";
 import IconDate from "~/components/icon/date.vue";
@@ -112,6 +116,7 @@ const route = useRoute();
 const leagueId = computed(() => String(route.params.slug));
 
 const leagueStore = useLeagueStore();
+const competitionStore = useCompetitionStore();
 const { leagueDetail, loading: leagueLoading } = storeToRefs(leagueStore);
 const isLoading = computed(
   () => leagueLoading.value && !leagueDetail.value,
@@ -209,11 +214,13 @@ const infoItems = computed(() => [
 
 onMounted(() => {
   leagueStore.getLeagueById(leagueId.value);
+  competitionStore.getPublicGroups(leagueId.value);
 });
 
 watch(leagueId, (next) => {
   leagueDetail.value = null;
   leagueStore.getLeagueById(next);
+  competitionStore.getPublicGroups(next);
 });
 </script>
 
