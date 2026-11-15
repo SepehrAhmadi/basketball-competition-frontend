@@ -1,5 +1,5 @@
 <template>
-  <div v-if="shouldRender" class="flex flex-col gap-3">
+  <div class="flex flex-col gap-3">
     <div v-if="isFirstLoading" class="flex flex-col gap-2" aria-hidden="true">
       <Card
         v-for="n in 3"
@@ -38,10 +38,13 @@
       <Card v-if="games.length === 0" class="w-full shadow-xs! rounded-4xl">
         <CardContent class="flex flex-col justify-center items-center gap-3 p-4">
           <icon-cup class="size-9 text-gray-500 dark:text-gray-300" />
-          <div class="text-gray-500 dark:text-gray-300 text-[15px]">
-            بازی‌ای با این فیلتر یافت نشد.
+          <div
+            class="text-gray-500 dark:text-gray-300 text-[15px] text-center"
+          >
+            {{ emptyMessage }}
           </div>
           <Button
+            v-if="filtersActive"
             size="sm"
             variant="outline"
             aria-label="حذف فیلترها"
@@ -69,21 +72,14 @@
                 class="flex justify-between items-center gap-2 text-[12px] text-gray-600 dark:text-gray-300"
               >
                 <div class="flex justify-start items-center gap-1">
-                  <span v-if="game.scheduledDate">
-                    {{ game.scheduledDate }}
-                    <template v-if="game.scheduledTime">
-                      · {{ game.scheduledTime }}
-                    </template>
-                  </span>
-                  <span v-else>تاریخ نامشخص</span>
-                </div>
-                <div class="flex justify-end items-center gap-1">
                   <span
                     v-if="game.group"
                     class="w-fit shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 bg-gray-200 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400"
                   >
                     {{ game.group.name }}
                   </span>
+                </div>
+                <div class="flex justify-end items-center gap-1">
                   <span
                     :class="
                       cn(
@@ -136,7 +132,9 @@
                   </span>
                 </div>
 
-                <div class="flex flex-col items-center gap-1 shrink-0">
+                <div
+                  class="flex flex-col items-center gap-1 shrink-0 min-w-[80px]"
+                >
                   <div v-if="hasScore(game)" class="flex items-center gap-1">
                     <span
                       :class="
@@ -160,9 +158,23 @@
                       {{ game.awayScore }}
                     </span>
                   </div>
-                  <span v-else class="text-[12px] font-semibold text-gray-500">
+                  <span
+                    v-else
+                    class="text-[18px] font-bold leading-none text-gray-700 dark:text-gray-200"
+                  >
                     VS
                   </span>
+                  <div
+                    class="flex flex-col items-center leading-tight text-[11px] text-gray-500 dark:text-gray-400"
+                  >
+                    <span v-if="game.scheduledDate">
+                      {{ game.scheduledDate }}
+                    </span>
+                    <span v-else>تاریخ نامشخص</span>
+                    <span v-if="game.scheduledTime">
+                      {{ game.scheduledTime }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="flex flex-col items-center gap-1 min-w-0 flex-1">
@@ -216,16 +228,31 @@
           </Card>
         </div>
 
-        <Button
-          v-if="hasMore"
-          variant="outline"
-          class="w-full"
-          :disabled="gamesLoading"
-          aria-label="نمایش بازی‌های بیشتر"
-          @click="loadGames(nextPage, true)"
+        <Pagination
+          v-if="pageCount > 1"
+          v-model:page="page"
+          :items-per-page="pageSize"
+          :total="gamesMeta?.total ?? 0"
+          :sibling-count="1"
+          show-edges
+          :class="gamesLoading && 'pointer-events-none opacity-60'"
+          aria-label="صفحه‌بندی بازی‌ها"
         >
-          نمایش بیشتر
-        </Button>
+          <PaginationContent>
+            <PaginationPrevious aria-label="صفحه قبلی" />
+            <PaginationItem
+              v-for="pageNumber in pageCount"
+              :key="pageNumber"
+              :value="pageNumber"
+              :is-active="pageNumber === page"
+              :aria-label="`صفحه ${pageNumber}`"
+              class="w-7! h-7! p-1! text-[14px]!"
+            >
+              {{ pageNumber }}
+            </PaginationItem>
+            <PaginationNext aria-label="صفحه بعدی" />
+          </PaginationContent>
+        </Pagination>
       </template>
     </template>
 
@@ -375,6 +402,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "~/components/ui/pagination";
 import { useCompetitionStore } from "~/store/competition";
 import teamLogo from "~/assets/img/icon/team.png";
 import { cn } from "~/lib/utils";
@@ -387,7 +421,11 @@ const competitionStore = useCompetitionStore();
 const { games, gamesMeta, gamesLoading, groups, teamOptions } =
   storeToRefs(competitionStore);
 
-const pageSize = 20;
+const page = ref(1);
+const pageSize = 5;
+const pageCount = computed(() =>
+  Math.ceil((gamesMeta.value?.total ?? 0) / pageSize),
+);
 
 const statusOptions = [
   { value: "SCHEDULED", label: "برنامه‌ریزی‌شده" },
@@ -420,27 +458,12 @@ const getStatusClass = (status: string): string => {
   }
 };
 
-const toLatinDigits = (value: string): string =>
-  value.replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)));
-
-const getTodayJalali = (): string => {
-  const formatted = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-    timeZone: "Asia/Tehran",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
-  return toLatinDigits(formatted).replace(/-/g, "/");
-};
-
-const defaultDateFrom = getTodayJalali();
-
 const emptyFilters = {
   search: "",
   status: "all",
   groupId: "all",
   leagueTeamId: "all",
-  dateFrom: defaultDateFrom,
+  dateFrom: "",
   dateTo: "",
 };
 
@@ -462,7 +485,7 @@ const filtersActive = computed(() => {
       f.status !== "all" ||
       f.groupId !== "all" ||
       f.leagueTeamId !== "all" ||
-      f.dateFrom !== defaultDateFrom ||
+      f.dateFrom !== "" ||
       f.dateTo !== "",
   );
 });
@@ -471,17 +494,21 @@ const isFirstLoading = computed(
   () => gamesLoading.value && games.value.length === 0,
 );
 
-const shouldRender = computed(() => {
-  if (isFirstLoading.value) return true;
-  if (games.value.length > 0) return true;
-  return filtersActive.value;
+const statusEmptyMessages: Record<string, string> = {
+  SCHEDULED: "بازی برنامه‌ریزی‌شده‌ای وجود ندارد.",
+  LIVE: "بازی در حال برگزاری وجود ندارد.",
+  FINISHED: "بازی تمام‌شده‌ای وجود ندارد.",
+  CANCELED: "بازی کنسل‌شده‌ای وجود ندارد.",
+};
+
+const emptyMessage = computed(() => {
+  const status = appliedFilters.value.status;
+  if (status !== "all") {
+    return statusEmptyMessages[status] ?? "بازی در حال حاضر وجود ندارد.";
+  }
+  if (filtersActive.value) return "بازی‌ای با این فیلتر یافت نشد.";
+  return "بازی در حال حاضر وجود ندارد.";
 });
-
-const hasMore = computed(
-  () => gamesMeta.value !== null && games.value.length < gamesMeta.value.total,
-);
-
-const nextPage = computed(() => (gamesMeta.value?.page ?? 1) + 1);
 
 const groupTeams = (groupId: string) => {
   const group = groups.value.find(
@@ -511,7 +538,7 @@ watch(
   },
 );
 
-const buildQuery = (page: number) => {
+const buildQuery = (pageNumber: number) => {
   const query: {
     page: number;
     pageSize: number;
@@ -521,7 +548,7 @@ const buildQuery = (page: number) => {
     search?: string;
     dateFrom?: string;
     dateTo?: string;
-  } = { page, pageSize };
+  } = { page: pageNumber, pageSize };
 
   if (appliedFilters.value.status !== "all") {
     query.status = appliedFilters.value
@@ -546,13 +573,8 @@ const buildQuery = (page: number) => {
   return query;
 };
 
-const loadGames = (page: number, append = false) => {
-  return competitionStore.getPublicGames(
-    props.leagueId,
-    buildQuery(page),
-    append,
-  );
-};
+const loadGames = (targetPage: number) =>
+  competitionStore.getPublicGames(props.leagueId, buildQuery(targetPage));
 
 const applyFilters = () => {
   appliedFilters.value = { ...draft.value };
@@ -576,13 +598,27 @@ watch(
   },
 );
 
+watch(page, (newPage) => {
+  loadGames(newPage);
+});
+
+watch(pageCount, (totalPages) => {
+  if (totalPages > 0 && page.value > totalPages) {
+    page.value = totalPages;
+  }
+});
+
 let suppressFilterReload = false;
 
 watch(
   appliedFilters,
   () => {
     if (suppressFilterReload) return;
-    loadGames(1);
+    if (page.value === 1) {
+      loadGames(1);
+    } else {
+      page.value = 1;
+    }
   },
   { deep: true },
 );
@@ -594,7 +630,11 @@ watch(
     suppressFilterReload = true;
     appliedFilters.value = { ...emptyFilters };
     draft.value = { ...emptyFilters };
-    loadGames(1);
+    if (page.value === 1) {
+      loadGames(1);
+    } else {
+      page.value = 1;
+    }
     nextTick(() => {
       suppressFilterReload = false;
     });
