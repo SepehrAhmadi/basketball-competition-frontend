@@ -60,7 +60,7 @@ onMounted(() => {
         <CardContent class="flex flex-col gap-4">
             <!-- full name -->
             <div class="flex flex-col gap-1">
-                <customLabel label="نام و نام خانوادگی"  />
+                <CustomLabel label="نام و نام خانوادگی"  />
                 <Input
                     v-model="fullName"
                     class="custom-input-focus"
@@ -71,7 +71,7 @@ onMounted(() => {
 
             <!-- phone   -->
             <div class="flex flex-col gap-1">
-                <customLabel label="شماره موبایل"  />
+                <CustomLabel label="شماره موبایل"  />
                 <Input
                     v-model="phone"
                     class="custom-input-focus"
@@ -82,7 +82,7 @@ onMounted(() => {
 
             <!-- email   -->
             <div class="flex flex-col gap-1">
-                <customLabel label="ایمیل"  />
+                <CustomLabel label="ایمیل"  />
                 <Input
                     v-model="email"
                     class="custom-input-focus"
@@ -93,7 +93,7 @@ onMounted(() => {
 
             <!-- password -->
             <div class="flex flex-col gap-1">
-                <customLabel label="مز عبور"  />
+                <CustomLabel label="مز عبور"  />
                 <div class="relative">
                     <Input
                         v-model="password"
@@ -119,7 +119,7 @@ onMounted(() => {
 
             <!-- roles -->
             <div class="flex flex-col gap-1">
-                <customLabel label="نقش ها"/>
+                <CustomLabel label="نقش ها"/>
                 <Combobox
                     v-model="roles"
                     multiple
@@ -186,15 +186,15 @@ onMounted(() => {
                 @click="submit"
                 class="w-full flex justify-center items-center gap-2"
             >
-                <div>ثبت‌نام</div>
-                <icon-user-add class="size-5" />
+                <div class="dark:text-gray-200">ثبت‌نام</div>
+                <icon-user-add class="size-5 dark:text-gray-200" />
             </Button>
             <div class="w-full text-xs flex gap-2 justify-center items-center">
                 <span> قبلاً حساب دارید؟ </span>
                 <Button
                     variant="link"
                     @click="$emit('switch')"
-                    class="text-primary font-bold px-0"
+                    class="text-primary font-bold px-0 dark:text-slate-400"
                 >
                     ورود
                 </Button>
