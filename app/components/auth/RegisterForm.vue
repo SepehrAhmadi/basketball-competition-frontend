@@ -186,15 +186,15 @@ onMounted(() => {
                 @click="submit"
                 class="w-full flex justify-center items-center gap-2"
             >
-                <div>ثبت‌نام</div>
-                <icon-user-add class="size-5" />
+                <div class="dark:text-gray-200">ثبت‌نام</div>
+                <icon-user-add class="size-5 dark:text-gray-200" />
             </Button>
             <div class="w-full text-xs flex gap-2 justify-center items-center">
                 <span> قبلاً حساب دارید؟ </span>
                 <Button
                     variant="link"
                     @click="$emit('switch')"
-                    class="text-primary font-bold px-0"
+                    class="text-primary font-bold px-0 dark:text-slate-400"
                 >
                     ورود
                 </Button>

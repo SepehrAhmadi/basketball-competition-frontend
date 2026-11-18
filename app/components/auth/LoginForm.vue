@@ -79,8 +79,8 @@ const submit = () => {
                 @click="submit"
                 class="w-full flex justify-center items-center gap-2"
             >
-                <div>ورود</div>
-                <icon-login class="size-5" />
+                <div class="dark:text-gray-200">ورود</div>
+                <icon-login class="size-5 dark:text-gray-200" />
             </Button>
             <div
                 class="w-full text-xs flex gap-2 justify-center items-center"
@@ -89,7 +89,7 @@ const submit = () => {
                 <Button
                     variant="link"
                     @click="$emit('switch')"
-                    class="text-primary font-bold px-0"
+                    class="text-primary font-bold px-0 dark:text-slate-400"
                 >
                     ثبت نام
                 </Button>
