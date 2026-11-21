@@ -75,7 +75,7 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="(row, index) in group.teams"
+                      v-for="(row, index) in groupRows(group)"
                       :key="row.leagueTeamId"
                       class="text-[13px] border-t border-gray-100 dark:border-gray-800"
                     >
@@ -83,7 +83,7 @@
                         <td class="py-2 ps-1">
                           <div class="flex justify-start items-center gap-2">
                             <span
-                              v-if="isQualified(group, Number(index))"
+                              v-if="isQualified(group, row, Number(index))"
                               class="w-0.5 self-stretch rounded-full bg-primary my-0.5 shrink-0"
                               aria-hidden="true"
                             />
@@ -150,11 +150,15 @@
                           </div>
                         </td>
                       </TooltipProvider>
-                      <td class="py-2 text-center text-gray-400 w-11">—</td>
-                      <td class="py-2 text-center text-gray-400 w-11">—</td>
-                      <td class="py-2 text-center text-gray-400 w-11">—</td>
-                      <td class="py-2 text-center text-gray-400 w-11">—</td>
-                      <td class="py-2 text-center text-gray-400 w-11">—</td>
+                      <td class="py-2 text-center w-11">{{ row.played ?? "—" }}</td>
+                      <td class="py-2 text-center w-11">{{ row.points ?? "—" }}</td>
+                      <td class="py-2 text-center w-11">{{ row.won ?? "—" }}</td>
+                      <td class="py-2 text-center w-11">{{ row.lost ?? "—" }}</td>
+                      <td class="py-2 text-center w-11">
+                        <span dir="ltr" class="inline-block">
+                          {{ row.difference == null ? "—" : formatDiff(row.difference) }}
+                        </span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -206,11 +210,27 @@ const slidesPerView = computed(() =>
   visibleGroups.value.length > 1 ? 1.08 : 1,
 );
 
-const isQualified = (group: any, index: number): boolean => {
+const groupRows = (group: any) => {
+  const standings = new Map<number, any>(
+    (group.standings ?? []).map((row: any) => [row.leagueTeamId, row]),
+  );
+  return [...group.teams]
+    .map((team: any) => ({
+      ...team,
+      ...(standings.get(team.leagueTeamId) ?? {}),
+    }))
+    .sort((a: any, b: any) => (a.rank ?? Infinity) - (b.rank ?? Infinity));
+};
+
+const isQualified = (group: any, row: any, index: number): boolean => {
+  if (typeof row.qualified === "boolean") return row.qualified;
   const qualifiers = group.qualifiers;
   if (typeof qualifiers !== "number") return false;
   return index < qualifiers;
 };
+
+const formatDiff = (value: number) =>
+  value > 0 ? `+ ${value}` : value < 0 ? `− ${Math.abs(value)}` : "0";
 
 const openTooltipId = ref<number | null>(null);
 
