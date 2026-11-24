@@ -58,7 +58,7 @@
       :space-between="12"
       :centered-slides="competitionList.length > 1"
       :grab-cursor="true"
-      class="items-stretch"
+      :class="competitionList.length > 1 ? 'items-stretch' : 'items-stretch px-3!'"
       @swiper="onSwiper"
       @slide-change="onSlideChange"
       @reach-end="onReachEnd"

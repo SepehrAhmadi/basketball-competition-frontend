@@ -33,7 +33,7 @@
         :space-between="12"
         :centered-slides="visibleGroups.length > 1"
         :grab-cursor="true"
-        class="items-stretch mt-2!"
+        :class="visibleGroups.length > 1 ? 'items-stretch mt-2!' : 'items-stretch mt-2! px-3!'"
       >
         <SwiperSlide
           v-for="group in visibleGroups"
@@ -43,11 +43,11 @@
           <Card class="w-full shadow-xs! rounded-4xl py-5 gap-4 h-full">
             <CardContent class="tw-py-2 flex flex-col gap-3 h-full">
               <div class="flex justify-between items-center gap-2">
-                <div class="text-[15px] font-semibold">
+                <div class="text-[13px] font-semibold">
                   {{ group.name }}
                 </div>
                 <span
-                  class="w-fit text-[10px] font-semibold rounded-full px-2 py-0.5 bg-gray-200 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400"
+                  class="w-fit text-[9px] font-semibold rounded-full px-2 py-0.5 bg-gray-200 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400"
                 >
                   {{ group.teams.length }} تیم
                 </span>
