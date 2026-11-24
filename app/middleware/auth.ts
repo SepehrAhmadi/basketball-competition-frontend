@@ -9,14 +9,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   if (!token) {
-    return navigateTo("/auth");
+    return navigateTo({ path: "/auth", query: { redirect: to.fullPath } });
   }
 
   if (token && !userStore.userProfile) {
     try {
       await userStore.getUserMe();
     } catch {
-      return navigateTo("/auth");
+      return navigateTo({ path: "/auth", query: { redirect: to.fullPath } });
     }
   }
 });
