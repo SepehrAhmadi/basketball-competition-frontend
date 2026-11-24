@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { safeRedirect } from "~/utils/redirect";
 
 definePageMeta({
   layout: "auth",
 });
+
+const route = useRoute();
+if (useCookie("token").value) {
+  await navigateTo(safeRedirect(route.query.redirect));
+}
 
 const mode = ref<"login" | "register">("login");
 </script>

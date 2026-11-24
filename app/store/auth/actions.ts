@@ -31,7 +31,7 @@ export function useAuthActions(state: StateType) {
       });
   };
 
-  const login = (value: any) => {
+  const login = (value: any, redirectTo = "/") => {
     const axios = useApi();
     state.loading.value = true;
 
@@ -43,7 +43,7 @@ export function useAuthActions(state: StateType) {
           const token = res.data.data.accessToken;
           useCookie("token").value = token;
           return userStore.getUserMe().then(() => {
-            navigateTo("/");
+            navigateTo(redirectTo);
             handlerStore.setSuccess(res.data.message);
           });
         }

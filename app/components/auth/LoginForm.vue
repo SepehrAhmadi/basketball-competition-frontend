@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/store/auth";
 import { useHandlerStore } from "~/store/handler";
+import { safeRedirect } from "~/utils/redirect";
 
 const authStore = useAuthStore();
 const handlerStore = useHandlerStore();
+const route = useRoute();
 
 defineEmits<{ (e: "switch"): void }>();
 
@@ -14,10 +16,13 @@ const password = ref("");
 
 const submit = () => {
   if (identifier.value && password.value) {
-    authStore.login({
-      identifier: identifier.value,
-      password: password.value,
-    });
+    authStore.login(
+      {
+        identifier: identifier.value,
+        password: password.value,
+      },
+      safeRedirect(route.query.redirect),
+    );
   } else {
     handlerStore.setError(
       "لطفاً شماره موبایل یا ایمیل و رمز عبور را وارد کنید",
