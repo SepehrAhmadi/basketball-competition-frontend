@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import type { Component } from "vue";
 import { useRoute } from "vue-router";
 import IconUser from "@/components/icon/user.vue";
@@ -11,19 +11,43 @@ type NavItem = {
     label: string;
     to: string;
     icon: Component;
+    noActive?: boolean;
 };
 
 const items: NavItem[] = [
     { label: "خانه", to: "/", icon: IconHome },
     { label: "مسابقات", to: "/competitions", icon: IconCup },
-    { label: "زمان بندی", to: "/", icon: IconDate },
+    { label: "زمان بندی", to: "/", icon: IconDate, noActive: true },
     { label: "پروفایل", to: "/profile", icon: IconUser },
 ];
 
 const route = useRoute();
 
-const activeIndex = computed(() =>
-    items.findIndex((item) => item.to === route.path),
+function matchIndex(path: string): number {
+    let best = -1;
+    let bestLen = -1;
+    items.forEach((item, index) => {
+        if (item.noActive) return;
+        const to = item.to;
+        const matched =
+            path === to || (to !== "/" && path.startsWith(to + "/"));
+        if (matched && to.length > bestLen) {
+            best = index;
+            bestLen = to.length;
+        }
+    });
+    return best;
+}
+
+const activeIndex = ref(-1);
+
+watch(
+    () => route.path,
+    (path) => {
+        const next = matchIndex(path);
+        if (next !== -1) activeIndex.value = next;
+    },
+    { immediate: true },
 );
 
 const pressKey = ref<number[]>(items.map(() => 0));
