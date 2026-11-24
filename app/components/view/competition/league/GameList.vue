@@ -74,7 +74,7 @@
                 <div class="flex justify-start items-center gap-1">
                   <span
                     v-if="game.group"
-                    class="w-fit shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 bg-gray-200 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400"
+                    class="w-fit shrink-0 text-[9px] font-semibold rounded-full px-2 py-0.5 bg-gray-200 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400"
                   >
                     {{ game.group.name }}
                   </span>
@@ -83,7 +83,7 @@
                   <span
                     :class="
                       cn(
-                        'w-fit shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5',
+                        'w-fit shrink-0 text-[9px] font-semibold rounded-full px-2 py-0.5',
                         getStatusClass(game.status),
                       )
                     "
@@ -96,7 +96,7 @@
               <div class="flex items-center justify-between gap-2">
                 <div class="flex flex-col items-center gap-1 min-w-0 flex-1">
                   <div
-                    class="shrink-0 w-10 h-10 rounded-full border border-gray-300 bg-primary"
+                    class="shrink-0 w-9 h-9 rounded-full border border-gray-300 bg-primary"
                   >
                     <img
                       v-if="game.homeTeam?.team?.logoUrl"
@@ -114,7 +114,7 @@
                   <span
                     :class="
                       cn(
-                        'text-[13px] font-semibold truncate max-w-full',
+                        'text-[12px] font-semibold truncate max-w-full',
                         game.status === 'CANCELED' && 'line-through',
                         game.winnerLeagueTeamId ===
                           game.homeTeam?.leagueTeamId && 'font-bold',
@@ -126,7 +126,7 @@
                   </span>
                   <span
                     v-if="game.homeTeam?.organization"
-                    class="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-full"
+                    class="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-full"
                   >
                     {{ game.homeTeam.organization.name }}
                   </span>
@@ -139,7 +139,7 @@
                     <span
                       :class="
                         cn(
-                          'min-w-10 text-center rounded-lg px-2 py-1 text-[18px] font-bold',
+                          'min-w-10 text-center rounded-lg px-2 py-1 text-[16px] font-bold',
                           getScoreClass(game, 'home'),
                         )
                       "
@@ -150,7 +150,7 @@
                     <span
                       :class="
                         cn(
-                          'min-w-10 text-center rounded-lg px-2 py-1 text-[18px] font-bold',
+                          'min-w-10 text-center rounded-lg px-2 py-1 text-[16px] font-bold',
                           getScoreClass(game, 'away'),
                         )
                       "
@@ -160,7 +160,7 @@
                   </div>
                   <span
                     v-else
-                    class="text-[18px] font-bold leading-none text-gray-700 dark:text-gray-200"
+                    class="text-[16px] font-bold leading-none text-gray-700 dark:text-gray-200"
                   >
                     VS
                   </span>
@@ -179,7 +179,7 @@
 
                 <div class="flex flex-col items-center gap-1 min-w-0 flex-1">
                   <div
-                    class="shrink-0 w-10 h-10 rounded-full border border-gray-300 bg-primary"
+                    class="shrink-0 w-9 h-9 rounded-full border border-gray-300 bg-primary"
                   >
                     <img
                       v-if="game.awayTeam?.team?.logoUrl"
@@ -197,7 +197,7 @@
                   <span
                     :class="
                       cn(
-                        'text-[13px] font-semibold truncate max-w-full',
+                        'text-[12px] font-semibold truncate max-w-full',
                         game.status === 'CANCELED' && 'line-through',
                         game.winnerLeagueTeamId ===
                           game.awayTeam?.leagueTeamId && 'font-bold',
@@ -209,7 +209,7 @@
                   </span>
                   <span
                     v-if="game.awayTeam?.organization"
-                    class="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-full"
+                    class="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-full"
                   >
                     {{ game.awayTeam.organization.name }}
                   </span>

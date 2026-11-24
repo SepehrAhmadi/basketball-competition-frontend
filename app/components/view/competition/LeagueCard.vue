@@ -9,11 +9,11 @@
             <icon-cup class="size-9 text-white" />
           </div>
           <div class="flex flex-col gap-1">
-            <div class="text-[15px] font-semibold">
+            <div class="text-[14px] font-semibold">
               {{ league?.name ?? "—" }}
             </div>
             <div
-              class="flex justify-start items-center gap-1 text-[13px] text-gray-600 dark:text-gray-300"
+              class="flex justify-start items-center gap-1 text-[12px] text-gray-600 dark:text-gray-300"
             >
               <span>{{ league?.season?.name ?? "—" }}</span>
               <span>|</span>
@@ -24,7 +24,7 @@
         <span
           :class="
             cn(
-              'w-fit shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5',
+              'w-fit shrink-0 text-[9px] font-semibold rounded-full px-2 py-0.5',
               getStatusClass(league?.status ?? ''),
             )
           "
