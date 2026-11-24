@@ -94,12 +94,12 @@
             v-if="leagueDetail?.startDate"
             class="flex flex-col justify-center items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-500"
           >
-            <icon-date-number class="size-7 text-gray-400 dark:text-gray-300" />
+            <icon-date-number class="size-6 text-gray-400 dark:text-gray-300" />
             <div
               class="text-gray-600 dark:text-gray-300 flex flex-col justify-center items-center gap-0.5"
             >
-              <div class="text-[12px]">تاریخ شروع</div>
-              <div class="text-[15px]">
+              <div class="text-[11px]">تاریخ شروع</div>
+              <div class="text-[14px]">
                 {{ leagueDetail.startDate }}
               </div>
             </div>
@@ -108,12 +108,12 @@
             v-if="leagueDetail?.endDate"
             class="flex flex-col justify-center items-center gap-2 p-3 rounded-lg border border-gray-200 dark:border-gray-500"
           >
-            <icon-date-number class="size-7 text-gray-400 dark:text-gray-300" />
+            <icon-date-number class="size-6 text-gray-400 dark:text-gray-300" />
             <div
               class="text-gray-600 dark:text-gray-300 flex flex-col justify-center items-center gap-0.5"
             >
-              <div class="text-[12px]">تاریخ پایان</div>
-              <div class="text-[15px]">
+              <div class="text-[11px]">تاریخ پایان</div>
+              <div class="text-[14px]">
                 {{ leagueDetail.endDate }}
               </div>
             </div>
@@ -122,12 +122,12 @@
             v-if="leagueDetail?.rosterDeadline"
             class="flex flex-col justify-center items-center gap-2 p-3 rounded-lg border border-gray-200 dark:border-gray-500"
           >
-            <icon-date-plus class="size-7 text-gray-400 dark:text-gray-300" />
+            <icon-date-plus class="size-6 text-gray-400 dark:text-gray-300" />
             <div
               class="text-gray-600 dark:text-gray-300 flex flex-col justify-center items-center gap-0.5"
             >
-              <div class="text-[12px]">مهلت ثبت‌نام</div>
-              <div class="text-[15px]">
+              <div class="text-[11px]">مهلت ثبت‌نام</div>
+              <div class="text-[14px]">
                 {{ leagueDetail.rosterDeadline }}
               </div>
             </div>
